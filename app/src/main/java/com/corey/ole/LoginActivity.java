@@ -13,9 +13,15 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
 
@@ -152,9 +158,30 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    public void login(String username) {
-        //Intent intent = new Intent(this, class);
-        //startActivity(intent);
-        Log.d(TAG, "Logging in...");
+    public void login(String email) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = db.getReference("users");
+        String uid = mAuth.getCurrentUser().getUid();
+        DatabaseReference user = usersRef.child(uid);
+        user.addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onDataChange(DataSnapshot data) {
+                if (data.child("Account Type").getValue(Integer.class) == 1) {
+                    // Tenant
+
+                    //Intent intent = new Intent(this, class);
+                    //startActivity(intent);
+                } else if (data.child("Account Type").getValue(Integer.class) == 2) {
+                    // Landlord
+                    
+                    //Intent intent = new Intent(this, class);
+                    //startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, String.valueOf(databaseError));
+            }
+        });
     }
 }
