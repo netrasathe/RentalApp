@@ -6,4 +6,6 @@
     <string name="login">Login</string>
     <string name="signup">Sign Up</string>
     <string name="auth_failed">Failed to login.</string>
+    <string name="drawer_open">drawer open.</string>
+    <string name="drawer_close">drawer close.</string>
 </resources>
