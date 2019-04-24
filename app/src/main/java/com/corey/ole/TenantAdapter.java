@@ -1,53 +1,67 @@
-package com.corey.ole;
+package com.coreyhu.cs160_sp18.prog3;
 
-import android.graphics.Bitmap;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.corey.ole.R;
+import com.corey.ole.TenantProfile;
 
-/* CardView for the tenant list under a property page*/
+import java.util.ArrayList;
 
-public class PropertyTenantView {
-    private String name;
-    private String address;
-    private int[] tenant_ids;
-    private Bitmap image;
+// Adapter for the recycler view in the Property's tenant list.
+public class TenantAdapter extends RecyclerView.Adapter {
 
-    public void PropertyTenantView(String name, String address, int[] tenant_ids) {
-        this.name = name;
-        this.address = address;
-        this.tenant_ids = tenant_ids;
+    private Context mContext;
+    private ArrayList<TenantProfile> mTenants;
+
+    public TenantAdapter(Context context, ArrayList<TenantProfile> tenants) {
+        mContext = context;
+        mTenants = tenants;
     }
 
-    public void setTitle(String t) {
-        this.title = t;
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.tenant_cell, parent, false);
+        return new TenantViewHolder(view);
     }
 
-    public void setAddress(String a) {
-        this.address = a;
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        TenantProfile tenant = mTenants.get(position);
+        ((TenantViewHolder) holder).bind(tenant);
     }
 
-    public void setTenants(int t){
-        this.tenants = t;
+    @Override
+    public int getItemCount() {
+        return mTenants.size();
+    }
+}
+
+class TenantViewHolder extends RecyclerView.ViewHolder {
+
+    public RelativeLayout mCommentBubbleLayout;
+    public TextView mNameTextView;
+    public TextView mRoomTextView;
+    public ImageView mPhotoTextView;
+
+    public TenantViewHolder(View itemView) {
+        super(itemView);
+        mCommentBubbleLayout = itemView.findViewById(R.id.tenant_cell);
+        mNameTextView = mCommentBubbleLayout.findViewById(R.id.name);
+        mRoomTextView = mCommentBubbleLayout.findViewById(R.id.room);
+        mPhotoTextView = mCommentBubbleLayout.findViewById(R.id.photo);
     }
 
-    public void setImage(Bitmap i) {
-        this.image = i;
+    void bind(TenantProfile tenant) {
+        mNameTextView.setText(tenant.getName());
+        mRoomTextView.setText(tenant.getRoom());
+        mPhotoTextView.setImageBitmap(tenant.getPhoto());
     }
-
-
-    public String getTitle(){
-        return this.title;
-    }
-
-    public String getAddress(){
-        return this.address;
-    }
-
-    public int getTenants(){
-        return this.tenants;
-    }
-
-    public Bitmap getImage(){
-        return this.image;
-    }
-
 }

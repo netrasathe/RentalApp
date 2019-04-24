@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.util.Date;
 
 // custom class made for storing a tenant object.
-public class Tenant {
+public class TenantProfile {
 
     private static int global_id = 0;
 
@@ -22,11 +22,11 @@ public class Tenant {
 
 
 
-    public Tenant(){
+    public TenantProfile(){
 
     }
 
-    Tenant(String name, String gender, Date birthdate, int phone, String email, Bitmap photo, int property, String room) {
+    TenantProfile(String name, String gender, Date birthdate, int phone, String email, Bitmap photo, int property, String room) {
         this.id = global_id;
         global_id += 1;
         this.name = name;
@@ -40,27 +40,76 @@ public class Tenant {
         this.room = room;
     }
 
-    // returns a string indicating how long ago this post was made
-    protected String elapsedTimeString() {
-        long diff = new Date().getTime() - date.getTime();
-        long seconds = diff / 1000;
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        long days = hours / 24;
-        int daysInt = Math.round(days);
-        int hoursInt = Math.round(hours);
-        int minutesInt = Math.round(minutes);
-        if (daysInt == 1) {
-            return "1 day";
-        } else if (daysInt > 1) {
-            return Integer.toString(daysInt) + " days";
-        } else if (hoursInt == 1) {
-            return "1 hour";
-        } else if (hoursInt > 1) {
-            return Integer.toString(hoursInt) + " hours";
-        } else {
-            return "less than an hour";
-        }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Bitmap getPhoto() {
+        return photo;
+    }
+
+    public int getProperty() {
+        return property;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
+    }
+
+    public void setProperty(int property) {
+        this.property = property;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
     }
 }
 
