@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    android:background="#303030">
+    android:background="@color/darkGrey">
 
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#212121" />
+            android:background="@color/appBar" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
