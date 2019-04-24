@@ -1,5 +1,6 @@
 package com.corey.ole;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,12 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +33,9 @@ public class LoginActivity extends AppCompatActivity implements
     private EditText mEmailField;
     private EditText mPasswordField;
     private Button mSignInButton;
+    private Button mSignUpButton;
+    private TextView mSignUpText;
+    private View mProgressView;
 
     private FirebaseAuth mAuth;
 
@@ -44,9 +47,12 @@ public class LoginActivity extends AppCompatActivity implements
         // Views
         mEmailField = findViewById(R.id.emailEditText);
         mPasswordField = findViewById(R.id.passwordEditText);
+        mProgressView = findViewById(R.id.login_progress);
+        mSignUpText = findViewById(R.id.textView2);
 
         // Buttons
         mSignInButton = findViewById(R.id.loginButton);
+        mSignUpButton = findViewById(R.id.signupButton);
         mSignInButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -90,10 +96,13 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void signIn(final String email, final String password) {
+
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
             return;
         }
+
+        showProgress(true);
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -112,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
+                        showProgress(false);
                     }
                 });
     }
@@ -158,6 +168,16 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+    public void tenantLogin() {
+        Intent intent = new Intent(this, TenantHomeActivity.class);
+        startActivity(intent);
+    }
+
+    public void landlordLogin() {
+        //Intent intent = new Intent(this, class);
+        //startActivity(intent);
+    }
+
     public void login(String email) {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = db.getReference("users");
@@ -166,15 +186,9 @@ public class LoginActivity extends AppCompatActivity implements
         user.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot data) {
                 if (data.child("Account Type").getValue(Integer.class) == 1) {
-                    // Tenant
-
-                    //Intent intent = new Intent(this, class);
-                    //startActivity(intent);
+                    tenantLogin();
                 } else if (data.child("Account Type").getValue(Integer.class) == 2) {
-                    // Landlord
-                    
-                    //Intent intent = new Intent(this, class);
-                    //startActivity(intent);
+                    landlordLogin();
                 }
             }
 
@@ -183,5 +197,18 @@ public class LoginActivity extends AppCompatActivity implements
                 Log.e(TAG, String.valueOf(databaseError));
             }
         });
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    private void showProgress(final boolean show) {
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+
+        mEmailField.setVisibility(show ? View.GONE : View.VISIBLE);
+        mPasswordField.setVisibility(show ? View.GONE : View.VISIBLE);
+        mSignInButton.setVisibility(show ? View.GONE : View.VISIBLE);
+        mSignUpText.setVisibility(show ? View.GONE : View.VISIBLE);
+        mSignUpButton.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 }

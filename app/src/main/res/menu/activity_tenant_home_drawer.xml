@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/ic_menu_messages"
+            android:title="messages" />
+        <item
+            android:id="@+id/nav_rent"
+            android:icon="@drawable/ic_menu_rent"
+            android:title="rent" />
+        <item
+            android:id="@+id/nav_lease"
+            android:icon="@drawable/ic_menu_lease"
+            android:title="lease" />
+        <item
+            android:id="@+id/nav_documents"
+            android:icon="@drawable/ic_menu_documents"
+            android:title="documents" />
+        <item
+            android:id="@+id/nav_repair"
+            android:icon="@drawable/ic_menu_repair"
+            android:title="repair" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_profile"
+            android:title="profile" />
+    </group>
+
+</menu>
