@@ -52,6 +52,7 @@ public class PropertyAdapter extends RecyclerView.Adapter {
         return mPropertyView.size();
     }
 
+
     /* PropertyViewHolder sets the image and info of the property on the UI */
     class PropertyViewHolder extends RecyclerView.ViewHolder {
 

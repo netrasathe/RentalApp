@@ -1,4 +1,4 @@
-package com.coreyhu.cs160_sp18.prog3;
+package com.corey.ole;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.corey.ole.R;
-import com.corey.ole.TenantProfile;
 
 import java.util.ArrayList;
 
