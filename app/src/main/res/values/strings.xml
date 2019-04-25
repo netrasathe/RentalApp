@@ -26,4 +26,6 @@
     <string name="you_pay">You Pay:</string>
     <string name="pay_now">Pay Now</string>
     <string name="total">Total:</string>
+    <string name="title_activity_messages">Messages</string>
+    <string name="unread">unread</string>
 </resources>

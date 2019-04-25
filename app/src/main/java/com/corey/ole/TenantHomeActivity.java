@@ -80,17 +80,6 @@ public class TenantHomeActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -98,7 +87,8 @@ public class TenantHomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_messages) {
-
+            Intent intent = new Intent(this, MessagesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_rent) {
             Intent intent = new Intent(this, RentActivity.class);
             startActivity(intent);
