@@ -25,7 +25,7 @@ public class PropertyAdapter extends RecyclerView.Adapter {
         mPropertyView = propertyView;
 
     }
-    
+
 
     @NonNull
     @Override
