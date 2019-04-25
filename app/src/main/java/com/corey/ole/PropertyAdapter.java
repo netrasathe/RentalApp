@@ -1,6 +1,7 @@
 package com.corey.ole;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,27 +19,19 @@ public class PropertyAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private ArrayList<PropertyView> mPropertyView;
-    private OnItemClickListener mListener;
 
     public PropertyAdapter(Context context, ArrayList<PropertyView> propertyView) {
         mContext = context;
         mPropertyView = propertyView;
-    }
 
-    public interface  OnItemClickListener {
-        void onItemClick(int position);
     }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
-    }
-
+    
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.property_cell, viewGroup, false);
-        return new PropertyViewHolder(view, mListener);
+        return new PropertyViewHolder(view);
     }
 
     @Override
@@ -56,14 +49,17 @@ public class PropertyAdapter extends RecyclerView.Adapter {
     /* PropertyViewHolder sets the image and info of the property on the UI */
     class PropertyViewHolder extends RecyclerView.ViewHolder {
 
+        private PropertyView mProperty;
         private RelativeLayout mPropertyLayout;
         private TextView mTitle;
         private TextView mAddress;
         private TextView mTenants;
         private ImageView mImage;
 
+        public static final String EXTRA_PROPERTYNAME = "propertyName";
 
-        public PropertyViewHolder(View itemView, final PropertyAdapter.OnItemClickListener listener) {
+
+        public PropertyViewHolder(View itemView) {
             super(itemView);
             mPropertyLayout = itemView.findViewById(R.id.property_cell);
             mTitle = mPropertyLayout.findViewById(R.id.title);
@@ -74,19 +70,17 @@ public class PropertyAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            PropertyView p = mPropertyView.get(position);
-                            listener.onItemClick(position);
+                    Intent goToTenantListIntent = new Intent(view.getContext(), TenantListActivity.class);
+                    goToTenantListIntent.putExtra(EXTRA_PROPERTYNAME, mProperty.getTitle());
 
-                        }
-                    }
+                    view.getContext().startActivity(goToTenantListIntent);
+
                 }
             });
         }
 
         void bind(PropertyView property) {
+            mProperty = property;
             String t = Integer.toString(property.getTenants()) + " Tenants";
             mTitle.setText(property.getTitle());
             mAddress.setText(property.getAddress());
