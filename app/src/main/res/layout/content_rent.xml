@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".RentActivity"
+    tools:showIn="@layout/app_bar_rent"
+    android:background="@color/darkGrey">
+
+    <TextView
+        android:id="@+id/dueHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Due April 30th 2019"
+        android:textColor="@color/textWhite"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dueHeader">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/baseRentHeader"
+                android:layout_column="1"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/base_rent"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:layout_marginStart="48dp" />
+
+            <TextView
+                android:id="@+id/baseRentValue"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="48dp"
+                android:gravity="right"
+                android:text="$3200"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:layout_marginEnd="48dp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/textWhite" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/waterHeader"
+                android:layout_column="1"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/water"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:layout_marginStart="48dp" />
+
+            <TextView
+                android:id="@+id/waterValue"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="48dp"
+                android:gravity="right"
+                android:text="$50"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:layout_marginEnd="48dp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/textWhite" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/trashHeader"
+                android:layout_column="1"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/trash"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:layout_marginStart="48dp" />
+
+            <TextView
+                android:id="@+id/trashValue"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="48dp"
+                android:gravity="right"
+                android:text="$75"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:layout_marginEnd="48dp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/textWhite" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/electricityHeader"
+                android:layout_column="1"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/electricity"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:layout_marginStart="48dp" />
+
+            <TextView
+                android:id="@+id/electricityValue"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="48dp"
+                android:gravity="right"
+                android:text="$40"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:layout_marginEnd="48dp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/textWhite" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/internetHeader"
+                android:layout_column="1"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/internet"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:layout_marginStart="48dp" />
+
+            <TextView
+                android:id="@+id/internetValue"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="48dp"
+                android:gravity="right"
+                android:text="$190"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:layout_marginEnd="48dp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/textWhite" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/totalHeader"
+                android:layout_column="1"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/total"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:layout_marginStart="48dp" />
+
+            <TextView
+                android:id="@+id/totalValue"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="48dp"
+                android:gravity="right"
+                android:text="$3555"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="48dp" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:stretchColumns="1"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/youPayHeader"
+                android:layout_column="1"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/you_pay"
+                android:textColor="@color/textWhite"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginStart="48dp" />
+
+            <TextView
+                android:id="@+id/youPayValue"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="48dp"
+                android:gravity="right"
+                android:text="$3555"
+                android:textColor="@color/textWhite"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="48dp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/textWhite" />
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:drawableLeft="@drawable/ic_payment_black"
+        android:drawableRight="@drawable/ic_keyboard_arrow_right_black"
+        android:text="@string/pay_now"
+        android:textColor="@color/textBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:drawableStart="@drawable/ic_payment_black"
+        android:drawableEnd="@drawable/ic_keyboard_arrow_right_black" />
+
+</android.support.constraint.ConstraintLayout>

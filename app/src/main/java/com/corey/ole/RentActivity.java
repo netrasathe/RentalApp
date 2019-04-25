@@ -2,8 +2,9 @@ package com.corey.ole;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,17 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-
-public class TenantHomeActivity extends AppCompatActivity
+public class RentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView mAnnouceRecycler;
-    private RecyclerView mUpcomingRecycler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tenant_home);
+        setContentView(R.layout.activity_rent);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -35,38 +32,11 @@ public class TenantHomeActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        mAnnouceRecycler = findViewById(R.id.rv_announcements);
-        mAnnouceRecycler.setHasFixedSize(true);
-        mAnnouceRecycler.setLayoutManager(new LinearLayoutManager(this));
-
-        mUpcomingRecycler = findViewById(R.id.rv_upcoming);
-        mUpcomingRecycler.setHasFixedSize(true);
-        mUpcomingRecycler.setLayoutManager(new LinearLayoutManager(this));
-
-        setAnnoucements();
-        setUpcoming();
-    }
-
-    private void setAnnoucements() {
-        ArrayList<String> data = new ArrayList<>();
-        data.add("Building Maintenance is on 04/20/19");
-        data.add("The backdoor lock is broken");
-        AnnouncementAdapter adapter = new AnnouncementAdapter(data);
-        mAnnouceRecycler.setAdapter(adapter);
-    }
-
-    private void setUpcoming() {
-        ArrayList<String> data = new ArrayList<>();
-        data.add("Rent due on next Tuesday 04/30/19");
-        data.add("Repair Request on 04/22/19");
-        AnnouncementAdapter adapter = new AnnouncementAdapter(data);
-        mUpcomingRecycler.setAdapter(adapter);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -76,7 +46,8 @@ public class TenantHomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.tenant_home, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.rent, menu);
         return true;
     }
 
@@ -90,8 +61,7 @@ public class TenantHomeActivity extends AppCompatActivity
             Intent intent = new Intent(this, MessagesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_rent) {
-            Intent intent = new Intent(this, RentActivity.class);
-            startActivity(intent);
+            // Do nothing
         } else if (id == R.id.nav_lease) {
 
         } else if (id == R.id.nav_documents) {
@@ -102,7 +72,7 @@ public class TenantHomeActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
