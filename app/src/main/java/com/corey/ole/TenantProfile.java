@@ -2,6 +2,8 @@ package com.corey.ole;
 
 import android.graphics.Bitmap;
 
+import com.google.android.gms.common.data.ConcatenatedDataBuffer;
+
 import java.util.Date;
 
 // custom class made for storing a tenant object.
@@ -18,8 +20,6 @@ public class TenantProfile {
     private Bitmap photo;
     private int property;
     private String room;
-
-
 
 
     public TenantProfile(){
@@ -111,5 +111,24 @@ public class TenantProfile {
     public void setRoom(String room) {
         this.room = room;
     }
+
+
+    public static TenantProfile makeTestTenants(int propertyID) {
+        TenantProfile tenant = new TenantProfile("John Smith", "Male",
+                new Date(System.currentTimeMillis() - (25 * 60 * 60 * 1000)),
+                12345678,
+                "email@email.com",
+                null,
+                propertyID,
+                "212");
+        return tenant;
+    }
+
+    public static TenantProfile getTenantFromID(int tenantID){
+        // TODO: Use firebase here to get Tenant from ID lookup
+        return makeTestTenants(0);
+
+    }
 }
+
 

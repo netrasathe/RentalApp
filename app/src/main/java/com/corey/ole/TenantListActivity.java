@@ -14,7 +14,7 @@ public class TenantListActivity extends AppCompatActivity {
     Toolbar toolbar;
     String propertyName = "Property";
     RecyclerView mRecyclerView;
-    TenantAdapter mAdapter;
+    TenantListAdapter mAdapter;
     int propertyID;
 
     ArrayList<TenantProfile> mTenants = new ArrayList<>();
@@ -34,27 +34,17 @@ public class TenantListActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        makeTestTenants();
+        mTenants.add(TenantProfile.makeTestTenants(propertyID));
         setAdapterAndUpdateData();
 
     }
 
-    private void makeTestTenants() {
-        TenantProfile tenant = new TenantProfile("John Smith", "Male",
-                new Date(System.currentTimeMillis() - (25 * 60 * 60 * 1000)),
-                12345678,
-                "email@email.com",
-                null,
-                propertyID,
-                "212");
 
-        mTenants.add(tenant);
-    }
 
     private void setAdapterAndUpdateData() {
         // create a new adapter with the updated mComments array
         // this will "refresh" our recycler view
-        mAdapter = new TenantAdapter(this, mTenants);
+        mAdapter = new TenantListAdapter(this, mTenants);
         mRecyclerView.setAdapter(mAdapter);
 
     }

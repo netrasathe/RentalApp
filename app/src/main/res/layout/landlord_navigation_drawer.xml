@@ -38,7 +38,7 @@
         android:textColor="@android:color/background_light" />
 
     <TextView
-        android:id="@+id/email"
+        android:id="@+id/roommates"
         android:layout_width="293dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"

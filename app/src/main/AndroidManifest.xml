@@ -29,6 +29,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LandlordHome" />
+        <activity android:name=".TenantProfileActivity" />
+        <activity android:name=".TenantListActivity" />
     </application>
 
 </manifest>

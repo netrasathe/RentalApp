@@ -10,7 +10,7 @@
     tools:showIn="@layout/app_bar_tenant_home">
 
     <TextView
-        android:id="@+id/announcemen"
+        android:id="@+id/announcements"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -32,7 +32,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/announcemen" >
+        app:layout_constraintTop_toBottomOf="@+id/announcements" >
 
     </android.support.v7.widget.RecyclerView>
 
