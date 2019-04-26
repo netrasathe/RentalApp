@@ -2,6 +2,7 @@ package com.corey.ole;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,16 +25,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class MessagesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mMessagesRecycler;
     private TextView mUsername;
+    private ArrayList<Message> mMessages;
+    private String mUid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,29 +64,59 @@ public class MessagesActivity extends AppCompatActivity
         mMessagesRecycler = findViewById(R.id.rv_messages);
         mMessagesRecycler.setHasFixedSize(true);
         mMessagesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mMessages = new ArrayList<>();
         setMessages();
     }
 
     private void setMessages() {
-        ArrayList<Message> data = new ArrayList<>();
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "ZYXILsSYC9POaErJhpRUAEMNi8T2", true));
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", false));
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "ZYXILsSYC9POaErJhpRUAEMNi8T2", false));
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", true));
-        MessageAdapter adapter = new MessageAdapter(data, this);
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference messRef = db.getReference("messages");
+
+        Query query = messRef.orderByChild("participants");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mMessages.clear();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    ArrayList participants = (ArrayList<String>) child.child("participants").getValue();
+                    if (participants.contains(mUid)) {
+                        Message newMessage = new Message("Lorem ipsum dolor sit amet, " +
+                                "consectetur adipisicing elit, sed do eiusmod tempor incididunt " +
+                                "ut labore et dolore magna wirl aliqua. Up exlaborum incididunt " +
+                                "quis nostrud exercitatn.", new Date(),
+                                "ZYXILsSYC9POaErJhpRUAEMNi8T2", false);
+                        mMessages.add(newMessage);
+                    }
+                }
+
+                setAdapterAndUpdateData();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void setAdapterAndUpdateData() {
+        // Save state
+        Parcelable recyclerViewState;
+        recyclerViewState = mMessagesRecycler.getLayoutManager().onSaveInstanceState();
+
+        // create a new adapter with the updated mComments array
+        // this will "refresh" our recycler view
+        Collections.sort(mMessages, new Comparator<Message>() {
+            @Override
+            public int compare(Message comment, Message t1) {
+                return -Long.compare(comment.getDate().getTime(), t1.getDate().getTime());
+            }
+        });
+        MessageAdapter adapter = new MessageAdapter(mMessages, this);
         mMessagesRecycler.setAdapter(adapter);
+
+        // Restore state
+        mMessagesRecycler.getLayoutManager().onRestoreInstanceState(recyclerViewState);
     }
 
     @Override
@@ -153,8 +193,8 @@ public class MessagesActivity extends AppCompatActivity
         String email = auth.getCurrentUser().getEmail();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = db.getReference("users");
-        String uid = auth.getCurrentUser().getUid();
-        DatabaseReference user = usersRef.child(uid);
+        mUid = auth.getCurrentUser().getUid();
+        DatabaseReference user = usersRef.child(mUid);
         user.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot data) {
                 String firstName = data.child("First Name").getValue(String.class);
