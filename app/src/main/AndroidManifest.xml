@@ -33,19 +33,9 @@
             android:name=".TenantHomeActivity"
             android:label="@string/title_activity_tenant_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LandlordHome">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".LandlordHome"/>
 
         <activity android:name=".LoginActivity">
-
-        </activity>
-
-        <activity android:name=".PropertyDetailsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,6 +43,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".PropertyDetailsActivity"/>
         <activity android:name=".TenantProfileActivity" />
         <activity android:name=".TenantListActivity" />
     </application>
