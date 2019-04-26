@@ -14,7 +14,7 @@ public class PropertyView {
     private String title;
     private String address;
     private int tenants;
-    private Bitmap image;
+    private int image;
 
     private int[] tenantIDList;
 
@@ -22,7 +22,7 @@ public class PropertyView {
 
     }
 
-    PropertyView(String title, String address, int tenants, Bitmap image) {
+    PropertyView(String title, String address, int tenants, int image) {
         this.id = global_id;
         global_id += 1;
         this.title = title;
@@ -44,7 +44,7 @@ public class PropertyView {
         this.tenants = t;
     }
 
-    public void setImage(Bitmap i) {
+    public void setImage(int i) {
         this.image = i;
     }
 
@@ -65,7 +65,7 @@ public class PropertyView {
         return this.tenants;
     }
 
-    public Bitmap getImage(){
+    public int getImage(){
         return this.image;
     }
 
@@ -75,7 +75,7 @@ public class PropertyView {
                 "TestProperty",
                 "1111 Shattuck Ave.",
                 12,
-                null);
+                0);
     }
 
 }

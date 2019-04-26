@@ -19,6 +19,7 @@ public class PropertyAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private ArrayList<PropertyView> mPropertyView;
+    private OnItemClickListener mListener;
 
     public PropertyAdapter(Context context, ArrayList<PropertyView> propertyView) {
         mContext = context;
@@ -26,12 +27,20 @@ public class PropertyAdapter extends RecyclerView.Adapter {
 
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.property_cell, viewGroup, false);
-        return new PropertyViewHolder(view);
+        return new PropertyViewHolder(view, mListener);
     }
 
     @Override
@@ -59,7 +68,7 @@ public class PropertyAdapter extends RecyclerView.Adapter {
         public static final String EXTRA_PROPERTYNAME = "propertyName";
 
 
-        public PropertyViewHolder(View itemView) {
+        public PropertyViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             mPropertyLayout = itemView.findViewById(R.id.property_cell);
             mTitle = mPropertyLayout.findViewById(R.id.title);
@@ -70,22 +79,26 @@ public class PropertyAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent goToTenantListIntent = new Intent(view.getContext(), TenantListActivity.class);
-                    goToTenantListIntent.putExtra(EXTRA_PROPERTYNAME, mProperty.getTitle());
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        listener.onItemClick(position);
 
-                    view.getContext().startActivity(goToTenantListIntent);
+//                        Intent goToTenantListIntent = new Intent(view.getContext(), TenantListActivity.class);
+//                        goToTenantListIntent.putExtra(EXTRA_PROPERTYNAME, mProperty.getTitle());
+//
+//                        view.getContext().startActivity(goToTenantListIntent);
+                    }
 
                 }
             });
         }
 
         void bind(PropertyView property) {
-            mProperty = property;
             String t = Integer.toString(property.getTenants()) + " Tenants";
             mTitle.setText(property.getTitle());
             mAddress.setText(property.getAddress());
             mTenants.setText(t);
-            mImage.setImageBitmap(property.getImage());
+            mImage.setImageResource(property.getImage());
         }
 
     }
