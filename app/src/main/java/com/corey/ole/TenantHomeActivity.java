@@ -2,6 +2,7 @@ package com.corey.ole;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.NavigationView;
@@ -10,8 +11,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -20,6 +31,7 @@ public class TenantHomeActivity extends AppCompatActivity
 
     private RecyclerView mAnnouceRecycler;
     private RecyclerView mUpcomingRecycler;
+    private TextView mUsername;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +47,7 @@ public class TenantHomeActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        setDrawerData(navigationView);
 
         mAnnouceRecycler = findViewById(R.id.rv_announcements);
         mAnnouceRecycler.setHasFixedSize(true);
@@ -44,11 +57,11 @@ public class TenantHomeActivity extends AppCompatActivity
         mUpcomingRecycler.setHasFixedSize(true);
         mUpcomingRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        setAnnoucements();
+        setAnnouncements();
         setUpcoming();
     }
 
-    private void setAnnoucements() {
+    private void setAnnouncements() {
         ArrayList<String> data = new ArrayList<>();
         data.add("Building Maintenance is on 04/20/19");
         data.add("The backdoor lock is broken");
@@ -62,6 +75,32 @@ public class TenantHomeActivity extends AppCompatActivity
         data.add("Repair Request on 04/22/19");
         AnnouncementAdapter adapter = new AnnouncementAdapter(data);
         mUpcomingRecycler.setAdapter(adapter);
+    }
+
+    private void setDrawerData(NavigationView navigationView) {
+        View header = navigationView.getHeaderView(0);
+        mUsername = header.findViewById(R.id.txt_name);
+        TextView txt_email = header.findViewById(R.id.txt_email);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String email = auth.getCurrentUser().getEmail();
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = db.getReference("users");
+        String uid = auth.getCurrentUser().getUid();
+        DatabaseReference user = usersRef.child(uid);
+        user.addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onDataChange(DataSnapshot data) {
+                String firstName = data.child("First Name").getValue(String.class);
+                String lastName = data.child("Last Name").getValue(String.class);
+                mUsername.setText(firstName + " " + lastName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("App Bar", String.valueOf(databaseError));
+            }
+        });
+        txt_email.setText(email);
     }
 
     @Override

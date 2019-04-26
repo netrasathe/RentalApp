@@ -1,5 +1,6 @@
 package com.corey.ole;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,8 +24,11 @@ import java.util.ArrayList;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.AnnouncementView> {
 
     private ArrayList<Message> mData;
-    public MessageAdapter(ArrayList<Message> data) {
+    private Context mContext;
+
+    public MessageAdapter(ArrayList<Message> data, Context context) {
         mData = data;
+        mContext = context;
     }
     @Override
     public void onBindViewHolder(AnnouncementView holder, int position) {
@@ -36,7 +40,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Announce
     public AnnouncementView onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View v = layoutInflater.inflate(R.layout.message_cell, parent, false);
-        return new AnnouncementView(v);
+        return new AnnouncementView(v, mContext);
     }
 
     @Override
@@ -46,13 +50,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Announce
 
     class AnnouncementView extends RecyclerView.ViewHolder {
 
+        private View mItemView;
+        private Context mContext;
         private TextView mSenderView;
         private TextView mDateView;
         private TextView mMessageView;
         private ImageView mUnreadView;
 
-        public AnnouncementView(View itemView) {
+        public AnnouncementView(View itemView, Context context) {
             super(itemView);
+            mItemView = itemView;
+            mContext = context;
             mSenderView = itemView.findViewById(R.id.sender);
             mDateView = itemView.findViewById(R.id.date);
             mMessageView = itemView.findViewById(R.id.message);
@@ -84,6 +92,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Announce
             } else {
                 mUnreadView.setVisibility(View.VISIBLE);
             }
+
+            mItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MessagesActivity) mContext).getConversation();
+                }
+            });
         }
     }
 

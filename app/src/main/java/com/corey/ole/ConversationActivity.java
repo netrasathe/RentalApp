@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,17 +31,26 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MessagesActivity extends AppCompatActivity
+public class ConversationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView mMessagesRecycler;
+    private RecyclerView mConversationRecycler;
     private TextView mUsername;
+    private ArrayList<Message> data = new ArrayList<>();
+    private String mUid;
+    private EditText commentInputBox;
+    private RelativeLayout layout;
+    private FloatingActionButton sendButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_messages);
+        setContentView(R.layout.activity_conversation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        layout = findViewById(R.id.comment_layout);
+        commentInputBox = layout.findViewById(R.id.comment_input_edit_text);
+        sendButton = layout.findViewById(R.id.send_button);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,14 +62,18 @@ public class MessagesActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
-        mMessagesRecycler = findViewById(R.id.rv_messages);
-        mMessagesRecycler.setHasFixedSize(true);
-        mMessagesRecycler.setLayoutManager(new LinearLayoutManager(this));
-        setMessages();
+        this.setTitle("Landlord");
+
+        mConversationRecycler = findViewById(R.id.rv_conversation);
+        mConversationRecycler.setHasFixedSize(true);
+        mConversationRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        makeFakeComments();
+        setConversation();
+        setOnClickForSendButton();
     }
 
-    private void setMessages() {
-        ArrayList<Message> data = new ArrayList<>();
+    private void makeFakeComments() {
         data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
                 "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
                 "exlaborum incididunt quis nostrud exercitatn.", new Date(),
@@ -75,8 +90,12 @@ public class MessagesActivity extends AppCompatActivity
                 "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
                 "exlaborum incididunt quis nostrud exercitatn.", new Date(),
                 "DKYk5BGJZaWlkB9MpyMDr15O9VF2", true));
-        MessageAdapter adapter = new MessageAdapter(data, this);
-        mMessagesRecycler.setAdapter(adapter);
+    }
+
+    private void setConversation() {
+        ConversationAdapter adapter = new ConversationAdapter(data);
+        mConversationRecycler.setAdapter(adapter);
+        mConversationRecycler.smoothScrollToPosition(data.size() - 1);
     }
 
     @Override
@@ -92,23 +111,8 @@ public class MessagesActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.messages, menu);
+        getMenuInflater().inflate(R.menu.conversation, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_new) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -118,7 +122,8 @@ public class MessagesActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_messages) {
-            // Do nothing
+            Intent intent = new Intent(this, MessagesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_rent) {
             Intent intent = new Intent(this, RentActivity.class);
             startActivity(intent);
@@ -137,11 +142,6 @@ public class MessagesActivity extends AppCompatActivity
         return true;
     }
 
-    public void getConversation() {
-        Intent intent = new Intent(this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
     private void setDrawerData(NavigationView navigationView) {
         View header = navigationView.getHeaderView(0);
         mUsername = header.findViewById(R.id.txt_name);
@@ -151,8 +151,8 @@ public class MessagesActivity extends AppCompatActivity
         String email = auth.getCurrentUser().getEmail();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = db.getReference("users");
-        String uid = auth.getCurrentUser().getUid();
-        DatabaseReference user = usersRef.child(uid);
+        mUid = auth.getCurrentUser().getUid();
+        DatabaseReference user = usersRef.child(mUid);
         user.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot data) {
                 String firstName = data.child("First Name").getValue(String.class);
@@ -166,5 +166,28 @@ public class MessagesActivity extends AppCompatActivity
             }
         });
         txt_email.setText(email);
+    }
+
+    private void setOnClickForSendButton() {
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String comment = commentInputBox.getText().toString();
+                if (TextUtils.isEmpty(comment)) {
+                    // don't do anything if nothing was added
+                    commentInputBox.requestFocus();
+                } else {
+                    // clear edit text, post comment
+                    commentInputBox.setText("");
+                    postNewComment(comment);
+                }
+            }
+        });
+    }
+
+    private void postNewComment(String commentText) {
+        Message newMessage = new Message(commentText, new Date(), mUid, true);
+        data.add(newMessage);
+        setConversation();
     }
 }

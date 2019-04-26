@@ -36,4 +36,6 @@
     <string name="property_name">property name</string>
     <string name="room_number">room number</string>
     <string name="profile_picture">Profile Picture</string>
+    <string name="title_activity_conversation">Conversation</string>
+    <string name="send_a_new_message">send a new message</string>
 </resources>
