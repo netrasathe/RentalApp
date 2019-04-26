@@ -66,13 +66,11 @@ public class LoginActivity extends AppCompatActivity implements
         updateUI(currentUser);
     }
 
-    private void createAccount(final String username, String password) {
-        Log.d(TAG, "signIn:" + username);
+    private void createAccount(final String email, String password) {
+        Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
             return;
         }
-
-        final String email = username + "@temp.com";
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -83,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                            login(username);
+                            login(email);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
