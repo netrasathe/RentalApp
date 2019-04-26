@@ -54,13 +54,9 @@ public class LandlordHome extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_new) {
+            // do something
             return true;
         }
 
@@ -81,7 +77,6 @@ public class LandlordHome extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 PropertyView p = mProperties.get(position);
-
                 startNewActivity(p);
             }
 
@@ -99,8 +94,16 @@ public class LandlordHome extends AppCompatActivity {
     }
 
     private void addProperty() {
-        PropertyView p = new PropertyView("BENVENUE", "Shattuck", 10, R.drawable.apartment);
-        mProperties.add(p);
+        PropertyView p1 = new PropertyView("Benvenue Apartments", "234 Shattuck Avenue, Berkley, CA 95054", 100, R.drawable.apartment);
+        mProperties.add(p1);
+        PropertyView p2 = new PropertyView("Martinez Commons", "21 Bowditch Avenue, Berkley, CA 94076", 12, R.drawable.martinez_commons);
+        mProperties.add(p2);
+        PropertyView p3  = new PropertyView("Telegraph Apartments", "945 Telegraph Avenue, Berkley, CA 94704", 68, R.drawable.telegraph);
+        mProperties.add(p3);
+        PropertyView p4  = new PropertyView("Unit 1", "532 Peidmont Avenue, Berkley, CA 94708", 210, R.drawable.unit);
+        mProperties.add(p4);
+
+
         setAdapterAndUpdateData();
     }
 }

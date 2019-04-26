@@ -38,4 +38,5 @@
     <string name="profile_picture">Profile Picture</string>
     <string name="title_activity_conversation">Conversation</string>
     <string name="send_a_new_message">send a new message</string>
+    <string name="edit">Edit</string>
 </resources>

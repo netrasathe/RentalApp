@@ -8,7 +8,7 @@
     android:background="#303030">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar3"
+        android:id="@+id/edit_property_toolbar"
         android:layout_width="410dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
@@ -19,25 +19,25 @@
         android:background="#212121"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
+        app:layout_constraintBottom_toTopOf="@+id/edit_property_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="412dp"
-        android:layout_height="213dp"
+        android:id="@+id/edit_property_image"
+        android:layout_width="413dp"
+        android:layout_height="196dp"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         android:layout_marginBottom="29dp"
-        app:layout_constraintBottom_toTopOf="@+id/property_title"
+        app:layout_constraintBottom_toTopOf="@+id/edit_property_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar3"
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_toolbar"
         app:srcCompat="@drawable/baseline_add_photo_alternate_black_18dp" />
 
     <TextView
@@ -51,9 +51,9 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
+        app:layout_constraintEnd_toEndOf="@+id/edit_property_image"
         app:layout_constraintHorizontal_bias="0.232"
-        app:layout_constraintStart_toStartOf="@+id/imageButton2" />
+        app:layout_constraintStart_toStartOf="@+id/edit_property_image" />
 
     <TextView
         android:id="@+id/textView5"
@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
-        android:id="@+id/property_title"
+        android:id="@+id/edit_property_name"
         android:layout_width="218dp"
         android:layout_height="37dp"
         android:layout_marginStart="20dp"
@@ -98,7 +98,7 @@
         app:layout_constraintVertical_bias="0.444" />
 
     <EditText
-        android:id="@+id/property_address"
+        android:id="@+id/edit_property_address"
         android:layout_width="220dp"
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
@@ -107,13 +107,13 @@
         android:text="Address"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/property_title"
+        app:layout_constraintEnd_toEndOf="@+id/edit_property_name"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/property_title"
-        app:layout_constraintTop_toBottomOf="@+id/property_title" />
+        app:layout_constraintStart_toStartOf="@+id/edit_property_name"
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_name" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/edit_property_policy"
         android:layout_width="222dp"
         android:layout_height="34dp"
         android:layout_marginStart="20dp"
@@ -132,7 +132,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/edit_property_note"
         android:layout_width="224dp"
         android:layout_height="40dp"
         android:layout_marginStart="21dp"
@@ -160,12 +160,13 @@
         android:layout_marginRight="8dp"
         android:background="@null"
         android:baselineAlignBottom="false"
-        app:layout_constraintBottom_toBottomOf="@+id/editText4"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_property_note"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText4"
-        app:layout_constraintTop_toTopOf="@+id/editText4"
+        app:layout_constraintStart_toEndOf="@+id/edit_property_note"
+        app:layout_constraintTop_toTopOf="@+id/edit_property_note"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_add_white" />
+        app:srcCompat="@drawable/ic_add_white"
+        tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
         android:id="@+id/add_policies"
@@ -177,11 +178,12 @@
         android:layout_marginRight="16dp"
         android:background="@null"
         android:baselineAlignBottom="false"
-        app:layout_constraintBottom_toBottomOf="@+id/editText3"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_property_policy"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText3"
-        app:layout_constraintTop_toTopOf="@+id/editText3"
-        app:srcCompat="@drawable/ic_add_white" />
+        app:layout_constraintStart_toEndOf="@+id/edit_property_policy"
+        app:layout_constraintTop_toTopOf="@+id/edit_property_policy"
+        app:srcCompat="@drawable/ic_add_white"
+        tools:ignore="VectorDrawableCompat" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/policies_rv"
@@ -191,14 +193,15 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/editText4"
+        app:layout_constraintBottom_toTopOf="@+id/edit_property_note"
         app:layout_constraintEnd_toEndOf="@+id/add_policies"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintStart_toStartOf="@+id/edit_property_policy"
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_policy"
         app:layout_constraintVertical_bias="0.0" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/notes_rv"
         android:layout_width="261dp"
         android:layout_height="82dp"
         android:layout_marginStart="8dp"
@@ -208,8 +211,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/add_notes"
         app:layout_constraintHorizontal_bias="0.727"
-        app:layout_constraintStart_toStartOf="@+id/editText4"
-        app:layout_constraintTop_toBottomOf="@+id/editText4"
+        app:layout_constraintStart_toStartOf="@+id/edit_property_note"
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_note"
         app:layout_constraintVertical_bias="0.0" />
+
 
 </android.support.constraint.ConstraintLayout>

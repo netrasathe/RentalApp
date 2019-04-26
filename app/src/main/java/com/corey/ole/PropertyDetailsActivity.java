@@ -3,7 +3,6 @@ package com.corey.ole;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +20,10 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     private ImageView image;
     private TextView name;
     private TextView address;
+    private String intentName;
+    private String intentAddr;
+    private int intentImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +50,32 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         RecyclerView notesRecylcer = findViewById(R.id.notes_rv);
         Button viewTenantButton = findViewById(R.id.view_tenants_button);
 
+        viewTenantButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTenantList();
+
+            }
+        });
+
     }
     private void setUpIntent()
     {
         Intent intent = getIntent();
-        String n = intent.getStringExtra("name");
+        intentName = intent.getStringExtra("name");
         if (name != null)
-            name.setText("Benvenue Apartments");
-        String a = intent.getStringExtra("address");
-        if (a != null)
-            address.setText("540 Shattuck Avenue, Berkeley, CA");
-        int i = intent.getIntExtra("image", 0);
-        if (i != 0)
-            image.setImageResource(i);
+            name.setText(intentName);
+        intentAddr = intent.getStringExtra("address");
+        if (intentAddr != null)
+            address.setText(intentAddr);
+        intentImage = intent.getIntExtra("image", 0);
+        if (intentImage != 0)
+            image.setImageResource(intentImage);
+    }
+
+    private void startTenantList(){
+        Intent intent = new Intent(this, TenantListActivity.class);
+        startActivity(intent);
     }
 
 
@@ -70,16 +87,27 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_new) {
+        if (id == R.id.edit) {
+            // do something
+            Intent intent = new Intent(this, EditPropertyActivity.class);
+            intent.putExtra("name", intentName);
+            intent.putExtra("address", intentAddr);
+            intent.putExtra("image", intentImage);
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.edit, menu);
+        return true;
+    }
+
+
+
 }
