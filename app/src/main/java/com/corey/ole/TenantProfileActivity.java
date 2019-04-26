@@ -54,11 +54,11 @@ public class TenantProfileActivity extends AppCompatActivity {
         TextView email = findViewById(R.id.email_field);
 
         name.setText(tenant.getName());
-        property.setText(tenant.getProperty());
+        property.setText(String.valueOf(tenant.getProperty()));
         room.setText(tenant.getRoom());
         gender.setText(tenant.getGender());
         dob.setText(tenant.getBirthdate().toString());
-        phone.setText(tenant.getPhone());
+        phone.setText(String.valueOf(tenant.getPhone()));
         email.setText(tenant.getEmail());
 
     }
