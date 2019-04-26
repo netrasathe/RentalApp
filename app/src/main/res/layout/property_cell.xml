@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background= "#212121"
     android:id="@+id/property_cell">
 
     <android.support.v7.widget.CardView
@@ -26,7 +27,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/image"
+                android:id="@+id/imageView3"
                 android:layout_width="match_parent"
                 android:layout_height="157dp"
                 tools:srcCompat="@tools:sample/avatars" />
