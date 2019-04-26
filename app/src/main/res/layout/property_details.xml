@@ -131,7 +131,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView6" />
 
     <Button
-        android:id="@+id/view_tenants button"
+        android:id="@+id/view_tenants_button"
         style="@style/Widget.AppCompat.Button.Colored"
 
         android:layout_width="wrap_content"
