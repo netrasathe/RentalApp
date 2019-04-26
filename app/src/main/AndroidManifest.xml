@@ -10,10 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ConversationActivity"
+            android:label="@string/title_activity_conversation"
+            android:parentActivityName=".MessagesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.corey.ole.MessagesActivity" />
+        </activity>
+        <activity
             android:name=".MessagesActivity"
             android:label="@string/title_activity_messages"
+
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity
             android:name=".RentActivity"
             android:label="@string/title_activity_rent"
