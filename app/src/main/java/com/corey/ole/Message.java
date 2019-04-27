@@ -8,12 +8,14 @@ public class Message {
     private Date mDate;
     private String mSenderUID;
     private Boolean mRead;
+    private String mConvId;
 
-    Message(String message, Date date, String senderUID, Boolean read) {
+    Message(String message, Date date, String senderUID, Boolean read, String convId) {
         mMessage = message;
         mDate = date;
         mSenderUID = senderUID;
         mRead = read;
+        mConvId = convId;
     }
 
     public Date getDate() {
@@ -32,6 +34,10 @@ public class Message {
         return mRead;
     }
 
+    public String getConvId() {
+        return mConvId;
+    }
+
     public void setDate(Date date) {
         mDate = date;
     }
@@ -46,5 +52,9 @@ public class Message {
 
     public void setRead(Boolean read) {
         mRead = read;
+    }
+
+    public void setConvId(String convId) {
+        mConvId = convId;
     }
 }

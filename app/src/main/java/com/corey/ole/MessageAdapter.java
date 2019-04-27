@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,27 +68,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Announce
             mUnreadView = itemView.findViewById(R.id.unread);
         }
 
-        public void bindView(Message message) {
+        public void bindView(final Message message) {
             mMessageView.setText(message.getMessage());
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
             mDateView.setText(format.format(message.getDate()));
             FirebaseDatabase db = FirebaseDatabase.getInstance();
             DatabaseReference usersRef = db.getReference("users");
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String mUid = auth.getCurrentUser().getUid();
             String uid = message.getSenderUID();
             DatabaseReference user = usersRef.child(uid);
-            user.addListenerForSingleValueEvent(new ValueEventListener() {
-                public void onDataChange(DataSnapshot data) {
-                    mSenderView.setText(data.child("First Name").getValue(String.class) + " " +
-                            data.child("Last Name").getValue(String.class));
-                }
+            if (mUid.equals(uid)) {
+                mSenderView.setText("Me");
+            } else {
+                user.addListenerForSingleValueEvent(new ValueEventListener() {
+                    public void onDataChange(DataSnapshot data) {
+                        mSenderView.setText(data.child("First Name").getValue(String.class) + " " +
+                                data.child("Last Name").getValue(String.class));
+                    }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e("message", String.valueOf(databaseError));
-                }
-            });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("message", String.valueOf(databaseError));
+                    }
+                });
+            }
 
-            if (message.getRead()) {
+            if (message.getRead() || mUid.equals(uid)) {
                 mUnreadView.setVisibility(View.INVISIBLE);
             } else {
                 mUnreadView.setVisibility(View.VISIBLE);
@@ -96,7 +103,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Announce
             mItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((MessagesActivity) mContext).getConversation();
+                    ((MessagesActivity) mContext).getConversation(message.getConvId());
                 }
             });
         }

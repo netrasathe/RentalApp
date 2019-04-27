@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,7 +71,7 @@ public class MessagesActivity extends AppCompatActivity
 
     private void setMessages() {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference messRef = db.getReference("messages");
+        final DatabaseReference messRef = db.getReference("messages");
 
         Query query = messRef.orderByChild("participants");
         query.addValueEventListener(new ValueEventListener() {
@@ -80,12 +81,21 @@ public class MessagesActivity extends AppCompatActivity
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     ArrayList participants = (ArrayList<String>) child.child("participants").getValue();
+                    String convId = child.getKey();
                     if (participants.contains(mUid)) {
-                        Message newMessage = new Message("Lorem ipsum dolor sit amet, " +
-                                "consectetur adipisicing elit, sed do eiusmod tempor incididunt " +
-                                "ut labore et dolore magna wirl aliqua. Up exlaborum incididunt " +
-                                "quis nostrud exercitatn.", new Date(),
-                                "ZYXILsSYC9POaErJhpRUAEMNi8T2", false);
+                        Iterable<DataSnapshot> allMessages = child.child("messages").getChildren();
+                        Date d = new Date();
+                        d.setTime(0);
+                        Message newMessage = new Message("", d, "", true, convId);
+                        for (DataSnapshot mess : allMessages) {
+                            if (mess.child("Date").getValue(Date.class).getTime() > newMessage.getDate().getTime()) {
+                                newMessage = new Message(mess.child("Message").getValue(String.class),
+                                        mess.child("Date").getValue(Date.class),
+                                        mess.child("Sender").getValue(String.class),
+                                        mess.child("Read").getValue(Boolean.class),
+                                        convId);
+                            }
+                        }
                         mMessages.add(newMessage);
                     }
                 }
@@ -179,8 +189,9 @@ public class MessagesActivity extends AppCompatActivity
         return true;
     }
 
-    public void getConversation() {
+    public void getConversation(String convId) {
         Intent intent = new Intent(this, ConversationActivity.class);
+        intent.putExtra("Conversation Id", convId);
         startActivity(intent);
     }
 

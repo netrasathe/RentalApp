@@ -77,19 +77,19 @@ public class ConversationActivity extends AppCompatActivity
         data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
                 "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
                 "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "ZYXILsSYC9POaErJhpRUAEMNi8T2", true));
+                "ZYXILsSYC9POaErJhpRUAEMNi8T2", true, ""));
         data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
                 "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
                 "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", false));
+                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", false, ""));
         data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
                 "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
                 "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "ZYXILsSYC9POaErJhpRUAEMNi8T2", false));
+                "ZYXILsSYC9POaErJhpRUAEMNi8T2", false, ""));
         data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
                 "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
                 "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", true));
+                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", true, ""));
     }
 
     private void setConversation() {
@@ -186,7 +186,7 @@ public class ConversationActivity extends AppCompatActivity
     }
 
     private void postNewComment(String commentText) {
-        Message newMessage = new Message(commentText, new Date(), mUid, true);
+        Message newMessage = new Message(commentText, new Date(), mUid, true, "");
         data.add(newMessage);
         setConversation();
     }
