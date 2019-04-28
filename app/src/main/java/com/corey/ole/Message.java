@@ -12,6 +12,9 @@ public class Message {
 
     Message(String message, Date date, String senderUID, Boolean read, String convId) {
         mMessage = message;
+        if (date == null) {
+            date = new Date();
+        }
         mDate = date;
         mSenderUID = senderUID;
         mRead = read;

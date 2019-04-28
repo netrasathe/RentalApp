@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,14 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 public class MessagesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -88,7 +82,13 @@ public class MessagesActivity extends AppCompatActivity
                         d.setTime(0);
                         Message newMessage = new Message("", d, "", true, convId);
                         for (DataSnapshot mess : allMessages) {
-                            if (mess.child("Date").getValue(Date.class).getTime() > newMessage.getDate().getTime()) {
+                            if (mess.child("Date").getValue(Date.class) == null) {
+                                newMessage = new Message(mess.child("Message").getValue(String.class),
+                                        new Date(),
+                                        mess.child("Sender").getValue(String.class),
+                                        mess.child("Read").getValue(Boolean.class),
+                                        convId);
+                            } else if (mess.child("Date").getValue(Date.class).getTime() > newMessage.getDate().getTime()) {
                                 newMessage = new Message(mess.child("Message").getValue(String.class),
                                         mess.child("Date").getValue(Date.class),
                                         mess.child("Sender").getValue(String.class),

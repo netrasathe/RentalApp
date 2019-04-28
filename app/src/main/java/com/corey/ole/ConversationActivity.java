@@ -2,6 +2,7 @@ package com.corey.ole;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,9 +27,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class ConversationActivity extends AppCompatActivity
@@ -41,6 +45,7 @@ public class ConversationActivity extends AppCompatActivity
     private EditText commentInputBox;
     private RelativeLayout layout;
     private FloatingActionButton sendButton;
+    private String mConvId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,38 +68,63 @@ public class ConversationActivity extends AppCompatActivity
         setDrawerData(navigationView);
 
         this.setTitle("Landlord");
+        Intent intent = getIntent();
+        mConvId = intent.getStringExtra("Conversation Id");
 
         mConversationRecycler = findViewById(R.id.rv_conversation);
         mConversationRecycler.setHasFixedSize(true);
         mConversationRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        makeFakeComments();
-        setConversation();
+        getMessages();
         setOnClickForSendButton();
     }
 
-    private void makeFakeComments() {
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "ZYXILsSYC9POaErJhpRUAEMNi8T2", true, ""));
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", false, ""));
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "ZYXILsSYC9POaErJhpRUAEMNi8T2", false, ""));
-        data.add(new Message("Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna wirl aliqua. Up " +
-                "exlaborum incididunt quis nostrud exercitatn.", new Date(),
-                "DKYk5BGJZaWlkB9MpyMDr15O9VF2", true, ""));
+    private void getMessages() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference comsRef = db.getReference("messages/" + mConvId + "/messages");
+
+        Query query = comsRef.orderByKey();
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                data.clear();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String message = child.child("Message").getValue(String.class);
+                    String sender = child.child("Sender").getValue(String.class);
+                    Date date = child.child("Date").getValue(Date.class);
+                    Boolean read = child.child("Read").getValue(Boolean.class);
+                    Message newMessage = new Message(message, date, sender, read, mConvId);
+                    data.add(newMessage);
+                }
+
+                setConversation();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void setConversation() {
+        // Save state
+        Parcelable recyclerViewState;
+        recyclerViewState = mConversationRecycler.getLayoutManager().onSaveInstanceState();
+
+        // create a new adapter with the updated mComments array
+        // this will "refresh" our recycler view
+        Collections.sort(data, new Comparator<Message>() {
+            @Override
+            public int compare(Message comment, Message t1) {
+                return comment.getDate().compareTo(t1.getDate());
+            }
+        });
         ConversationAdapter adapter = new ConversationAdapter(data);
         mConversationRecycler.setAdapter(adapter);
+
+        // Restore state
+        mConversationRecycler.getLayoutManager().onRestoreInstanceState(recyclerViewState);
         mConversationRecycler.smoothScrollToPosition(data.size() - 1);
     }
 
@@ -185,9 +215,13 @@ public class ConversationActivity extends AppCompatActivity
         });
     }
 
-    private void postNewComment(String commentText) {
-        Message newMessage = new Message(commentText, new Date(), mUid, true, "");
-        data.add(newMessage);
-        setConversation();
+    private void postNewComment(String messageText) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference comsRef = database.getReference("messages/" + mConvId + "/messages");
+        DatabaseReference comm = comsRef.push();
+        comm.child("Sender").setValue(mUid);
+        comm.child("Date").setValue(new Date());
+        comm.child("Message").setValue(messageText);
+        comm.child("Read").setValue(false);
     }
 }
