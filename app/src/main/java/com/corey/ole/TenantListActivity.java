@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 
@@ -65,5 +67,12 @@ public class TenantListActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
     }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
+    }
+
 
 }
