@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class TenantListActivity extends AppCompatActivity {
 
@@ -23,7 +22,7 @@ public class TenantListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_property_tenant_list);
+        setContentView(R.layout.content_property_tenant_list);
 
 
         //mToolbar = findViewById(R.id.toolbar);
