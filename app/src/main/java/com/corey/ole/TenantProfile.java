@@ -9,6 +9,8 @@ import java.util.Date;
 // custom class made for storing a tenant object.
 public class TenantProfile {
 
+    public static final String EXTRA_TENANT_ID = "tenantID";
+
     private static int global_id = 0;
 
     private int id;

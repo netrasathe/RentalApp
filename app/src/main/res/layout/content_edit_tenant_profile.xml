@@ -17,10 +17,10 @@
         android:text="@string/gender"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_picture_field"
+        app:layout_constraintEnd_toEndOf="@+id/profile_picture_edit_field"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/profile_picture_field"
-        app:layout_constraintTop_toBottomOf="@+id/room_number_field" />
+        app:layout_constraintStart_toStartOf="@+id/profile_picture_edit_field"
+        app:layout_constraintTop_toBottomOf="@+id/room_number_edit_field" />
 
     <TextView
         android:id="@+id/roommates"
@@ -30,9 +30,9 @@
         android:text="@string/roommates"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_picture_field"
+        app:layout_constraintEnd_toEndOf="@+id/profile_picture_edit_field"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/profile_picture_field"
+        app:layout_constraintStart_toStartOf="@+id/profile_picture_edit_field"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <TextView
@@ -43,9 +43,9 @@
         android:text="@string/email"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_picture_field"
+        app:layout_constraintEnd_toEndOf="@+id/profile_picture_edit_field"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/profile_picture_field"
+        app:layout_constraintStart_toStartOf="@+id/profile_picture_edit_field"
         app:layout_constraintTop_toBottomOf="@+id/cell_phone" />
 
     <TextView
@@ -56,9 +56,9 @@
         android:text="@string/date_of_birth"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_picture_field"
+        app:layout_constraintEnd_toEndOf="@+id/profile_picture_edit_field"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/profile_picture_field"
+        app:layout_constraintStart_toStartOf="@+id/profile_picture_edit_field"
         app:layout_constraintTop_toBottomOf="@+id/gender" />
 
     <TextView
@@ -69,110 +69,110 @@
         android:text="@string/cell_phone"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_picture_field"
+        app:layout_constraintEnd_toEndOf="@+id/profile_picture_edit_field"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/profile_picture_field"
+        app:layout_constraintStart_toStartOf="@+id/profile_picture_edit_field"
         app:layout_constraintTop_toBottomOf="@+id/date_of_birth" />
 
     <EditText
-        android:id="@+id/gender_field"
+        android:id="@+id/gender_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gender Field"
+        android:text="Gender edit_field"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/gender"
-        app:layout_constraintEnd_toEndOf="@+id/room_number_field"
+        app:layout_constraintEnd_toEndOf="@+id/room_number_edit_field"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/room_number_field"
+        app:layout_constraintStart_toStartOf="@+id/room_number_edit_field"
         app:layout_constraintTop_toTopOf="@+id/gender"
-        app:backgroundTint="@color/textWhite" />/>
+        app:backgroundTint="@color/textWhite" />
 
     <EditText
-        android:id="@+id/cell_phone_field"
+        android:id="@+id/cell_phone_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Phone Field"
+        android:text="Phone edit_field"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/cell_phone"
-        app:layout_constraintEnd_toEndOf="@+id/room_number_field"
+        app:layout_constraintEnd_toEndOf="@+id/room_number_edit_field"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/room_number_field"
+        app:layout_constraintStart_toStartOf="@+id/room_number_edit_field"
         app:layout_constraintTop_toTopOf="@+id/cell_phone"
         app:backgroundTint="@color/textWhite"/>
 
     <EditText
-        android:id="@+id/email_field"
+        android:id="@+id/email_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email Field"
+        android:text="Email edit_field"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/email"
-        app:layout_constraintEnd_toEndOf="@+id/room_number_field"
+        app:layout_constraintEnd_toEndOf="@+id/room_number_edit_field"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/room_number_field"
+        app:layout_constraintStart_toStartOf="@+id/room_number_edit_field"
         app:layout_constraintTop_toTopOf="@+id/email"
         app:backgroundTint="@color/textWhite"/>
 
     <EditText
-        android:id="@+id/date_of_birth_field"
+        android:id="@+id/date_of_birth_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date of Birth Field"
+        android:text="Date of Birth edit_field"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/date_of_birth"
-        app:layout_constraintEnd_toEndOf="@+id/room_number_field"
+        app:layout_constraintEnd_toEndOf="@+id/room_number_edit_field"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/room_number_field"
+        app:layout_constraintStart_toStartOf="@+id/room_number_edit_field"
         app:layout_constraintTop_toTopOf="@+id/date_of_birth"
         app:backgroundTint="@color/textWhite"/>
 
     <EditText
-        android:id="@+id/room_number_field"
+        android:id="@+id/room_number_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/room_number"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/tenant_name_field"
+        app:layout_constraintEnd_toEndOf="@+id/tenant_name_edit_field"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tenant_name_field"
-        app:layout_constraintTop_toBottomOf="@+id/property_name_field"
+        app:layout_constraintStart_toStartOf="@+id/tenant_name_edit_field"
+        app:layout_constraintTop_toBottomOf="@+id/property_name_edit_field"
         app:backgroundTint="@color/textWhite"/>
 
     <EditText
-        android:id="@+id/property_name_field"
+        android:id="@+id/property_name_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/property_name"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/tenant_name_field"
+        app:layout_constraintEnd_toEndOf="@+id/tenant_name_edit_field"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tenant_name_field"
-        app:layout_constraintTop_toBottomOf="@+id/tenant_name_field"
+        app:layout_constraintStart_toStartOf="@+id/tenant_name_edit_field"
+        app:layout_constraintTop_toBottomOf="@+id/tenant_name_edit_field"
         app:backgroundTint="@color/textWhite"/>
 
-    <TextView
-        android:id="@+id/tenant_name_field"
+    <EditText
+        android:id="@+id/tenant_name_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="132dp"
-        android:layout_marginRight="132dp"
         android:text="@string/name"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:backgroundTint="@color/textWhite" />
 
     <ImageView
-        android:id="@+id/profile_picture_field"
+        android:id="@+id/profile_picture_edit_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -180,10 +180,10 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:contentDescription="@string/profile_picture"
-        app:layout_constraintEnd_toStartOf="@+id/tenant_name_field"
+        app:layout_constraintEnd_toStartOf="@+id/tenant_name_edit_field"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tenant_name_field"
+        app:layout_constraintTop_toTopOf="@+id/tenant_name_edit_field"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button

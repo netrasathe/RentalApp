@@ -1,6 +1,9 @@
 package com.corey.ole;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 
 public class TenantListActivity extends AppCompatActivity {
 
+    ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     String propertyName = "Property";
     RecyclerView mRecyclerView;
@@ -23,6 +27,16 @@ public class TenantListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_property_tenant_list);
+
+        Toolbar toolbar = findViewById(R.id.property_details_toolbar);
+        toolbar.setTitle("Property Details");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_property_detail);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.drawer_open, R.string.drawer_close);
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
 
         //mToolbar = findViewById(R.id.toolbar);
