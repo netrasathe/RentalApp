@@ -1,9 +1,12 @@
 package com.corey.ole;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,18 @@ public class EditTenantProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_tenant_profile);
 
+        Toolbar toolbar = findViewById(R.id.edit_tenant_toolbar);
+        toolbar.setTitle("Edit Tenant Profile");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawerLayout = findViewById(R.id.edit_tenant_profile_drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.drawer_open, R.string.drawer_close);
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+
+
         Intent tenantIntent = getIntent();
         Bundle intentExtras = tenantIntent.getExtras();
 
@@ -31,20 +46,10 @@ public class EditTenantProfileActivity extends AppCompatActivity {
             tenant = TenantProfile.getTenantFromID(tenantID);
             loadData();
         } else {
-            // Raise dialog exception
+            // TODO: Raise dialog exception
             tenant = null;
         }
 
-        Button messageButton = findViewById(R.id.message_button);
-        messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToMessageIntent = new Intent(v.getContext(), MessagesActivity.class);
-                goToMessageIntent.putExtra("tenantID", tenant.getId());
-
-                v.getContext().startActivity(goToMessageIntent);
-            }
-        });
 
 
     }

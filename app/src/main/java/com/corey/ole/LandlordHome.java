@@ -89,6 +89,7 @@ public class LandlordHome extends AppCompatActivity {
         intent.putExtra("name", p.getTitle());
         intent.putExtra("address", p.getAddress());
         intent.putExtra("image", p.getImage());
+        intent.putExtra("PropertyID", p.getId());
         startActivity(intent);
 
     }

@@ -22,6 +22,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     private TextView address;
     private String intentName;
     private String intentAddr;
+    private int propertyID;
     private int intentImage;
 
 
@@ -71,10 +72,16 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         intentImage = intent.getIntExtra("image", 0);
         if (intentImage != 0)
             image.setImageResource(intentImage);
+        propertyID = intent.getIntExtra("PropertyID", 0);
+
+
     }
 
     private void startTenantList(){
         Intent intent = new Intent(this, TenantListActivity.class);
+        intent.putExtra("name", intentName);
+        intent.putExtra("PropertyID", propertyID);
+
         startActivity(intent);
     }
 

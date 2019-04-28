@@ -24,11 +24,11 @@ public class TenantProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tenant_profile);
 
 
-        Toolbar toolbar = findViewById(R.id.property_details_toolbar);
-        toolbar.setTitle("Property Details");
+        Toolbar toolbar = findViewById(R.id.tenant_profile_toolbar);
+        toolbar.setTitle("Tenant Profile");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_property_detail);
+        DrawerLayout drawerLayout = findViewById(R.id.tenant_profile_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);

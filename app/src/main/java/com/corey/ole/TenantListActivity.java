@@ -1,5 +1,6 @@
 package com.corey.ole;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 public class TenantListActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle actionBarDrawerToggle;
-    Toolbar toolbar;
     String propertyName = "Property";
     RecyclerView mRecyclerView;
     TenantListAdapter mAdapter;
@@ -26,22 +26,26 @@ public class TenantListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_property_tenant_list);
+        setContentView(R.layout.activity_property_tenant_list);
 
-        Toolbar toolbar = findViewById(R.id.property_details_toolbar);
-        toolbar.setTitle("Property Details");
+        Intent intent = getIntent();
+        propertyName = intent.getStringExtra("name");
+        propertyID = intent.getIntExtra("PropertyID", 0);
+
+
+
+        Toolbar toolbar = findViewById(R.id.tenant_list_toolbar);
+        toolbar.setTitle(propertyName + " Tenants");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_property_detail);
+        DrawerLayout drawerLayout = findViewById(R.id.tenant_list_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
 
-        //mToolbar = findViewById(R.id.toolbar);
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(propertyName + " Tenants");
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
