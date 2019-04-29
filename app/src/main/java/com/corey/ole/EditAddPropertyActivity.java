@@ -46,6 +46,7 @@ public class EditAddPropertyActivity extends AppCompatActivity
     private RecyclerView noteRecyclerView;
     private Button camera;
     private Button gallery;
+    private AlertDialog dialog;
 
     private static final int REQUEST_TAKE_PHOTO = 2;
     private String currentPhotoPath;
@@ -150,9 +151,11 @@ public class EditAddPropertyActivity extends AppCompatActivity
             if (requestCode == REQUEST_TAKE_PHOTO) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
+                dialog.cancel();
                 image.setImageBitmap(imageBitmap);
             } else if (requestCode == PICK_IMAGE) {
                 Uri imageUri = data.getData();
+                dialog.cancel();
                 image.setImageURI(imageUri);
             }
         }
@@ -187,7 +190,7 @@ public class EditAddPropertyActivity extends AppCompatActivity
             }
         });
 
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.getWindow().setLayout(300, 150);
         dialog.show();
     }
