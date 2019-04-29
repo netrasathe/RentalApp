@@ -40,8 +40,8 @@ public class EditPropertyActivity extends AppCompatActivity {
         address = findViewById(R.id.edit_property_address);
         setUpIntent();
 
-        RecyclerView policiesRecycler = findViewById(R.id.policies_rv);
-        RecyclerView notesRecylcer = findViewById(R.id.notes_rv);
+        RecyclerView policiesRecycler = findViewById(R.id.edit_property_details_notes_recycler_view);
+        RecyclerView notesRecylcer = findViewById(R.id.edit_property_details_policies_recycler_view);
         setUpIntent();
 
     }

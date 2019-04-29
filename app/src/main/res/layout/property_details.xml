@@ -18,13 +18,13 @@
         android:background="#212121"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/property_detail_image"
+        app:layout_constraintBottom_toTopOf="@+id/property_details_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/property_detail_image"
+        android:id="@+id/property_details_image"
         android:layout_width="407dp"
         android:layout_height="154dp"
         android:layout_marginStart="1dp"
@@ -34,7 +34,7 @@
         android:layout_marginRight="1dp"
         android:layout_marginBottom="5dp"
         android:contentDescription="TODO"
-        app:layout_constraintBottom_toTopOf="@+id/building_name"
+        app:layout_constraintBottom_toTopOf="@+id/property_details_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
         tools:srcCompat="@tools:sample/avatars[14]" />
 
     <TextView
-        android:id="@+id/building_name"
+        android:id="@+id/property_details_name"
         android:layout_width="374dp"
         android:layout_height="33dp"
         android:layout_marginTop="5dp"
@@ -54,14 +54,14 @@
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/building_address"
-        app:layout_constraintEnd_toEndOf="@+id/property_detail_image"
+        app:layout_constraintBottom_toTopOf="@+id/property_details_address"
+        app:layout_constraintEnd_toEndOf="@+id/property_details_image"
         app:layout_constraintHorizontal_bias="0.467"
-        app:layout_constraintStart_toStartOf="@+id/property_detail_image"
-        app:layout_constraintTop_toBottomOf="@+id/property_detail_image" />
+        app:layout_constraintStart_toStartOf="@+id/property_details_image"
+        app:layout_constraintTop_toBottomOf="@+id/property_details_image" />
 
     <TextView
-        android:id="@+id/building_address"
+        android:id="@+id/property_details_address"
         android:layout_width="357dp"
         android:layout_height="30dp"
         android:layout_marginTop="5dp"
@@ -73,10 +73,10 @@
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
-        app:layout_constraintEnd_toEndOf="@+id/property_detail_image"
+        app:layout_constraintEnd_toEndOf="@+id/property_details_image"
         app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="@+id/property_detail_image"
-        app:layout_constraintTop_toBottomOf="@+id/building_name" />
+        app:layout_constraintStart_toStartOf="@+id/property_details_image"
+        app:layout_constraintTop_toBottomOf="@+id/property_details_name" />
 
     <TextView
         android:id="@+id/textView6"
@@ -87,10 +87,10 @@
         android:layout_marginRight="8dp"
         android:text="Property Notes"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/property_detail_image"
+        app:layout_constraintEnd_toEndOf="@+id/property_details_image"
         app:layout_constraintHorizontal_bias="0.888"
-        app:layout_constraintStart_toStartOf="@+id/property_detail_image"
-        app:layout_constraintTop_toBottomOf="@+id/building_address" />
+        app:layout_constraintStart_toStartOf="@+id/property_details_image"
+        app:layout_constraintTop_toBottomOf="@+id/property_details_address" />
 
     <TextView
         android:id="@+id/property_policies"
@@ -100,9 +100,9 @@
         android:layout_marginRight="8dp"
         android:text="Property Policies"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/property_detail_image"
+        app:layout_constraintEnd_toEndOf="@+id/property_details_image"
         app:layout_constraintHorizontal_bias="0.13"
-        app:layout_constraintStart_toStartOf="@+id/property_detail_image"
+        app:layout_constraintStart_toStartOf="@+id/property_details_image"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
 
     <View
@@ -111,34 +111,38 @@
         android:layout_height="225dp"
         android:layout_marginTop="32dp"
         android:background="@color/textWhite"
-        app:layout_constraintEnd_toEndOf="@+id/building_address"
+        app:layout_constraintEnd_toEndOf="@+id/property_details_address"
         app:layout_constraintHorizontal_bias="0.54"
-        app:layout_constraintStart_toStartOf="@+id/building_address"
-        app:layout_constraintTop_toBottomOf="@+id/building_address" />
+        app:layout_constraintStart_toStartOf="@+id/property_details_address"
+        app:layout_constraintTop_toBottomOf="@+id/property_details_address" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/policies_rv"
+        android:id="@+id/property_details_policies_recycler_view"
         android:layout_width="157dp"
         android:layout_height="199dp"
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
-        app:layout_constraintBottom_toBottomOf="@+id/notes_rv"
-        app:layout_constraintEnd_toStartOf="@+id/notes_rv"
-        app:layout_constraintTop_toTopOf="@+id/notes_rv"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toBottomOf="@+id/property_details_notes_recycler_view"
+        app:layout_constraintEnd_toStartOf="@+id/property_details_notes_recycler_view"
+        app:layout_constraintTop_toTopOf="@+id/property_details_notes_recycler_view"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/annoucement_cell"
+        android:scrollbars="vertical"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/notes_rv"
+        android:id="@+id/property_details_notes_recycler_view"
         android:layout_width="155dp"
         android:layout_height="201dp"
         android:layout_marginBottom="152dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textView6"
         app:layout_constraintHorizontal_bias="0.434"
-        app:layout_constraintStart_toStartOf="@+id/textView6" />
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        tools:listitem="@layout/annoucement_cell"
+        android:scrollbars="vertical"/>
 
     <Button
-        android:id="@+id/view_tenants_button"
+        android:id="@+id/property_details_view_tenants_button"
         style="@style/Widget.AppCompat.Button.Colored"
 
         android:layout_width="wrap_content"

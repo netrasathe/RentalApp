@@ -1,7 +1,6 @@
 package com.corey.ole;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,12 +17,12 @@ import java.util.ArrayList;
 public class PropertyAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    private ArrayList<PropertyView> mPropertyView;
+    private ArrayList<Property> mProperty;
     private OnItemClickListener mListener;
 
-    public PropertyAdapter(Context context, ArrayList<PropertyView> propertyView) {
+    public PropertyAdapter(Context context, ArrayList<Property> propertyView) {
         mContext = context;
-        mPropertyView = propertyView;
+        mProperty = propertyView;
 
     }
 
@@ -45,23 +44,23 @@ public class PropertyAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        PropertyView property = mPropertyView.get(i);
+        Property property = mProperty.get(i);
         ((PropertyViewHolder) viewHolder).bind(property);
     }
 
     @Override
     public int getItemCount() {
-        return mPropertyView.size();
+        return mProperty.size();
     }
 
 
     /* PropertyViewHolder sets the image and info of the property on the UI */
     class PropertyViewHolder extends RecyclerView.ViewHolder {
 
-        private PropertyView mProperty;
         private RelativeLayout mPropertyLayout;
         private TextView mTitle;
-        private TextView mAddress;
+        private TextView mStreet;
+        private TextView mCityStateZip;
         private TextView mTenants;
         private ImageView mImage;
 
@@ -71,10 +70,11 @@ public class PropertyAdapter extends RecyclerView.Adapter {
         public PropertyViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             mPropertyLayout = itemView.findViewById(R.id.property_cell);
-            mTitle = mPropertyLayout.findViewById(R.id.title);
-            mAddress = mPropertyLayout.findViewById(R.id.address);
-            mTenants = mPropertyLayout.findViewById(R.id.tenants);
-            mImage = mPropertyLayout.findViewById(R.id.image);
+            mTitle = mPropertyLayout.findViewById(R.id.property_cell_name);
+            mStreet = mPropertyLayout.findViewById(R.id.property_cell_street);
+            mCityStateZip = mPropertyLayout.findViewById(R.id.property_cell_csz);
+            mTenants = mPropertyLayout.findViewById(R.id.property_cell_tenants);
+            mImage = mPropertyLayout.findViewById(R.id.property_cell_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,21 +82,17 @@ public class PropertyAdapter extends RecyclerView.Adapter {
                     if (listener != null) {
                         int position = getAdapterPosition();
                         listener.onItemClick(position);
-
-//                        Intent goToTenantListIntent = new Intent(view.getContext(), TenantListActivity.class);
-//                        goToTenantListIntent.putExtra(EXTRA_PROPERTYNAME, mProperty.getTitle());
-//
-//                        view.getContext().startActivity(goToTenantListIntent);
                     }
 
                 }
             });
         }
 
-        void bind(PropertyView property) {
-            String t = Integer.toString(property.getTenants()) + " Tenants";
-            mTitle.setText(property.getTitle());
-            mAddress.setText(property.getAddress());
+        void bind(Property property) {
+            String t = property.getNumTenants() + " Tenants";
+            mTitle.setText(property.getName());
+            mStreet.setText(property.getStreet());
+            mCityStateZip.setText(property.getCityStateZip());
             mTenants.setText(t);
             mImage.setImageResource(property.getImage());
         }

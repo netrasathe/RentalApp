@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     public void landlordLogin() {
-        Intent intent = new Intent(this, LandlordHome.class);
+        Intent intent = new Intent(this, LandlordHomeActivity.class);
         startActivity(intent);
     }
 

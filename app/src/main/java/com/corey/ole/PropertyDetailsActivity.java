@@ -15,41 +15,83 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 public class PropertyDetailsActivity extends AppCompatActivity {
-    ActionBarDrawerToggle actionBarDrawerToggle;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     private ImageView image;
     private TextView name;
     private TextView address;
-    private String intentName;
-    private String intentAddr;
-    private int propertyID;
-    private int intentImage;
+    private FirebaseDatabase database;
+    private String id;
+    private RecyclerView policiesRecycler;
+    private RecyclerView notesRecylcer;
+    private Button viewTenantButton;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.property_details_main);
         Toolbar toolbar = findViewById(R.id.property_details_toolbar);
         toolbar.setTitle("Property Details");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+
         DrawerLayout drawerLayout = findViewById(R.id.drawer_property_detail);
+
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        image = findViewById(R.id.property_detail_image);
-        name = findViewById(R.id.building_name);
-        address = findViewById(R.id.building_address);
-        setUpIntent();
+        image = findViewById(R.id.property_details_image);
+        name = findViewById(R.id.property_details_name);
+        address = findViewById(R.id.property_details_address);
+
+        policiesRecycler = findViewById(R.id.property_details_policies_recycler_view);
+        notesRecylcer = findViewById(R.id.property_details_notes_recycler_view);
+        Button viewTenantButton = findViewById(R.id.property_details_view_tenants_button);
+
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("property");
+        DatabaseReference property = ref.child(id);
+
+        property.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Property property = dataSnapshot.getValue(Property.class);
+                name.setText(property.getName());
+                address.setText(property.getStreet() + property.getCityStateZip());
+                image.setImageResource(property.getImage());
+
+                ArrayList<String> notes = property.getNotes();
+
+                AnnouncementAdapter policyAdapter = new AnnouncementAdapter(notes);
+                policiesRecycler.setAdapter(policyAdapter);
+
+//                AnnouncementAdapter noteAdapter = new AnnouncementAdapter(property.getNotes());
+//                notesRecylcer.setAdapter(noteAdapter);
 
 
-        RecyclerView policiesRecycler = findViewById(R.id.policies_rv);
-        RecyclerView notesRecylcer = findViewById(R.id.notes_rv);
-        Button viewTenantButton = findViewById(R.id.view_tenants_button);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
 
         viewTenantButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,27 +102,12 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         });
 
     }
-    private void setUpIntent()
-    {
-        Intent intent = getIntent();
-        intentName = intent.getStringExtra("name");
-        if (name != null)
-            name.setText(intentName);
-        intentAddr = intent.getStringExtra("address");
-        if (intentAddr != null)
-            address.setText(intentAddr);
-        intentImage = intent.getIntExtra("image", 0);
-        if (intentImage != 0)
-            image.setImageResource(intentImage);
-        propertyID = intent.getIntExtra("PropertyID", 0);
 
-
-    }
 
     private void startTenantList(){
         Intent intent = new Intent(this, TenantListActivity.class);
-        intent.putExtra("name", intentName);
-        intent.putExtra("PropertyID", propertyID);
+        //intent.putExtra("name", intentName);
+        intent.putExtra("PropertyID", id);
 
         startActivity(intent);
     }
@@ -96,11 +123,8 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.edit) {
-            // do something
             Intent intent = new Intent(this, EditPropertyActivity.class);
-            intent.putExtra("name", intentName);
-            intent.putExtra("address", intentAddr);
-            intent.putExtra("image", intentImage);
+            intent.putExtra("id", id);
             startActivity(intent);
             return true;
         }

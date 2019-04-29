@@ -117,9 +117,7 @@
         android:layout_width="222dp"
         android:layout_height="34dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
@@ -133,12 +131,10 @@
 
     <EditText
         android:id="@+id/edit_property_note"
-        android:layout_width="224dp"
-        android:layout_height="40dp"
+        android:layout_width="225dp"
+        android:layout_height="35dp"
         android:layout_marginStart="21dp"
-        android:layout_marginLeft="21dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
@@ -186,34 +182,28 @@
         tools:ignore="VectorDrawableCompat" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/policies_rv"
-        android:layout_width="254dp"
-        android:layout_height="74dp"
+        android:id="@+id/edit_property_details_policies_recycler_view"
+        android:layout_width="250dp"
+        android:layout_height="89dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/edit_property_note"
         app:layout_constraintEnd_toEndOf="@+id/add_policies"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/edit_property_policy"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_policy"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_policy" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/notes_rv"
-        android:layout_width="261dp"
-        android:layout_height="82dp"
+        android:id="@+id/edit_property_details_notes_recycler_view"
+        android:layout_width="253dp"
+        android:layout_height="97dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/add_notes"
-        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/edit_property_note"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_note"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_note" />
 
 
 </android.support.constraint.ConstraintLayout>

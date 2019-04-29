@@ -5,23 +5,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_landlord_home"
+    android:id="@+id/landlord_home_drawer"
     android:background="@color/darkGrey">
 
 
     <LinearLayout
+        android:id="@+id/landlord_home_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_landlord_home"
+            android:id="@+id/landlord_home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/appBar" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_landlord_home"
+            android:id="@+id/landlord_home_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="579dp"
             android:layout_marginStart="8dp"
@@ -42,9 +43,9 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nv_landlord_home"
+        android:id="@+id/landlord_home_navigation_drawer"
         android:layout_width="210dp"
-        android:layout_height="676dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_gravity="start"
