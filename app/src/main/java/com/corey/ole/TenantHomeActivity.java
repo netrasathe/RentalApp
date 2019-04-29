@@ -125,7 +125,9 @@ public class TenantHomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_messages) {
+        if (id == R.id.nav_home) {
+            // Do nothing
+        } else if (id == R.id.nav_messages) {
             Intent intent = new Intent(this, MessagesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_rent) {
