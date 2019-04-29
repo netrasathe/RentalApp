@@ -123,7 +123,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.edit) {
-            Intent intent = new Intent(this, EditPropertyActivity.class);
+            Intent intent = new Intent(this, EditAddPropertyActivity.class);
             intent.putExtra("id", id);
             startActivity(intent);
             return true;
