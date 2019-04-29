@@ -46,10 +46,13 @@ public class ConversationActivity extends AppCompatActivity
     private RelativeLayout layout;
     private FloatingActionButton sendButton;
     private String mConvId;
+    private FirebaseDatabase mDb;
+    private String mTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDb = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_conversation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,9 +70,9 @@ public class ConversationActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
-        this.setTitle("Landlord");
         Intent intent = getIntent();
         mConvId = intent.getStringExtra("Conversation Id");
+        setmTitle();
 
         mConversationRecycler = findViewById(R.id.rv_conversation);
         mConversationRecycler.setHasFixedSize(true);
@@ -79,9 +82,47 @@ public class ConversationActivity extends AppCompatActivity
         setOnClickForSendButton();
     }
 
+    private void setmTitle() {
+        DatabaseReference particRef = mDb.getReference("messages/" + mConvId + "/participants");
+
+        Query query = particRef.orderByKey();
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> participants = (ArrayList<String>) dataSnapshot.getValue();
+                for (String participant : participants) {
+                    if (!participant.equals(mUid)) {
+                        DatabaseReference nameRef = mDb.getReference("users/" + participant);
+                        Query query = nameRef.orderByKey();
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String firstName = dataSnapshot.child("First Name").getValue(String.class);
+                                String lastName = dataSnapshot.child("Last Name").getValue(String.class);
+                                mTitle = firstName + " " + lastName;
+                                setTitle();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void setTitle() {
+        this.setTitle(mTitle);
+    }
+
     private void getMessages() {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference comsRef = db.getReference("messages/" + mConvId + "/messages");
+        DatabaseReference comsRef = mDb.getReference("messages/" + mConvId + "/messages");
 
         Query query = comsRef.orderByKey();
         query.addValueEventListener(new ValueEventListener() {
@@ -151,7 +192,10 @@ public class ConversationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_messages) {
+        if (id == R.id.nav_home) {
+            Intent intent = new Intent(this, TenantHomeActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_messages) {
             Intent intent = new Intent(this, MessagesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_rent) {
@@ -179,8 +223,7 @@ public class ConversationActivity extends AppCompatActivity
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String email = auth.getCurrentUser().getEmail();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = db.getReference("users");
+        DatabaseReference usersRef = mDb.getReference("users");
         mUid = auth.getCurrentUser().getUid();
         DatabaseReference user = usersRef.child(mUid);
         user.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -216,8 +259,7 @@ public class ConversationActivity extends AppCompatActivity
     }
 
     private void postNewComment(String messageText) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference comsRef = database.getReference("messages/" + mConvId + "/messages");
+        DatabaseReference comsRef = mDb.getReference("messages/" + mConvId + "/messages");
         DatabaseReference comm = comsRef.push();
         comm.child("Sender").setValue(mUid);
         comm.child("Date").setValue(new Date());
