@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/done"
-        android:icon="@drawable/edit_white"
-        android:title="@string/edit"
+        android:icon="@drawable/round_done_white_18dp"
+        android:title="Done"
         app:showAsAction="always" />
 
 </menu>

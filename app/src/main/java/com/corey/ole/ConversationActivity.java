@@ -102,7 +102,7 @@ public class ConversationActivity extends AppCompatActivity
     }
 
     private void setmTitle() {
-        DatabaseReference particRef = mDb.getReference("messages/" + mConvId + "/participants");
+        DatabaseReference particRef = mDb.getReference("add/" + mConvId + "/participants");
 
         Query query = particRef.orderByKey();
         query.addValueEventListener(new ValueEventListener() {
@@ -141,7 +141,7 @@ public class ConversationActivity extends AppCompatActivity
     }
 
     private void getMessages() {
-        DatabaseReference comsRef = mDb.getReference("messages/" + mConvId + "/messages");
+        DatabaseReference comsRef = mDb.getReference("add/" + mConvId + "/add");
 
         Query query = comsRef.orderByKey();
         query.addValueEventListener(new ValueEventListener() {
@@ -312,7 +312,7 @@ public class ConversationActivity extends AppCompatActivity
                         mDb.getReference("users").orderByChild("Email").equalTo(to).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                DatabaseReference conv = mDb.getReference().child("messages").push();
+                                DatabaseReference conv = mDb.getReference().child("add").push();
                                 mConvId = conv.getKey();
                                 ArrayList<String> part = new ArrayList<>();
                                 part.add(mUid);
@@ -340,7 +340,7 @@ public class ConversationActivity extends AppCompatActivity
     }
 
     private void postNewComment(String messageText) {
-        DatabaseReference comsRef = mDb.getReference("messages/" + mConvId + "/messages");
+        DatabaseReference comsRef = mDb.getReference("add/" + mConvId + "/add");
         DatabaseReference comm = comsRef.push();
         comm.child("Sender").setValue(mUid);
         comm.child("Date").setValue(new Date());
