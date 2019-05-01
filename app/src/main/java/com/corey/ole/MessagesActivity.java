@@ -157,6 +157,9 @@ public class MessagesActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_new) {
+            Intent intent = new Intent(this, ConversationActivity.class);
+            intent.putExtra("New Message", true);
+            startActivity(intent);
             return true;
         }
 

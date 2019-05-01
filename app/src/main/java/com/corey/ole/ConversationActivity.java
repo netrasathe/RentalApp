@@ -22,7 +22,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class ConversationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,11 +47,14 @@ public class ConversationActivity extends AppCompatActivity
     private ArrayList<Message> data = new ArrayList<>();
     private String mUid;
     private EditText commentInputBox;
+    private EditText toInputBox;
     private RelativeLayout layout;
     private FloatingActionButton sendButton;
     private String mConvId;
     private FirebaseDatabase mDb;
     private String mTitle = "";
+    private Boolean newMessage;
+    private String comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class ConversationActivity extends AppCompatActivity
         layout = findViewById(R.id.comment_layout);
         commentInputBox = layout.findViewById(R.id.comment_input_edit_text);
         sendButton = layout.findViewById(R.id.send_button);
+        toInputBox = layout.findViewById(R.id.to_edit_text);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -71,7 +79,19 @@ public class ConversationActivity extends AppCompatActivity
         setDrawerData(navigationView);
 
         Intent intent = getIntent();
-        mConvId = intent.getStringExtra("Conversation Id");
+        newMessage = intent.getBooleanExtra("New Message", false);
+        if (newMessage) {
+            findViewById(R.id.llTo).setVisibility(View.VISIBLE);
+            this.setTitle("");
+        } else {
+            findViewById(R.id.llTo).setVisibility(View.GONE);
+            mConvId = intent.getStringExtra("Conversation Id");
+            getConversation();
+        }
+        setOnClickForSendButton();
+    }
+
+    private void getConversation() {
         setmTitle();
 
         mConversationRecycler = findViewById(R.id.rv_conversation);
@@ -79,7 +99,6 @@ public class ConversationActivity extends AppCompatActivity
         mConversationRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         getMessages();
-        setOnClickForSendButton();
     }
 
     private void setmTitle() {
@@ -166,7 +185,11 @@ public class ConversationActivity extends AppCompatActivity
 
         // Restore state
         mConversationRecycler.getLayoutManager().onRestoreInstanceState(recyclerViewState);
-        mConversationRecycler.smoothScrollToPosition(data.size() - 1);
+        try {
+            mConversationRecycler.smoothScrollToPosition(data.size() - 1);
+        } catch (IllegalArgumentException e) {
+            // Do nothing
+        }
     }
 
     @Override
@@ -245,13 +268,71 @@ public class ConversationActivity extends AppCompatActivity
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String comment = commentInputBox.getText().toString();
+                String to = "";
+                if (newMessage) {
+                    to = toInputBox.getText().toString();
+                    if (TextUtils.isEmpty(to)) {
+                        toInputBox.requestFocus();
+                        toInputBox.setError("Please enter an email.");
+                        return;
+                    } else {
+                        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(to)
+                                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                if (task.isSuccessful()) {
+                                    SignInMethodQueryResult result = task.getResult();
+                                    List<String> signInMethods = result.getSignInMethods();
+                                    if (signInMethods.size() > 0) {
+                                        // User exists
+                                    } else {
+                                        toInputBox.setError("Not a valid user.");
+                                    }
+                                } else {
+                                    Log.e("Conversation", "Error getting sign in methods for user", task.getException());
+                                }
+                            }
+                        });
+                    }
+                }
+                if (!TextUtils.isEmpty(toInputBox.getError())) {
+                    return;
+                }
+                comment = commentInputBox.getText().toString();
                 if (TextUtils.isEmpty(comment)) {
                     // don't do anything if nothing was added
                     commentInputBox.requestFocus();
                 } else {
                     // clear edit text, post comment
                     commentInputBox.setText("");
+                    toInputBox.setText("");
+                    if (newMessage) {
+                        newMessage = false;
+                        findViewById(R.id.llTo).setVisibility(View.GONE);
+                        mDb.getReference("users").orderByChild("Email").equalTo(to).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                DatabaseReference conv = mDb.getReference().child("messages").push();
+                                mConvId = conv.getKey();
+                                ArrayList<String> part = new ArrayList<>();
+                                part.add(mUid);
+                                String toUid = "";
+                                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                    toUid = child.getKey();
+                                }
+                                part.add(toUid);
+                                conv.child("participants").setValue(part);
+                                getConversation();
+                                postNewComment(comment);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                        return;
+                    }
                     postNewComment(comment);
                 }
             }
