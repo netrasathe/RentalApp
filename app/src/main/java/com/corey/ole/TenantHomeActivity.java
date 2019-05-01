@@ -32,6 +32,8 @@ public class TenantHomeActivity extends AppCompatActivity
     private RecyclerView mAnnouceRecycler;
     private RecyclerView mUpcomingRecycler;
     private TextView mUsername;
+    private String mUid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +59,37 @@ public class TenantHomeActivity extends AppCompatActivity
         mUpcomingRecycler.setHasFixedSize(true);
         mUpcomingRecycler.setLayoutManager(new LinearLayoutManager(this));
 
+        mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setAnnouncements();
         setUpcoming();
     }
 
     private void setAnnouncements() {
-        ArrayList<String> data = new ArrayList<>();
-        data.add("Building Maintenance is on 04/20/19");
-        data.add("The backdoor lock is broken");
-        AnnouncementAdapter adapter = new AnnouncementAdapter(data);
-        mAnnouceRecycler.setAdapter(adapter);
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference("property").orderByChild("tenants").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    ArrayList tenants = (ArrayList<String>) child.child("tenants").getValue();
+                    if (tenants != null && tenants.contains(mUid)) {
+                        ArrayList<String> data = new ArrayList<>();
+                        Iterable<DataSnapshot> announcements = child.child("announcements").getChildren();
+                        for (DataSnapshot ds : announcements) {
+                            data.add(ds.getValue(String.class));
+                        }
+                        AnnouncementAdapter adapter = new AnnouncementAdapter(data);
+                        mAnnouceRecycler.setAdapter(adapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //data.add("Building Maintenance is on 04/20/19");
+        //data.add("The backdoor lock is broken");
     }
 
     private void setUpcoming() {
