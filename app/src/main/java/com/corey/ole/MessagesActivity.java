@@ -65,7 +65,7 @@ public class MessagesActivity extends AppCompatActivity
 
     private void setMessages() {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        final DatabaseReference messRef = db.getReference("add");
+        final DatabaseReference messRef = db.getReference("messages");
 
         Query query = messRef.orderByChild("participants");
         query.addValueEventListener(new ValueEventListener() {
@@ -77,7 +77,7 @@ public class MessagesActivity extends AppCompatActivity
                     ArrayList participants = (ArrayList<String>) child.child("participants").getValue();
                     String convId = child.getKey();
                     if (participants.contains(mUid)) {
-                        Iterable<DataSnapshot> allMessages = child.child("add").getChildren();
+                        Iterable<DataSnapshot> allMessages = child.child("messages").getChildren();
                         Date d = new Date();
                         d.setTime(0);
                         Message newMessage = new Message("", d, "", true, convId);
