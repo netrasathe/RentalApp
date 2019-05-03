@@ -54,4 +54,10 @@
     <string name="send">Send</string>
     <string name="title_activity_tenant_tenant_profile">Profile</string>
     <string name="title_activity_tenant_edit_tenant_profile">Edit Profile</string>
+    <string name="property_image">Property image</string>
+    <string name="view_tenants">View Tenants</string>
+    <string name="property_notes">Property Notes</string>
+    <string name="address">Address</string>
+    <string name="building">Building</string>
+    <string name="property_policies">Property Policies</string>
 </resources>
