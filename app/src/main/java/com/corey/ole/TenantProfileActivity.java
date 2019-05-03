@@ -1,6 +1,9 @@
 package com.corey.ole;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +20,7 @@ public class TenantProfileActivity extends NavDrawerActivity {
     protected TenantProfile tenant;
 
     protected void loadData(){
+        ImageView photo = findViewById(R.id.profile_picture_field);
         TextView name = findViewById(R.id.tenant_name_field);
         TextView property = findViewById(R.id.property_name_field);
         TextView room = findViewById(R.id.room_number_field);
@@ -25,6 +29,11 @@ public class TenantProfileActivity extends NavDrawerActivity {
         TextView phone = findViewById(R.id.cell_phone_field);
         TextView email = findViewById(R.id.email_field);
 
+        if (tenant.getPhoto() != null) {
+            photo.setImageBitmap(tenant.getPhoto());
+        } else {
+            photo.setImageDrawable(Drawable.createFromPath("@tools:sample/avatars[0]"));
+        }
         name.setText(tenant.getName());
         property.setText(String.valueOf(tenant.getPropertyID()));
         room.setText(tenant.getRoom());

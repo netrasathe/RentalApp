@@ -100,7 +100,7 @@ public class EditTenantProfileActivity extends NavDrawerActivity {
         }
 
         if (!TextUtils.isEmpty(dob.getText().toString())) {
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
             try {
                 Date date = format.parse(dob.getText().toString());
                 userRef.child("Birthday").setValue(date);
