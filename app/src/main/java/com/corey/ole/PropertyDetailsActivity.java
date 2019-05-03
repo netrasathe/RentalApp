@@ -31,6 +31,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     private TextView address;
     private FirebaseDatabase database;
     private String propertyId;
+    private String propertyName;
     private RecyclerView policiesRecycler;
     private RecyclerView notesRecycler;
     private Button viewTenantButton;
@@ -74,7 +75,8 @@ public class PropertyDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Property property = dataSnapshot.getValue(Property.class);
-                name.setText(property.getName());
+                propertyName = property.getName();
+                name.setText(propertyName);
                 address.setText(property.getStreet() + property.getCityStateZip());
                 image.setImageResource(property.getImage());
 
@@ -112,7 +114,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
     private void startTenantList(){
         Intent intent = new Intent(this, TenantListActivity.class);
-        //intent.putExtra("name", intentName);
+        intent.putExtra("name", propertyName);
         intent.putExtra("PropertyID", propertyId);
 
         startActivity(intent);
