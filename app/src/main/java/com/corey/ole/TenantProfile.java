@@ -24,11 +24,11 @@ public class TenantProfile {
     private int phone;
     private String email;
     private Bitmap photo;
-    private int property;
+    private int propertyID;
     private String room;
 
 
-    public TenantProfile(String id, String name, String gender, Date birthdate, int phone, String email, Bitmap photo, int property, String room) {
+    public TenantProfile(String id, String name, String gender, Date birthdate, int phone, String email, Bitmap photo, int propertyID, String room) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -37,7 +37,7 @@ public class TenantProfile {
         this.email = email;
         this.photo = photo;
 
-        this.property = property;
+        this.propertyID = propertyID;
         this.room = room;
     }
 
@@ -69,8 +69,8 @@ public class TenantProfile {
         return photo;
     }
 
-    public int getProperty() {
-        return property;
+    public int getPropertyID() {
+        return propertyID;
     }
 
     public String getRoom() {
@@ -101,8 +101,8 @@ public class TenantProfile {
         this.photo = photo;
     }
 
-    public void setProperty(int property) {
-        this.property = property;
+    public void setPropertyID(int property) {
+        this.propertyID = property;
     }
 
     public void setRoom(String room) {

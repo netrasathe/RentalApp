@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class EditTenantProfileActivity extends NavDrawerActivity {
     protected TenantProfile tenant;
@@ -29,10 +30,10 @@ public class EditTenantProfileActivity extends NavDrawerActivity {
         TextView email = findViewById(R.id.email_edit_field);
 
         name.setText(tenant.getName());
-        property.setText(String.valueOf(tenant.getProperty()));
+        property.setText(String.valueOf(tenant.getPropertyID()));
         room.setText(tenant.getRoom());
         gender.setText(tenant.getGender());
-        dob.setText(new SimpleDateFormat("MM/dd/yy").format(tenant.getBirthdate()));
+        dob.setText(new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(tenant.getBirthdate()));
         phone.setText(String.valueOf(tenant.getPhone()).replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3"));
         email.setText(tenant.getEmail());
 

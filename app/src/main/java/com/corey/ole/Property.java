@@ -174,4 +174,5 @@ public class Property {
     public void removeTenant(String id) {
         tenants.remove(id);
     }
+
 }
