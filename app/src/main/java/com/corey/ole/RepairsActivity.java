@@ -111,7 +111,8 @@ public class RepairsActivity extends NavDrawerActivity
         } else if (id == R.id.nav_repair) {
             // Do nothing
         } else if (id == R.id.nav_profile) {
-
+            Intent intent = new Intent(this, TenantTenantProfileActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

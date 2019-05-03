@@ -179,7 +179,8 @@ public class MessagesActivity extends NavDrawerActivity
             Intent intent = new Intent(this, RepairsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_profile) {
-
+            Intent intent = new Intent(this, TenantTenantProfileActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

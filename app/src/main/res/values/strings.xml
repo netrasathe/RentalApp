@@ -52,4 +52,6 @@
     <string name="request_a_repair">Request a Repair</string>
     <string name="to">To:</string>
     <string name="send">Send</string>
+    <string name="title_activity_tenant_tenant_profile">Profile</string>
+    <string name="title_activity_tenant_edit_tenant_profile">Edit Profile</string>
 </resources>
