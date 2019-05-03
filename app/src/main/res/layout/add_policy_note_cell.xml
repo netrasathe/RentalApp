@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:text="Policies/Notes"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/add_policy_note_delete_button"

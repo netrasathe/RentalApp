@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -52,7 +51,8 @@
         android:textColor="@color/textWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" tools:targetApi="o" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -71,7 +71,8 @@
         android:textColor="@color/textWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditText" tools:targetApi="o" />
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText"
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/loginButton"
@@ -95,12 +96,13 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginLeft="108dp"
+        android:layout_marginStart="32dp"
         android:layout_marginBottom="88dp"
         android:text="@string/new_account"
         android:textColor="@color/textWhite"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signupButton"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -108,14 +110,15 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="104dp"
-        android:layout_marginRight="104dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="84dp"
         android:background="@color/colorPrimary"
         android:text="@string/signup"
         android:textColor="@android:color/background_dark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView2" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

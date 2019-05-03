@@ -63,7 +63,7 @@
                         android:layout_height="22dp"
                         android:layout_marginLeft="25dp"
                         android:text="TextView"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/property_cell_csz"
@@ -71,7 +71,7 @@
                         android:layout_height="26dp"
                         android:layout_marginLeft="25dp"
                         android:text="TextView"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <TextView
@@ -82,7 +82,7 @@
                     android:layout_marginRight="25dp"
                     android:layout_weight="1"
                     android:text="TextView"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
