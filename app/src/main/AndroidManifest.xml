@@ -18,13 +18,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".TenantEditTenantProfileActivity"
+            android:label="@string/title_activity_tenant_edit_tenant_profile"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".TenantTenantProfileActivity"
+            android:label="@string/title_activity_tenant_tenant_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".RepairsActivity"
             android:label="@string/title_activity_repairs"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EditAddPropertyActivity"
             android:label="@string/title_activity_edit_add_property"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ConversationActivity"
             android:label="@string/title_activity_conversation"
@@ -55,9 +63,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".PropertyDetailsActivity" />
-        <activity android:name=".TenantProfileActivity" />
+        <activity android:name=".LandlordTenantProfileActivity" />
         <activity android:name=".TenantListActivity" />
-        <activity android:name=".EditTenantProfileActivity" />
+        <activity android:name=".LandlordEditTenantProfileActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

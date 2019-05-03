@@ -1,8 +1,14 @@
 package com.corey.ole;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.data.ConcatenatedDataBuffer;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
@@ -11,9 +17,7 @@ public class TenantProfile {
 
     public static final String EXTRA_TENANT_ID = "tenantID";
 
-    private static int global_id = 0;
-
-    private int id;
+    private String id;
     private String name;
     private String gender;
     private Date birthdate;
@@ -24,13 +28,8 @@ public class TenantProfile {
     private String room;
 
 
-    public TenantProfile(){
-
-    }
-
-    TenantProfile(String name, String gender, Date birthdate, int phone, String email, Bitmap photo, int property, String room) {
-        this.id = global_id;
-        global_id += 1;
+    public TenantProfile(String id, String name, String gender, Date birthdate, int phone, String email, Bitmap photo, int property, String room) {
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.birthdate = birthdate;
@@ -42,7 +41,7 @@ public class TenantProfile {
         this.room = room;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -112,9 +111,9 @@ public class TenantProfile {
 
 
     public static TenantProfile makeTestTenants(int propertyID) {
-        TenantProfile tenant = new TenantProfile("John Smith", "Male",
+        TenantProfile tenant = new TenantProfile("1", "John Smith", "Male",
                 new Date(System.currentTimeMillis() - (25 * 60 * 60 * 1000)),
-                12345678,
+                1234567890,
                 "email@email.com",
                 null,
                 propertyID,
@@ -122,11 +121,6 @@ public class TenantProfile {
         return tenant;
     }
 
-    public static TenantProfile getTenantFromID(int tenantID){
-        // TODO: Use firebase here to get Tenant from ID lookup
-        return makeTestTenants(0);
-
-    }
 }
 
 
