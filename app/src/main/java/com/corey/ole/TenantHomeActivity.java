@@ -9,30 +9,31 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
-public class TenantHomeActivity extends AppCompatActivity
+import static java.lang.Math.min;
+
+public class TenantHomeActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mAnnouceRecycler;
     private RecyclerView mUpcomingRecycler;
-    private TextView mUsername;
     private String mUid;
+    private FirebaseDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class TenantHomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
+        mDb = FirebaseDatabase.getInstance();
+
         mAnnouceRecycler = findViewById(R.id.rv_announcements);
         mAnnouceRecycler.setHasFixedSize(true);
         mAnnouceRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -65,8 +68,7 @@ public class TenantHomeActivity extends AppCompatActivity
     }
 
     private void setAnnouncements() {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        db.getReference("property").orderByChild("tenants").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDb.getReference("property").orderByChild("tenants").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -88,42 +90,33 @@ public class TenantHomeActivity extends AppCompatActivity
 
             }
         });
-        //data.add("Building Maintenance is on 04/20/19");
-        //data.add("The backdoor lock is broken");
     }
 
     private void setUpcoming() {
-        ArrayList<String> data = new ArrayList<>();
-        data.add("Rent due on next Tuesday 04/30/19");
-        data.add("Repair Request on 04/22/19");
-        AnnouncementAdapter adapter = new AnnouncementAdapter(data);
-        mUpcomingRecycler.setAdapter(adapter);
-    }
-
-    private void setDrawerData(NavigationView navigationView) {
-        View header = navigationView.getHeaderView(0);
-        mUsername = header.findViewById(R.id.txt_name);
-        TextView txt_email = header.findViewById(R.id.txt_email);
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String email = auth.getCurrentUser().getEmail();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = db.getReference("users");
-        String uid = auth.getCurrentUser().getUid();
-        DatabaseReference user = usersRef.child(uid);
-        user.addListenerForSingleValueEvent(new ValueEventListener() {
-            public void onDataChange(DataSnapshot data) {
-                String firstName = data.child("First Name").getValue(String.class);
-                String lastName = data.child("Last Name").getValue(String.class);
-                mUsername.setText(firstName + " " + lastName);
+        mDb.getReference("users/" + mUid + "/repairs").orderByChild("Date").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> data = new ArrayList<>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Date d = child.child("Date").getValue(Date.class);
+                    String date = new SimpleDateFormat("MM/dd/yy").format(d);
+                    String request = child.child("Request").getValue(String.class);
+                    if (request.length() > 15) {
+                        data.add("Repair Request submitted " + date + ": " + request.substring(0, 15) + "...");
+                    } else {
+                        data.add("Repair Request submitted " + date + ": " + request);
+                    }
+                }
+                Collections.reverse(data);
+                AnnouncementAdapter adapter = new AnnouncementAdapter(data);
+                mUpcomingRecycler.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("App Bar", String.valueOf(databaseError));
+
             }
         });
-        txt_email.setText(email);
     }
 
     @Override

@@ -33,7 +33,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:text="To:"
+            android:text="@string/to"
             android:textColor="@color/textWhite"
             android:textSize="18sp" />
 

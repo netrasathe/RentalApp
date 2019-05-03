@@ -49,4 +49,7 @@
     <string name="menu_send">Send</string>
     <string name="cancel">Cancel</string>
     <string name="title_activity_repairs">Repair</string>
+    <string name="request_a_repair">Request a Repair</string>
+    <string name="to">To:</string>
+    <string name="send">Send</string>
 </resources>
