@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,27 +27,42 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class EditAddPropertyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView name;
-    private TextView street;
-    private TextView cityStateZip;
+    private TextView nameView;
+    private TextView streetView;
+    private TextView cityStateZipView;
     private TextView addPolicyText;
     private TextView addNoteText;
     private Button addPolicyButton;
     private Button addNoteButton;
-    private ImageButton image;
-    private RecyclerView policyRecyclerView;
-    private RecyclerView noteRecyclerView;
-    private Button camera;
-    private Button gallery;
-    private AlertDialog dialog;
+    private ImageButton imageButton;
+    private RecyclerView policiesRecycler;
+    private RecyclerView notesRecycler;
+    private Button cameraButton;
+    private Button galleryButton;
+    private AlertDialog imageButtonDialog;
+    private Property thisProperty;
+    private String propertyId;
+    private ArrayList<String> policies;
+    private ArrayList<String> notes;
+    private boolean isAddProperty;
+    private FirebaseDatabase database;
+    private  DatabaseReference propertyRef;
+
 
     private static final int REQUEST_TAKE_PHOTO = 2;
     private String currentPhotoPath;
@@ -57,7 +73,17 @@ public class EditAddPropertyActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_add_property);
         Toolbar toolbar = findViewById(R.id.edit_property_toolbar);
-        toolbar.setTitle("Edit Property");
+
+        Intent intent = getIntent();
+        isAddProperty = intent.getBooleanExtra("isAdd", false);
+        propertyId = intent.getStringExtra("id");
+        if (isAddProperty) {
+            toolbar.setTitle("Add Property");
+            thisProperty = new Property();
+        }
+
+        else
+            toolbar.setTitle("Edit Property");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
@@ -69,19 +95,60 @@ public class EditAddPropertyActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        image = findViewById(R.id.edit_property_image);
-        name = findViewById(R.id.edit_property_name);
-        street = findViewById(R.id.edit_property_street);
-        cityStateZip = findViewById(R.id.edit_property_csz);
+        policies = new ArrayList<>();
+        notes = new ArrayList<>();
+
+        imageButton = findViewById(R.id.edit_property_image);
+        nameView = findViewById(R.id.edit_property_name);
+        streetView = findViewById(R.id.edit_property_street);
+        cityStateZipView = findViewById(R.id.edit_property_csz);
         addPolicyButton = findViewById(R.id.edit_property_add_policy);
         addNoteButton = findViewById(R.id.edit_property_add_note);
         addNoteText = findViewById(R.id.edit_property_note);
         addPolicyText = findViewById(R.id.edit_property_policy);
+        policiesRecycler = findViewById(R.id.edit_property_details_policies_recycler_view);
+        notesRecycler = findViewById(R.id.edit_property_details_notes_recycler_view);
+        policiesRecycler.setHasFixedSize(true);
+        policiesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        notesRecycler.setHasFixedSize(true);
+        notesRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        database = FirebaseDatabase.getInstance();
+        propertyRef = database.getReference("property");
+
+        if (!isAddProperty) {
+            DatabaseReference property = propertyRef.child(propertyId);
+            property.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    thisProperty = dataSnapshot.getValue(Property.class);
+                    nameView.setText(thisProperty.getName());
+                    streetView.setText(thisProperty.getStreet());
+                    cityStateZipView.setText(thisProperty.getCityStateZip());
+                    imageButton.setImageResource(thisProperty.getImage());
+
+                    notes = thisProperty.getNotes();
+                    policies = thisProperty.getPolicies();
+                    setNoteAdapter();
+                    setPolicyAdapter();
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+        }
+
+
 
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String note = addNoteText.getText().toString();
+                if (note.length() != 0)
+                    notes.add(note);
+                setNoteAdapter();
+                addNoteText.setText("");
             }
 
         });
@@ -89,15 +156,50 @@ public class EditAddPropertyActivity extends AppCompatActivity
         addPolicyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String policy = addPolicyText.getText().toString();
+                if (policy.length() != 0)
+                    policies.add(policy);
+                setPolicyAdapter();
+                addPolicyText.setText("");
+            }
+
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createDialog();
 
             }
 
         });
 
-        image.setOnClickListener(new View.OnClickListener() {
+        setNoteAdapter();
+        setPolicyAdapter();
+
+    }
+
+    private void setPolicyAdapter() {
+        AddPolicyNoteAdapter policyAdapter = new AddPolicyNoteAdapter(policies);
+        policiesRecycler.setAdapter(policyAdapter);
+        policyAdapter.setOnItemClickListener(new AddPolicyNoteAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                createDialog();
+            public void onItemClick(int position) {
+                policies.remove(position);
+                setPolicyAdapter();
+
+            }
+        });
+    }
+
+    private void setNoteAdapter() {
+        AddPolicyNoteAdapter noteAdapter = new AddPolicyNoteAdapter(notes);
+        notesRecycler.setAdapter(noteAdapter);
+        noteAdapter.setOnItemClickListener(new AddPolicyNoteAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                notes.remove(position);
+                setNoteAdapter();
             }
 
         });
@@ -105,21 +207,16 @@ public class EditAddPropertyActivity extends AppCompatActivity
     }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.corey.ole",
                         photoFile);
-                //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
@@ -130,10 +227,7 @@ public class EditAddPropertyActivity extends AppCompatActivity
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+        File image = File.createTempFile( imageFileName, ".jpg", storageDir
         );
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
@@ -151,12 +245,12 @@ public class EditAddPropertyActivity extends AppCompatActivity
             if (requestCode == REQUEST_TAKE_PHOTO) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-                dialog.cancel();
-                image.setImageBitmap(imageBitmap);
+                imageButton.setImageBitmap(imageBitmap);
+                imageButtonDialog.cancel();
             } else if (requestCode == PICK_IMAGE) {
                 Uri imageUri = data.getData();
-                dialog.cancel();
-                image.setImageURI(imageUri);
+                imageButton.setImageURI(imageUri);
+                imageButtonDialog.cancel();
             }
         }
     }
@@ -164,17 +258,17 @@ public class EditAddPropertyActivity extends AppCompatActivity
     private void createDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.add_photo, null);
-        camera = view.findViewById(R.id.add_photo_camera);
-        gallery = view.findViewById(R.id.add_button_gallery);
+        cameraButton = view.findViewById(R.id.add_photo_camera);
+        galleryButton = view.findViewById(R.id.add_button_gallery);
 
-        camera.setOnClickListener(new View.OnClickListener() {
+        cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dispatchTakePictureIntent();
             }
 
         });
-        gallery.setOnClickListener(new View.OnClickListener() {
+        galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openGallery();
@@ -190,9 +284,19 @@ public class EditAddPropertyActivity extends AppCompatActivity
             }
         });
 
-        dialog = builder.create();
-        dialog.getWindow().setLayout(300, 150);
-        dialog.show();
+        imageButtonDialog = builder.create();
+        imageButtonDialog.getWindow().setLayout(300, 150);
+        imageButtonDialog.show();
+    }
+
+    private void saveProperty() {
+        thisProperty.setName(nameView.getText().toString());
+        thisProperty.setStreet(streetView.getText().toString());
+        thisProperty.setCityStateZip(cityStateZipView.getText().toString());
+        thisProperty.setPolicies(policies);
+        thisProperty.setNotes(notes);
+        DatabaseReference property = propertyRef.child(thisProperty.getId());
+        property.setValue(thisProperty);
     }
 
 
@@ -215,13 +319,12 @@ public class EditAddPropertyActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.done) {
+            saveProperty();
+            Intent intent = new Intent(this, PropertyDetailsActivity.class);
+            intent.putExtra("id", thisProperty.getId());
+            startActivity(intent);
             return true;
         }
 

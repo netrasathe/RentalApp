@@ -171,22 +171,23 @@ public class LoginActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    public void landlordLogin() {
+    public void landlordLogin(String uid) {
         Intent intent = new Intent(this, LandlordHomeActivity.class);
+        intent.putExtra("id", uid);
         startActivity(intent);
     }
 
     public void login(String email) {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = db.getReference("users");
-        String uid = mAuth.getCurrentUser().getUid();
+        final String uid = mAuth.getCurrentUser().getUid();
         DatabaseReference user = usersRef.child(uid);
         user.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot data) {
                 if (data.child("Account Type").getValue(Integer.class) == 1) {
                     tenantLogin();
                 } else if (data.child("Account Type").getValue(Integer.class) == 2) {
-                    landlordLogin();
+                    landlordLogin(uid);
                 }
             }
 

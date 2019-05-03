@@ -13,10 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /* Activity for Landlord's Home UI */
 
@@ -27,6 +31,7 @@ public class LandlordHomeActivity extends AppCompatActivity {
     PropertyAdapter mAdapter;
     RecyclerView mRecyclerView;
     ArrayList<Property> mProperties = new ArrayList<>();
+    ArrayList<String> mPropertyIds;
 
 
     @Override
@@ -45,10 +50,45 @@ public class LandlordHomeActivity extends AppCompatActivity {
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         mRecyclerView = findViewById(R.id.landlord_home_recycler_view);
-
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        addProperty();
+
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("users");
+        DatabaseReference property = ref.child(id);
+
+        property.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mPropertyIds = (ArrayList<String>) dataSnapshot.child("properties").getValue();
+                DatabaseReference ref = database.getReference("property");
+
+                for (String id: mPropertyIds) {
+                    DatabaseReference p = ref.child(id);
+                    p.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            mProperties.add(dataSnapshot.getValue(Property.class));
+                            setAdapterAndUpdateData();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            System.out.println("The read failed: " + databaseError.getCode());
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+
     }
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
@@ -60,7 +100,9 @@ public class LandlordHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_new) {
-            // do something
+            Intent intent = new Intent(this, EditAddPropertyActivity.class);
+            intent.putExtra("isAdd", true);
+            startActivity(intent);
             return true;
         }
 
@@ -69,7 +111,6 @@ public class LandlordHomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add, menu);
         return true;
     }
@@ -88,11 +129,9 @@ public class LandlordHomeActivity extends AppCompatActivity {
     }
 
     public void startNewActivity(Property p) {
-
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
         intent.putExtra("id", p.getId());
         startActivity(intent);
-
     }
 
     private void addProperty() {
