@@ -225,8 +225,6 @@ public class ConversationActivity extends NavDrawerActivity
             startActivity(intent);
         } else if (id == R.id.nav_lease) {
 
-        } else if (id == R.id.nav_documents) {
-
         } else if (id == R.id.nav_repair) {
             Intent intent = new Intent(this, RepairsActivity.class);
             startActivity(intent);

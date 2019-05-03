@@ -108,8 +108,6 @@ public class RepairsActivity extends NavDrawerActivity
             startActivity(intent);
         } else if (id == R.id.nav_lease) {
 
-        } else if (id == R.id.nav_documents) {
-
         } else if (id == R.id.nav_repair) {
             // Do nothing
         } else if (id == R.id.nav_profile) {

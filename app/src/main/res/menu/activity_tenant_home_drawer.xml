@@ -21,10 +21,6 @@
             android:icon="@drawable/ic_menu_lease"
             android:title="lease" />
         <item
-            android:id="@+id/nav_documents"
-            android:icon="@drawable/ic_menu_documents"
-            android:title="documents" />
-        <item
             android:id="@+id/nav_repair"
             android:icon="@drawable/ic_menu_repair"
             android:title="repair" />
