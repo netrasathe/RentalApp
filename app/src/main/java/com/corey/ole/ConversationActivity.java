@@ -14,13 +14,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,13 +37,11 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class ConversationActivity extends AppCompatActivity
+public class ConversationActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mConversationRecycler;
-    private TextView mUsername;
     private ArrayList<Message> data = new ArrayList<>();
-    private String mUid;
     private EditText commentInputBox;
     private EditText toInputBox;
     private RelativeLayout layout;
@@ -232,7 +228,8 @@ public class ConversationActivity extends AppCompatActivity
         } else if (id == R.id.nav_documents) {
 
         } else if (id == R.id.nav_repair) {
-
+            Intent intent = new Intent(this, RepairsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
 
         }
@@ -240,31 +237,6 @@ public class ConversationActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void setDrawerData(NavigationView navigationView) {
-        View header = navigationView.getHeaderView(0);
-        mUsername = header.findViewById(R.id.txt_name);
-        TextView txt_email = header.findViewById(R.id.txt_email);
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String email = auth.getCurrentUser().getEmail();
-        DatabaseReference usersRef = mDb.getReference("users");
-        mUid = auth.getCurrentUser().getUid();
-        DatabaseReference user = usersRef.child(mUid);
-        user.addListenerForSingleValueEvent(new ValueEventListener() {
-            public void onDataChange(DataSnapshot data) {
-                String firstName = data.child("First Name").getValue(String.class);
-                String lastName = data.child("Last Name").getValue(String.class);
-                mUsername.setText(firstName + " " + lastName);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("App Bar", String.valueOf(databaseError));
-            }
-        });
-        txt_email.setText(email);
     }
 
     private void setOnClickForSendButton() {

@@ -161,7 +161,8 @@ public class TenantHomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_documents) {
 
         } else if (id == R.id.nav_repair) {
-
+            Intent intent = new Intent(this, RepairsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
 
         }

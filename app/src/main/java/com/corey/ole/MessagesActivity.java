@@ -3,22 +3,17 @@ package com.corey.ole;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,13 +26,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-public class MessagesActivity extends AppCompatActivity
+public class MessagesActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mMessagesRecycler;
-    private TextView mUsername;
     private ArrayList<Message> mMessages;
-    private String mUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +178,8 @@ public class MessagesActivity extends AppCompatActivity
         } else if (id == R.id.nav_documents) {
 
         } else if (id == R.id.nav_repair) {
-
+            Intent intent = new Intent(this, RepairsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
 
         }
@@ -199,31 +193,5 @@ public class MessagesActivity extends AppCompatActivity
         Intent intent = new Intent(this, ConversationActivity.class);
         intent.putExtra("Conversation Id", convId);
         startActivity(intent);
-    }
-
-    private void setDrawerData(NavigationView navigationView) {
-        View header = navigationView.getHeaderView(0);
-        mUsername = header.findViewById(R.id.txt_name);
-        TextView txt_email = header.findViewById(R.id.txt_email);
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String email = auth.getCurrentUser().getEmail();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = db.getReference("users");
-        mUid = auth.getCurrentUser().getUid();
-        DatabaseReference user = usersRef.child(mUid);
-        user.addListenerForSingleValueEvent(new ValueEventListener() {
-            public void onDataChange(DataSnapshot data) {
-                String firstName = data.child("First Name").getValue(String.class);
-                String lastName = data.child("Last Name").getValue(String.class);
-                mUsername.setText(firstName + " " + lastName);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("App Bar", String.valueOf(databaseError));
-            }
-        });
-        txt_email.setText(email);
     }
 }
