@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +18,24 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LandlordTenantProfileActivity extends TenantProfileActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private String label;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landlord_tenant_profile);
 
+        Intent tenantIntent = getIntent();
+        Bundle intentExtras = tenantIntent.getExtras();
+        String tenantID = intentExtras.getString(TenantProfile.EXTRA_TENANT_ID);
+        label = intentExtras.getString(TenantProfile.EXTRA_LABEL);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Tenant Profile");
+        if(!TextUtils.isEmpty(label)) {
+            toolbar.setTitle(label);
+        } else {
+            toolbar.setTitle("");
+        }
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -34,32 +46,12 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
-
-        Intent tenantIntent = getIntent();
-        Bundle intentExtras = tenantIntent.getExtras();
-
-        String tenantID;
-
-        if(intentExtras != null) {
-            tenantID = intentExtras.getString(TenantProfile.EXTRA_TENANT_ID);
-            getTenantFromID("DKYk5BGJZaWlkB9MpyMDr15O9VF2");
+        if(!TextUtils.isEmpty(tenantID)) {
+            getTenantFromID(tenantID);
         } else {
             // Raise dialog exception
             tenant = null;
         }
-
-        Button messageButton = findViewById(R.id.message_button);
-        messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToMessageIntent = new Intent(v.getContext(), TenantMessagesActivity.class);
-                goToMessageIntent.putExtra("tenantID", tenant.getId());
-
-                v.getContext().startActivity(goToMessageIntent);
-            }
-        });
-
-
     }
 
     @Override
@@ -69,6 +61,7 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
             // do something
             Intent intent = new Intent(this, LandlordEditTenantProfileActivity.class);
             intent.putExtra(TenantProfile.EXTRA_TENANT_ID, tenant.getId());
+            intent.putExtra(TenantProfile.EXTRA_LABEL, label);
             startActivity(intent);
             return true;
         }
@@ -96,6 +89,12 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
         } else if (id == R.id.nav_messages) {
             Intent intent = new Intent(this, LandlordMessagesActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_profile) {
+            Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
+            intent.putExtra(TenantProfile.EXTRA_TENANT_ID, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            intent.putExtra(TenantProfile.EXTRA_LABEL, "Profile");
+            startActivity(intent);
+            return true;
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginActivity.class);

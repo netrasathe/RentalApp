@@ -16,6 +16,7 @@ import java.util.Date;
 public class TenantProfile {
 
     public static final String EXTRA_TENANT_ID = "tenantID";
+    public static final String EXTRA_LABEL = "label";
 
     private String id;
     private String name;

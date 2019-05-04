@@ -9,18 +9,20 @@ import android.view.MenuItem;
 public class LandlordEditTenantProfileActivity extends EditTenantProfileActivity {
 
     private String uid;
+    private String label;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_tenant_profile);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Edit Tenant Profile");
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
 
         Intent tenantIntent = getIntent();
         Bundle intentExtras = tenantIntent.getExtras();
+        label = intentExtras.getString(TenantProfile.EXTRA_LABEL);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Edit " + label);
+        setSupportActionBar(toolbar);
 
         if(intentExtras != null) {
             uid = intentExtras.getString(TenantProfile.EXTRA_TENANT_ID);
@@ -40,6 +42,7 @@ public class LandlordEditTenantProfileActivity extends EditTenantProfileActivity
 
             Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
             intent.putExtra(TenantProfile.EXTRA_TENANT_ID, tenant.getId());
+            intent.putExtra(TenantProfile.EXTRA_LABEL, label);
             startActivity(intent);
             return true;
         }

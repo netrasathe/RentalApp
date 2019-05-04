@@ -89,7 +89,13 @@ public class LandlordMessagesActivity extends MessagesActivity
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
             // Do nothing
-        } else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_profile) {
+            Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
+            intent.putExtra(TenantProfile.EXTRA_TENANT_ID, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            intent.putExtra(TenantProfile.EXTRA_LABEL, "Profile");
+            startActivity(intent);
+            return true;
+        }  else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

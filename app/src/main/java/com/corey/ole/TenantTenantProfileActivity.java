@@ -35,9 +35,6 @@ public class TenantTenantProfileActivity extends TenantProfileActivity
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getTenantFromID(uid);
-
-        Button messageButton = findViewById(R.id.message_button);
-        messageButton.setVisibility(View.GONE);
     }
 
     @Override
