@@ -60,4 +60,5 @@
     <string name="address">Address</string>
     <string name="building">Building</string>
     <string name="property_policies">Property Policies</string>
+    <string name="title_activity_property_details">Property Details</string>
 </resources>

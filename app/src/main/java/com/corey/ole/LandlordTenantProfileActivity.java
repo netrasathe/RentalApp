@@ -11,7 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LandlordTenantProfileActivity extends TenantProfileActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,12 +90,24 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Do something
+            Intent intent = new Intent(this, LandlordHomeActivity.class);
+            intent.putExtra("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 }
