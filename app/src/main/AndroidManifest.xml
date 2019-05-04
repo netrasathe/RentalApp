@@ -18,9 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".EditAddPropertyActivity"
+            android:label="@string/title_activity_edit_add_property"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".LandlordHomeActivity"
             android:label="@string/title_activity_landlord_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PropertyDetailsActivity"
             android:label="@string/title_activity_property_details"
@@ -36,10 +40,6 @@
         <activity
             android:name=".RepairsActivity"
             android:label="@string/title_activity_repairs"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".EditAddPropertyActivity"
-            android:label="@string/title_activity_edit_add_property"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ConversationActivity"

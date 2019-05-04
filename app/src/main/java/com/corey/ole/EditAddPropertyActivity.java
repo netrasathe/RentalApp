@@ -10,19 +10,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -39,8 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EditAddPropertyActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class EditAddPropertyActivity extends AppCompatActivity {
 
     private TextView nameView;
     private TextView streetView;
@@ -61,7 +55,7 @@ public class EditAddPropertyActivity extends AppCompatActivity
     private ArrayList<String> notes;
     private boolean isAddProperty;
     private FirebaseDatabase database;
-    private  DatabaseReference propertyRef;
+    private DatabaseReference propertyRef;
 
 
     private static final int REQUEST_TAKE_PHOTO = 2;
@@ -71,8 +65,9 @@ public class EditAddPropertyActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_add_property);
-        Toolbar toolbar = findViewById(R.id.edit_property_toolbar);
+        setContentView(R.layout.activity_edit_add_property);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         isAddProperty = intent.getBooleanExtra("isAdd", false);
@@ -80,20 +75,11 @@ public class EditAddPropertyActivity extends AppCompatActivity
         if (isAddProperty) {
             toolbar.setTitle("Add Property");
             thisProperty = new Property();
-        }
-
-        else
+        } else {
             toolbar.setTitle("Edit Property");
+        }
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = findViewById(R.id.edit_add_property_drawer_layout);
-        NavigationView navigationView = findViewById(R.id.edit_add_property_navigation_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
 
         policies = new ArrayList<>();
         notes = new ArrayList<>();
@@ -299,17 +285,6 @@ public class EditAddPropertyActivity extends AppCompatActivity
         property.setValue(thisProperty);
     }
 
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.edit_add_property_drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -331,28 +306,4 @@ public class EditAddPropertyActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

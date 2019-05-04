@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#303030">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/edit_property_toolbar"
-        android:layout_width="410dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#212121"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/edit_property_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".EditAddPropertyActivity"
+    tools:showIn="@layout/activity_edit_add_property"
+    android:background="@color/darkGrey">
 
     <ImageButton
         android:id="@+id/edit_property_image"
@@ -223,6 +208,5 @@
         app:layout_constraintStart_toStartOf="@+id/edit_property_street"
         app:layout_constraintTop_toBottomOf="@+id/edit_property_street"
         app:layout_constraintVertical_bias="0.0" />
-
 
 </android.support.constraint.ConstraintLayout>
