@@ -18,9 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".LandlordHomeActivity"
+            android:label="@string/title_activity_landlord_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".PropertyDetailsActivity"
             android:label="@string/title_activity_property_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TenantEditTenantProfileActivity"
             android:label="@string/title_activity_tenant_edit_tenant_profile"
@@ -36,7 +40,7 @@
         <activity
             android:name=".EditAddPropertyActivity"
             android:label="@string/title_activity_edit_add_property"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ConversationActivity"
             android:label="@string/title_activity_conversation"
@@ -58,7 +62,6 @@
             android:name=".TenantHomeActivity"
             android:label="@string/title_activity_tenant_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LandlordHomeActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
