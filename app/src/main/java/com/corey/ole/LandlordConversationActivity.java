@@ -6,66 +6,68 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
-public class TenantListActivity extends NavDrawerActivity
+public class LandlordConversationActivity extends ConversationActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    String propertyName = "Property";
-    RecyclerView mRecyclerView;
-    TenantListAdapter mAdapter;
-    int propertyID;
-
-    ArrayList<TenantProfile> mTenants = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_property_tenant_list);
-
-        Intent intent = getIntent();
-        propertyName = intent.getStringExtra("name");
-        propertyID = intent.getIntExtra("PropertyID", 0);
-
-
-
-        Toolbar toolbar = findViewById(R.id.tenant_list_toolbar);
-        toolbar.setTitle(propertyName + " Tenants");
+        mDb = FirebaseDatabase.getInstance();
+        setContentView(R.layout.activity_landlord_conversation);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        RelativeLayout layout = findViewById(R.id.comment_layout);
+        commentInputBox = layout.findViewById(R.id.comment_input_edit_text);
+        sendButton = layout.findViewById(R.id.send_button);
+        toInputBox = layout.findViewById(R.id.to_edit_text);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
-        mRecyclerView = findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mTenants.add(TenantProfile.makeTestTenants(propertyID));
-        setAdapterAndUpdateData();
-
+        Intent intent = getIntent();
+        newMessage = intent.getBooleanExtra("New Message", false);
+        if (newMessage) {
+            findViewById(R.id.llTo).setVisibility(View.VISIBLE);
+            this.setTitle("");
+        } else {
+            findViewById(R.id.llTo).setVisibility(View.GONE);
+            mConvId = intent.getStringExtra("Conversation Id");
+            getConversation();
+        }
+        setOnClickForSendButton();
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-
-    private void setAdapterAndUpdateData() {
-        // create a new adapter with the updated mComments array
-        // this will "refresh" our recycler view
-        mAdapter = new TenantListAdapter(this, mTenants);
-        mRecyclerView.setAdapter(mAdapter);
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.conversation, menu);
+        return true;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -87,15 +89,4 @@ public class TenantListActivity extends NavDrawerActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
 }

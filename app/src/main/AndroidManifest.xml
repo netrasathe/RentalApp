@@ -42,16 +42,29 @@
             android:label="@string/title_activity_repairs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ConversationActivity"
+            android:name=".TenantConversationActivity"
             android:label="@string/title_activity_conversation"
-            android:parentActivityName=".MessagesActivity"
+            android:parentActivityName=".TenantMessagesActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.corey.ole.MessagesActivity" />
+                android:value="com.corey.ole.TenantMessagesActivity" />
         </activity>
         <activity
-            android:name=".MessagesActivity"
+            android:name=".LandlordConversationActivity"
+            android:label="@string/title_activity_conversation"
+            android:parentActivityName=".LandlordMessagesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.corey.ole.LandlordMessagesActivity" />
+        </activity>
+        <activity
+            android:name=".TenantMessagesActivity"
+            android:label="@string/title_activity_messages"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LandlordMessagesActivity"
             android:label="@string/title_activity_messages"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

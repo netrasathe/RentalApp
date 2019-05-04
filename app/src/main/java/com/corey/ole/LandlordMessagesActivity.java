@@ -6,81 +6,75 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LandlordTenantProfileActivity extends TenantProfileActivity
+import java.util.ArrayList;
+
+public class LandlordMessagesActivity extends MessagesActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landlord_tenant_profile);
-
+        setContentView(R.layout.activity_landlord_messages);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Tenant Profile");
         setSupportActionBar(toolbar);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
-
-        Intent tenantIntent = getIntent();
-        Bundle intentExtras = tenantIntent.getExtras();
-
-        String tenantID;
-
-        if(intentExtras != null) {
-            tenantID = intentExtras.getString(TenantProfile.EXTRA_TENANT_ID);
-            getTenantFromID("DKYk5BGJZaWlkB9MpyMDr15O9VF2");
-        } else {
-            // Raise dialog exception
-            tenant = null;
-        }
-
-        Button messageButton = findViewById(R.id.message_button);
-        messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToMessageIntent = new Intent(v.getContext(), TenantMessagesActivity.class);
-                goToMessageIntent.putExtra("tenantID", tenant.getId());
-
-                v.getContext().startActivity(goToMessageIntent);
-            }
-        });
-
-
+        mMessagesRecycler = findViewById(R.id.rv_messages);
+        mMessagesRecycler.setHasFixedSize(true);
+        mMessagesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mMessages = new ArrayList<>();
+        setMessages();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.edit) {
-            // do something
-            Intent intent = new Intent(this, LandlordEditTenantProfileActivity.class);
-            intent.putExtra(TenantProfile.EXTRA_TENANT_ID, tenant.getId());
-            startActivity(intent);
-            return true;
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.edit, menu);
+        getMenuInflater().inflate(R.menu.add, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_new) {
+            Intent intent = new Intent(this, TenantConversationActivity.class);
+            intent.putExtra("New Message", true);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -94,8 +88,7 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
             intent.putExtra("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
-            Intent intent = new Intent(this, LandlordMessagesActivity.class);
-            startActivity(intent);
+            // Do nothing
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -103,14 +96,9 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    public void getConversation(String convId) {
+        Intent intent = new Intent(this, LandlordConversationActivity.class);
+        intent.putExtra("Conversation Id", convId);
+        startActivity(intent);
     }
-
 }

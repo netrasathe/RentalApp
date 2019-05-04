@@ -185,6 +185,9 @@ public class LandlordHomeActivity extends NavDrawerActivity
 
         if (id == R.id.nav_home) {
             // Do nothing
+        } else if (id == R.id.nav_messages) {
+            Intent intent = new Intent(this, LandlordMessagesActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

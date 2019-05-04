@@ -2,73 +2,42 @@ package com.corey.ole;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import java.util.ArrayList;
 
-import java.util.Date;
-
-public class RepairsActivity extends NavDrawerActivity
+public class TenantMessagesActivity extends MessagesActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private FirebaseDatabase mDb;
-    private String mUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repairs);
+        setContentView(R.layout.activity_tenant_messages);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
-        mDb = FirebaseDatabase.getInstance();
-        mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        final EditText repairInputBox = findViewById(R.id.repairEditText);
-        Button send = findViewById(R.id.repairButton);
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String repair = repairInputBox.getText().toString();
-                if (TextUtils.isEmpty(repair)) {
-                    // don't do anything if nothing was added
-                    repairInputBox.requestFocus();
-                } else {
-                    // clear edit text, post comment
-                    repairInputBox.setText("");
-                    postNewRepair(repair);
-                }
-            }
-        });
-    }
-
-    private void postNewRepair(String repair) {
-        Date now = new Date();
-        DatabaseReference repairRef = mDb.getReference("users/" + mUid + "/repairs").push();
-        repairRef.child("Date").setValue(now);
-        repairRef.child("Request").setValue(repair);
+        mMessagesRecycler = findViewById(R.id.rv_messages);
+        mMessagesRecycler.setHasFixedSize(true);
+        mMessagesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mMessages = new ArrayList<>();
+        setMessages();
     }
 
     @Override
@@ -84,8 +53,28 @@ public class RepairsActivity extends NavDrawerActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.repairs, menu);
+        getMenuInflater().inflate(R.menu.add, menu);
         return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_new) {
+            Intent intent = new Intent(this, TenantConversationActivity.class);
+            intent.putExtra("New Message", true);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -98,15 +87,15 @@ public class RepairsActivity extends NavDrawerActivity
             Intent intent = new Intent(this, TenantHomeActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
-            Intent intent = new Intent(this, TenantMessagesActivity.class);
-            startActivity(intent);
+            // Do nothing
         } else if (id == R.id.nav_rent) {
             Intent intent = new Intent(this, RentActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_lease) {
 
         } else if (id == R.id.nav_repair) {
-            // Do nothing
+            Intent intent = new Intent(this, RepairsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, TenantTenantProfileActivity.class);
             startActivity(intent);
@@ -115,5 +104,11 @@ public class RepairsActivity extends NavDrawerActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getConversation(String convId) {
+        Intent intent = new Intent(this, TenantConversationActivity.class);
+        intent.putExtra("Conversation Id", convId);
+        startActivity(intent);
     }
 }

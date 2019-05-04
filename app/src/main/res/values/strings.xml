@@ -40,13 +40,6 @@
     <string name="send_a_new_message">send a new message</string>
     <string name="edit">Edit</string>
     <string name="title_activity_edit_add_property">EditAddPropertyActivity</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
     <string name="cancel">Cancel</string>
     <string name="title_activity_repairs">Repair</string>
     <string name="request_a_repair">Request a Repair</string>
@@ -62,4 +55,10 @@
     <string name="property_policies">Property Policies</string>
     <string name="title_activity_property_details">Property Details</string>
     <string name="title_activity_landlord_home">My Properties</string>
+    <string name="menu_home">home</string>
+    <string name="menu_messages">messages</string>
+    <string name="menu_rent">rent</string>
+    <string name="menu_lease">lease</string>
+    <string name="menu_repair">repair</string>
+    <string name="menu_profile">profile</string>
 </resources>

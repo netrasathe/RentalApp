@@ -141,7 +141,7 @@ public class TenantHomeActivity extends NavDrawerActivity
         if (id == R.id.nav_home) {
             // Do nothing
         } else if (id == R.id.nav_messages) {
-            Intent intent = new Intent(this, MessagesActivity.class);
+            Intent intent = new Intent(this, TenantMessagesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_rent) {
             Intent intent = new Intent(this, RentActivity.class);

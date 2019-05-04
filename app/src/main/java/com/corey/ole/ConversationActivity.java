@@ -1,7 +1,5 @@
 package com.corey.ole;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,15 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,57 +27,20 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class ConversationActivity extends NavDrawerActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class ConversationActivity extends NavDrawerActivity {
 
-    private RecyclerView mConversationRecycler;
-    private ArrayList<Message> data = new ArrayList<>();
-    private EditText commentInputBox;
-    private EditText toInputBox;
-    private RelativeLayout layout;
-    private FloatingActionButton sendButton;
-    private String mConvId;
-    private FirebaseDatabase mDb;
-    private String mTitle = "";
-    private Boolean newMessage;
-    private String comment;
+    protected RecyclerView mConversationRecycler;
+    protected ArrayList<Message> data = new ArrayList<>();
+    protected EditText commentInputBox;
+    protected EditText toInputBox;
+    protected FloatingActionButton sendButton;
+    protected String mConvId;
+    protected FirebaseDatabase mDb;
+    protected String mTitle = "";
+    protected String comment;
+    protected Boolean newMessage;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mDb = FirebaseDatabase.getInstance();
-        setContentView(R.layout.activity_conversation);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        layout = findViewById(R.id.comment_layout);
-        commentInputBox = layout.findViewById(R.id.comment_input_edit_text);
-        sendButton = layout.findViewById(R.id.send_button);
-        toInputBox = layout.findViewById(R.id.to_edit_text);
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        setDrawerData(navigationView);
-
-        Intent intent = getIntent();
-        newMessage = intent.getBooleanExtra("New Message", false);
-        if (newMessage) {
-            findViewById(R.id.llTo).setVisibility(View.VISIBLE);
-            this.setTitle("");
-        } else {
-            findViewById(R.id.llTo).setVisibility(View.GONE);
-            mConvId = intent.getStringExtra("Conversation Id");
-            getConversation();
-        }
-        setOnClickForSendButton();
-    }
-
-    private void getConversation() {
+    protected void getConversation() {
         setmTitle();
 
         mConversationRecycler = findViewById(R.id.rv_conversation);
@@ -97,7 +50,7 @@ public class ConversationActivity extends NavDrawerActivity
         getMessages();
     }
 
-    private void setmTitle() {
+    protected void setmTitle() {
         DatabaseReference particRef = mDb.getReference("messages/" + mConvId + "/participants");
 
         Query query = particRef.orderByKey();
@@ -132,11 +85,11 @@ public class ConversationActivity extends NavDrawerActivity
         });
     }
 
-    private void setTitle() {
+    protected void setTitle() {
         this.setTitle(mTitle);
     }
 
-    private void getMessages() {
+    protected void getMessages() {
         DatabaseReference comsRef = mDb.getReference("messages/" + mConvId + "/messages");
 
         Query query = comsRef.orderByKey();
@@ -166,7 +119,7 @@ public class ConversationActivity extends NavDrawerActivity
         });
     }
 
-    private void setConversation() {
+    protected void setConversation() {
         // Save state
         Parcelable recyclerViewState;
         recyclerViewState = mConversationRecycler.getLayoutManager().onSaveInstanceState();
@@ -191,54 +144,7 @@ public class ConversationActivity extends NavDrawerActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.conversation, menu);
-        return true;
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            Intent intent = new Intent(this, TenantHomeActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_messages) {
-            Intent intent = new Intent(this, MessagesActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_rent) {
-            Intent intent = new Intent(this, RentActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_lease) {
-
-        } else if (id == R.id.nav_repair) {
-            Intent intent = new Intent(this, RepairsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(this, TenantTenantProfileActivity.class);
-            startActivity(intent);
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void setOnClickForSendButton() {
+    protected void setOnClickForSendButton() {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,21 +158,21 @@ public class ConversationActivity extends NavDrawerActivity
                     } else {
                         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(to)
                                 .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                if (task.isSuccessful()) {
-                                    SignInMethodQueryResult result = task.getResult();
-                                    List<String> signInMethods = result.getSignInMethods();
-                                    if (signInMethods.size() > 0) {
-                                        // User exists
-                                    } else {
-                                        toInputBox.setError("Not a valid user.");
+                                    @Override
+                                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                        if (task.isSuccessful()) {
+                                            SignInMethodQueryResult result = task.getResult();
+                                            List<String> signInMethods = result.getSignInMethods();
+                                            if (signInMethods.size() > 0) {
+                                                // User exists
+                                            } else {
+                                                toInputBox.setError("Not a valid user.");
+                                            }
+                                        } else {
+                                            Log.e("Conversation", "Error getting sign in methods for user", task.getException());
+                                        }
                                     }
-                                } else {
-                                    Log.e("Conversation", "Error getting sign in methods for user", task.getException());
-                                }
-                            }
-                        });
+                                });
                     }
                 }
                 if (!TextUtils.isEmpty(toInputBox.getError())) {
@@ -313,7 +219,7 @@ public class ConversationActivity extends NavDrawerActivity
         });
     }
 
-    private void postNewComment(String messageText) {
+    protected void postNewComment(String messageText) {
         DatabaseReference comsRef = mDb.getReference("messages/" + mConvId + "/messages");
         DatabaseReference comm = comsRef.push();
         comm.child("Sender").setValue(mUid);
