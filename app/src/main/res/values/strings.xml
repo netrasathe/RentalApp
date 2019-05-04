@@ -61,4 +61,9 @@
     <string name="menu_lease">lease</string>
     <string name="menu_repair">repair</string>
     <string name="menu_profile">profile</string>
+    <string name="about">About</string>
+    <string name="street">Street</string>
+    <string name="policy">Policy</string>
+    <string name="note">Note</string>
+    <string name="city_state_zip_code">City/State/Zip Code</string>
 </resources>
