@@ -1,10 +1,5 @@
 package com.corey.ole;
 
-import android.provider.ContactsContract;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -14,7 +9,6 @@ public class Property {
     private String street;
     private String cityStateZip;
     private int image;
-    private int numTenants;
     private ArrayList<String> tenants;
     private ArrayList<String> policies;
     private ArrayList<String> notes;
@@ -22,7 +16,7 @@ public class Property {
     private ArrayList<String> updates;
 
 
-    Property(String name, String street, String cityStateZip, int image, int numTenants,
+    Property(String name, String street, String cityStateZip, int image,
              ArrayList<String> tenants, ArrayList<String> policies, ArrayList<String> notes,
              ArrayList<String> announcements, ArrayList<String> updates) {
 
@@ -31,7 +25,6 @@ public class Property {
         this.street = street;
         this.cityStateZip = cityStateZip;
         this.image = image;
-        this.numTenants = numTenants;
         this.tenants = tenants;
         this.policies = policies;
         this.notes = notes;
@@ -45,7 +38,6 @@ public class Property {
         this.street = null;
         this.cityStateZip = null;
         this.image = 0;
-        this.numTenants = 0;
         this.tenants = null;
         this.policies = null;
         this.notes = null;
@@ -96,11 +88,11 @@ public class Property {
     }
 
     public int getNumTenants() {
-        return numTenants;
-    }
-
-    public void setNumTenants(int numTenants) {
-        this.numTenants = numTenants;
+        if (tenants != null) {
+            return tenants.size();
+        } else {
+            return 0;
+        }
     }
 
     public ArrayList<String> getTenants() {

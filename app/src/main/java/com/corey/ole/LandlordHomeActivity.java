@@ -116,16 +116,16 @@ public class LandlordHomeActivity extends NavDrawerActivity
         notes.add("No smoking cigarettes! Only weed");
 
         Property p1 = new Property("Benvenue Apartments", "234 Shattuck Avenue", "Berkley, CA 95054", R.drawable.apartment,
-                100, new ArrayList<String>(), policies, notes, new ArrayList<String>(), new ArrayList<String>());
+                new ArrayList<String>(), policies, notes, new ArrayList<String>(), new ArrayList<String>());
         mProperties.add(p1);
-        Property p2 = new Property("Martinez Commons", "21 Bowditch Avenue", "Berkley, CA 94076", R.drawable.martinez_commons, 12,
+        Property p2 = new Property("Martinez Commons", "21 Bowditch Avenue", "Berkley, CA 94076", R.drawable.martinez_commons,
                 new ArrayList<String>(), policies, new ArrayList<String>(), notes, new ArrayList<String>());
         mProperties.add(p2);
-        Property p3  = new Property("Telegraph Apartments", "945 Telegraph Avenue", "Berkley, CA 94704", R.drawable.telegraph, 68,
+        Property p3  = new Property("Telegraph Apartments", "945 Telegraph Avenue", "Berkley, CA 94704", R.drawable.telegraph,
                 new ArrayList<String>(), policies, notes, new ArrayList<String>(), new ArrayList<String>());
         mProperties.add(p3);
 
-        Property p4  = new Property("Unit 1", "532 Peidmont Avenue", "Berkley, CA 94708", R.drawable.unit, 210,
+        Property p4  = new Property("Unit 1", "532 Peidmont Avenue", "Berkley, CA 94708", R.drawable.unit,
                 policies, policies, notes, new ArrayList<String>(), new ArrayList<String>());
         mProperties.add(p4);
 
