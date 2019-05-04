@@ -110,6 +110,10 @@ public class RepairsActivity extends NavDrawerActivity
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, TenantTenantProfileActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

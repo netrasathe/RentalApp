@@ -94,6 +94,10 @@ public class TenantTenantProfileActivity extends TenantProfileActivity
             startActivity(intent);
         } else if (id == R.id.nav_profile) {
             // Do nothing
+        } else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

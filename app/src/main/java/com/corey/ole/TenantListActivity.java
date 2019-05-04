@@ -81,6 +81,10 @@ public class TenantListActivity extends NavDrawerActivity
         } else if (id == R.id.nav_messages) {
             Intent intent = new Intent(this, LandlordMessagesActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
