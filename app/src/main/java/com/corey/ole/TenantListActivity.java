@@ -76,7 +76,7 @@ public class TenantListActivity extends NavDrawerActivity
 
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, LandlordHomeActivity.class);
-            intent.putExtra("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            intent.putExtra("landlordId", FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
             Intent intent = new Intent(this, LandlordMessagesActivity.class);
