@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,12 +22,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +64,8 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     private boolean isAddProperty;
     private FirebaseDatabase database;
     private DatabaseReference propertyRef;
+    private Uri photoUri;
+    StorageReference storageRef;
 
 
     private static final int REQUEST_TAKE_PHOTO = 2;
@@ -83,6 +93,7 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         policies = new ArrayList<>();
         notes = new ArrayList<>();
+        photoUri = null;
 
         imageButton = findViewById(R.id.edit_property_image);
         nameView = findViewById(R.id.edit_property_name);
@@ -101,6 +112,7 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         propertyRef = database.getReference("property");
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         if (!isAddProperty) {
             DatabaseReference property = propertyRef.child(propertyId);
@@ -111,12 +123,30 @@ public class EditAddPropertyActivity extends AppCompatActivity {
                     nameView.setText(thisProperty.getName());
                     streetView.setText(thisProperty.getStreet());
                     cityStateZipView.setText(thisProperty.getCityStateZip());
-                    imageButton.setImageResource(thisProperty.getImage());
-
                     notes = thisProperty.getNotes();
                     policies = thisProperty.getPolicies();
                     setNoteAdapter();
                     setPolicyAdapter();
+
+                    /* Fetch the image from Firebase Storage and sets it to imageButton */
+                    try {
+                        final File localFile = File.createTempFile("images", "jpg");
+                        StorageReference imageStorage = storageRef.child(thisProperty.getImagePath());
+                        imageStorage.getFile(localFile)
+                                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Uri uri = Uri.fromFile(localFile);
+                                        imageButton.setImageURI(uri);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -155,7 +185,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 createDialog();
-
             }
 
         });
@@ -200,9 +229,11 @@ public class EditAddPropertyActivity extends AppCompatActivity {
             } catch (IOException ex) {
             }
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
+                photoUri = FileProvider.getUriForFile(this,
                         "com.corey.ole",
                         photoFile);
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
@@ -229,13 +260,11 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_TAKE_PHOTO) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                imageButton.setImageBitmap(imageBitmap);
+                imageButton.setImageURI(photoUri);
                 imageButtonDialog.cancel();
             } else if (requestCode == PICK_IMAGE) {
-                Uri imageUri = data.getData();
-                imageButton.setImageURI(imageUri);
+                photoUri = data.getData();
+                imageButton.setImageURI(photoUri);
                 imageButtonDialog.cancel();
             }
         }
@@ -276,13 +305,69 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     }
 
     private void saveProperty() {
-        thisProperty.setName(nameView.getText().toString());
-        thisProperty.setStreet(streetView.getText().toString());
-        thisProperty.setCityStateZip(cityStateZipView.getText().toString());
+        String name = nameView.getText().toString();
+        if (name.length() == 0) {
+            Toast.makeText(EditAddPropertyActivity.this, "Name Field Required",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        thisProperty.setName(name);
+
+        String street = streetView.getText().toString();
+        if (street.length() == 0) {
+            Toast.makeText(EditAddPropertyActivity.this, "Street Field Required",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        thisProperty.setStreet(street);
+
+        String city = cityStateZipView.getText().toString();
+        if (city.length() == 0) {
+            Toast.makeText(EditAddPropertyActivity.this, "Street Field Required",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        thisProperty.setCityStateZip(city);
         thisProperty.setPolicies(policies);
         thisProperty.setNotes(notes);
+
+
+        saveImageToFirebaseStorage();
         DatabaseReference property = propertyRef.child(thisProperty.getId());
         property.setValue(thisProperty);
+
+
+        Intent intent = new Intent(this, PropertyDetailsActivity.class);
+        intent.putExtra("id", thisProperty.getId());
+        startActivity(intent);
+
+    }
+
+    private void saveImageToFirebaseStorage() {
+        if (photoUri == null) {
+            thisProperty.setImagePath("");
+            return;
+
+        }
+
+
+        String path = thisProperty.getId() + "/images/profile.jpg";
+        thisProperty.setImagePath(path);
+        StorageReference imageRef = storageRef.child(path);
+        imageRef.putFile(photoUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
     }
 
     @Override
@@ -297,10 +382,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.done) {
             saveProperty();
-            Intent intent = new Intent(this, PropertyDetailsActivity.class);
-            intent.putExtra("id", thisProperty.getId());
-            startActivity(intent);
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

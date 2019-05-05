@@ -3,7 +3,7 @@ package com.corey.ole;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.data.ConcatenatedDataBuffer;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

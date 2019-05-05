@@ -106,42 +106,42 @@ public class LandlordHomeActivity extends NavDrawerActivity
         startActivity(intent);
     }
 
-    private void addProperty() {
-        ArrayList<String> policies = new ArrayList<>();
-        policies.add("Thou shall not kill!");
-        policies.add("Thou shall not eat roommate's food!");
-        policies.add("Enjoy!");
-        ArrayList<String> notes = new ArrayList<>();
-        notes.add("No dogs allowed! Only cats.");
-        notes.add("No smoking cigarettes! Only weed");
-
-        Property p1 = new Property("Benvenue Apartments", "234 Shattuck Avenue", "Berkley, CA 95054", R.drawable.apartment,
-                new ArrayList<String>(), policies, notes, new ArrayList<String>(), new ArrayList<String>());
-        mProperties.add(p1);
-        Property p2 = new Property("Martinez Commons", "21 Bowditch Avenue", "Berkley, CA 94076", R.drawable.martinez_commons,
-                new ArrayList<String>(), policies, new ArrayList<String>(), notes, new ArrayList<String>());
-        mProperties.add(p2);
-        Property p3  = new Property("Telegraph Apartments", "945 Telegraph Avenue", "Berkley, CA 94704", R.drawable.telegraph,
-                new ArrayList<String>(), policies, notes, new ArrayList<String>(), new ArrayList<String>());
-        mProperties.add(p3);
-
-        Property p4  = new Property("Unit 1", "532 Peidmont Avenue", "Berkley, CA 94708", R.drawable.unit,
-                policies, policies, notes, new ArrayList<String>(), new ArrayList<String>());
-        mProperties.add(p4);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference property = database.getReference("property");
-        DatabaseReference d1 = property.child(p1.getId());
-        d1.setValue(p1);
-        DatabaseReference d2 = property.child(p2.getId());
-        d2.setValue(p2);
-        DatabaseReference d3 = property.child(p3.getId());
-        d3.setValue(p3);
-        DatabaseReference d4 = property.child(p4.getId());
-        d4.setValue(p4);
-
-        setAdapterAndUpdateData();
-    }
+//    private void addProperty() {
+//        ArrayList<String> policies = new ArrayList<>();
+//        policies.add("Thou shall not kill!");
+//        policies.add("Thou shall not eat roommate's food!");
+//        policies.add("Enjoy!");
+//        ArrayList<String> notes = new ArrayList<>();
+//        notes.add("No dogs allowed! Only cats.");
+//        notes.add("No smoking cigarettes! Only weed");
+//
+//        Property p1 = new Property("Benvenue Apartments", "234 Shattuck Avenue", "Berkley, CA 95054", R.drawable.apartment,
+//                new ArrayList<String>(), policies, notes, new ArrayList<String>(), new ArrayList<String>());
+//        mProperties.add(p1);
+//        Property p2 = new Property("Martinez Commons", "21 Bowditch Avenue", "Berkley, CA 94076", R.drawable.martinez_commons,
+//                new ArrayList<String>(), policies, new ArrayList<String>(), notes, new ArrayList<String>());
+//        mProperties.add(p2);
+//        Property p3  = new Property("Telegraph Apartments", "945 Telegraph Avenue", "Berkley, CA 94704", R.drawable.telegraph,
+//                new ArrayList<String>(), policies, notes, new ArrayList<String>(), new ArrayList<String>());
+//        mProperties.add(p3);
+//
+//        Property p4  = new Property("Unit 1", "532 Peidmont Avenue", "Berkley, CA 94708", R.drawable.unit,
+//                policies, policies, notes, new ArrayList<String>(), new ArrayList<String>());
+//        mProperties.add(p4);
+//
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference property = database.getReference("property");
+//        DatabaseReference d1 = property.child(p1.getId());
+//        d1.setValue(p1);
+//        DatabaseReference d2 = property.child(p2.getId());
+//        d2.setValue(p2);
+//        DatabaseReference d3 = property.child(p3.getId());
+//        d3.setValue(p3);
+//        DatabaseReference d4 = property.child(p4.getId());
+//        d4.setValue(p4);
+//
+//        setAdapterAndUpdateData();
+//    }
 
     @Override
     public void onBackPressed() {

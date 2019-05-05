@@ -1,6 +1,7 @@
 package com.corey.ole;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /* Adapter for Properties in Landlord's Home */
@@ -94,7 +105,25 @@ public class PropertyAdapter extends RecyclerView.Adapter {
             mStreet.setText(property.getStreet());
             mCityStateZip.setText(property.getCityStateZip());
             mTenants.setText(t);
-            mImage.setImageResource(property.getImage());
+            try {
+                final File localFile = File.createTempFile("images", "jpg");
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                StorageReference imageStorage = storageRef.child(property.getImagePath());
+                imageStorage.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Uri uri = Uri.fromFile(localFile);
+                                mImage.setImageURI(uri);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

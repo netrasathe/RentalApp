@@ -1,5 +1,16 @@
 package com.corey.ole;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -8,15 +19,14 @@ public class Property {
     private String name;
     private String street;
     private String cityStateZip;
-    private int image;
+    private String imagePath;     // image path in Firebase Storage
     private ArrayList<String> tenants;
     private ArrayList<String> policies;
     private ArrayList<String> notes;
     private ArrayList<String> announcements;
     private ArrayList<String> updates;
 
-
-    Property(String name, String street, String cityStateZip, int image,
+    Property(String name, String street, String cityStateZip, String imagePath,
              ArrayList<String> tenants, ArrayList<String> policies, ArrayList<String> notes,
              ArrayList<String> announcements, ArrayList<String> updates) {
 
@@ -24,7 +34,7 @@ public class Property {
         this.name = name;
         this.street = street;
         this.cityStateZip = cityStateZip;
-        this.image = image;
+        this.imagePath = imagePath;
         this.tenants = tenants;
         this.policies = policies;
         this.notes = notes;
@@ -37,7 +47,7 @@ public class Property {
         this.name = null;
         this.street = null;
         this.cityStateZip = null;
-        this.image = 0;
+        this.imagePath = "";
         this.tenants = null;
         this.policies = null;
         this.notes = null;
@@ -79,13 +89,14 @@ public class Property {
         this.cityStateZip = cityStateZip;
     }
 
-    public int getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
+
 
     public int getNumTenants() {
         if (tenants != null) {

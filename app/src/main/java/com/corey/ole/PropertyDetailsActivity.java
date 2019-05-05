@@ -1,7 +1,9 @@
 package com.corey.ole;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,13 +19,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PropertyDetailsActivity extends NavDrawerActivity
@@ -80,20 +89,37 @@ public class PropertyDetailsActivity extends NavDrawerActivity
                 propertyName = property.getName();
                 name.setText(propertyName);
                 address.setText(property.getStreet() + property.getCityStateZip());
-                image.setImageResource(property.getImage());
-
                 ArrayList<String> notes = property.getNotes();
                 if (notes != null) {
                     AnnouncementAdapter noteAdapter = new AnnouncementAdapter(property.getNotes());
                     notesRecycler.setAdapter(noteAdapter);
                 }
-
                 ArrayList<String> policies = property.getPolicies();
                 if (policies != null) {
                     AnnouncementAdapter policyAdapter = new AnnouncementAdapter(property.getPolicies());
                     policiesRecycler.setAdapter(policyAdapter);
 
                 }
+                try {
+                    final File localFile = File.createTempFile("images", "jpg");
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                    StorageReference imageStorage = storageRef.child(property.getImagePath());
+                    imageStorage.getFile(localFile)
+                            .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    Uri uri = Uri.fromFile(localFile);
+                                    image.setImageURI(uri);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
             }
 
