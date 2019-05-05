@@ -25,11 +25,13 @@ import java.util.ArrayList;
 public class LandlordHomeActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Toolbar toolbar;
-    PropertyAdapter mAdapter;
-    RecyclerView mRecyclerView;
-    ArrayList<Property> mProperties = new ArrayList<>();
-    ArrayList<String> mPropertyIds;
+    private Toolbar toolbar;
+    private PropertyAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private ArrayList<Property> mProperties = new ArrayList<>();
+    private ArrayList<String> mPropertyIds;
+    private String landlordId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +54,11 @@ public class LandlordHomeActivity extends NavDrawerActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
+        landlordId = intent.getStringExtra("landlordId");
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
-        DatabaseReference property = ref.child(id);
+        DatabaseReference property = ref.child(landlordId);
 
         property.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -102,7 +104,8 @@ public class LandlordHomeActivity extends NavDrawerActivity
 
     public void startNewActivity(Property p) {
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
-        intent.putExtra("id", p.getId());
+        intent.putExtra("propertyId", p.getId());
+        intent.putExtra("landlordId", landlordId);
         startActivity(intent);
     }
 
@@ -143,6 +146,20 @@ public class LandlordHomeActivity extends NavDrawerActivity
 //        setAdapterAndUpdateData();
 //    }
 
+    private void addProperties() {
+        ArrayList<String> p = new ArrayList<>();
+        p.add("3d2ec489-dd01-4d97-93b3-8ab23a65e73e");
+        p.add("4f7542ff-6be0-4a19-9641-e4bb2d2ffd1d");
+        p.add("57041e57-9803-4c36-9164-5553b6e1393d");
+        p.add("7488d81c-35af-4bd8-bc66-a659889f33a0");
+        p.add("dfae4d37-61ed-43de-bedb-9fd7b2ff5289");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference landlordRef = database.getReference("users").child(landlordId);
+        DatabaseReference propertiesRef = landlordRef.child("properties");
+        propertiesRef.setValue(p);
+
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -155,22 +172,17 @@ public class LandlordHomeActivity extends NavDrawerActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_new) {
             Intent intent = new Intent(this, EditAddPropertyActivity.class);
             intent.putExtra("isAdd", true);
+            intent.putExtra("landlordId", landlordId);
             startActivity(intent);
             return true;
         }

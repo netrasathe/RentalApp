@@ -30,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -59,13 +60,15 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     private AlertDialog imageButtonDialog;
     private Property thisProperty;
     private String propertyId;
+    private String landlordId;
     private ArrayList<String> policies;
     private ArrayList<String> notes;
     private boolean isAddProperty;
     private FirebaseDatabase database;
     private DatabaseReference propertyRef;
     private Uri photoUri;
-    StorageReference storageRef;
+    private ArrayList<String> propertyIds;
+    private StorageReference storageRef;
 
 
     private static final int REQUEST_TAKE_PHOTO = 2;
@@ -81,7 +84,9 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         isAddProperty = intent.getBooleanExtra("isAdd", false);
-        propertyId = intent.getStringExtra("id");
+        propertyId = intent.getStringExtra("propertyId");
+        landlordId = intent.getStringExtra("landlordId");
+
         if (isAddProperty) {
             toolbar.setTitle("Add Property");
             thisProperty = new Property();
@@ -109,7 +114,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
         policiesRecycler.setLayoutManager(new LinearLayoutManager(this));
         notesRecycler.setHasFixedSize(true);
         notesRecycler.setLayoutManager(new LinearLayoutManager(this));
-
         database = FirebaseDatabase.getInstance();
         propertyRef = database.getReference("property");
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -123,27 +127,39 @@ public class EditAddPropertyActivity extends AppCompatActivity {
                     nameView.setText(thisProperty.getName());
                     streetView.setText(thisProperty.getStreet());
                     cityStateZipView.setText(thisProperty.getCityStateZip());
-                    notes = thisProperty.getNotes();
-                    policies = thisProperty.getPolicies();
-                    setNoteAdapter();
-                    setPolicyAdapter();
+                    ArrayList<String> n = thisProperty.getNotes();
+
+                    if (n != null) {
+                        notes = n;
+                        setNoteAdapter();
+                    }
+                    ArrayList<String> p = thisProperty.getPolicies();
+                    if (p != null) {
+                        policies = p;
+                        setPolicyAdapter();
+                    }
+
 
                     /* Fetch the image from Firebase Storage and sets it to imageButton */
                     try {
                         final File localFile = File.createTempFile("images", "jpg");
-                        StorageReference imageStorage = storageRef.child(thisProperty.getImagePath());
-                        imageStorage.getFile(localFile)
-                                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        Uri uri = Uri.fromFile(localFile);
-                                        imageButton.setImageURI(uri);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                            }
-                        });
+
+                        if (thisProperty.getImagePath() != null && thisProperty.getImagePath().length() != 0) {
+                            StorageReference imageStorage = storageRef.child(thisProperty.getImagePath());
+                            imageStorage.getFile(localFile)
+                                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            Uri uri = Uri.fromFile(localFile);
+                                            imageButton.setImageURI(uri);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                }
+                            });
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -153,9 +169,22 @@ public class EditAddPropertyActivity extends AppCompatActivity {
                     System.out.println("The read failed: " + databaseError.getCode());
                 }
             });
+        } else {
+            DatabaseReference landlordRef = database.getReference("users").child(landlordId);
+            DatabaseReference propertiesRef = landlordRef.child("properties");
+            propertiesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                    propertyIds = dataSnapshot.getValue(t);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+
         }
-
-
 
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +224,9 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     }
 
     private void setPolicyAdapter() {
+        if (policies == null)
+            return;
+
         AddPolicyNoteAdapter policyAdapter = new AddPolicyNoteAdapter(policies);
         policiesRecycler.setAdapter(policyAdapter);
         policyAdapter.setOnItemClickListener(new AddPolicyNoteAdapter.OnItemClickListener() {
@@ -208,6 +240,9 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     }
 
     private void setNoteAdapter() {
+        if (notes == null)
+            return;
+
         AddPolicyNoteAdapter noteAdapter = new AddPolicyNoteAdapter(notes);
         notesRecycler.setAdapter(noteAdapter);
         noteAdapter.setOnItemClickListener(new AddPolicyNoteAdapter.OnItemClickListener() {
@@ -331,14 +366,26 @@ public class EditAddPropertyActivity extends AppCompatActivity {
         thisProperty.setPolicies(policies);
         thisProperty.setNotes(notes);
 
-
+        String path = thisProperty.getId() + "/images/profile.jpg";
+        thisProperty.setImagePath(path);
         saveImageToFirebaseStorage();
+
         DatabaseReference property = propertyRef.child(thisProperty.getId());
         property.setValue(thisProperty);
 
+        if (isAddProperty) {
+            DatabaseReference landlordRef = database.getReference("users").child(landlordId);
+            DatabaseReference propertiesRef = landlordRef.child("properties");
+            propertyIds.add(thisProperty.getId());
+            propertiesRef.setValue(propertyIds);
+
+        }
+
+
 
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
-        intent.putExtra("id", thisProperty.getId());
+        intent.putExtra("propertyId", thisProperty.getId());
+        intent.putExtra("landlordId", landlordId);
         startActivity(intent);
 
     }
@@ -350,10 +397,7 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         }
 
-
-        String path = thisProperty.getId() + "/images/profile.jpg";
-        thisProperty.setImagePath(path);
-        StorageReference imageRef = storageRef.child(path);
+        StorageReference imageRef = storageRef.child(thisProperty.getImagePath());
         imageRef.putFile(photoUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -386,5 +430,8 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
 }

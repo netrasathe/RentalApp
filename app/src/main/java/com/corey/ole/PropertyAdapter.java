@@ -107,20 +107,24 @@ public class PropertyAdapter extends RecyclerView.Adapter {
             mTenants.setText(t);
             try {
                 final File localFile = File.createTempFile("images", "jpg");
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                StorageReference imageStorage = storageRef.child(property.getImagePath());
-                imageStorage.getFile(localFile)
-                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Uri uri = Uri.fromFile(localFile);
-                                mImage.setImageURI(uri);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
+
+                if (property.getImagePath() != null && property.getImagePath().length() != 0) {
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                    StorageReference imageStorage = storageRef.child(property.getImagePath());
+                    imageStorage.getFile(localFile)
+                            .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    Uri uri = Uri.fromFile(localFile);
+                                    mImage.setImageURI(uri);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                        }
+                    });
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

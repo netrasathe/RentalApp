@@ -47,6 +47,7 @@ public class PropertyDetailsActivity extends NavDrawerActivity
     private RecyclerView policiesRecycler;
     private RecyclerView notesRecycler;
     private Button viewTenantButton;
+    private String landlordId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,8 @@ public class PropertyDetailsActivity extends NavDrawerActivity
         notesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         Intent intent = getIntent();
-        propertyId = intent.getStringExtra("id");
+        propertyId = intent.getStringExtra("propertyId");
+        landlordId = intent.getStringExtra("landlordId");
 
         database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("property");
@@ -103,19 +105,24 @@ public class PropertyDetailsActivity extends NavDrawerActivity
                 try {
                     final File localFile = File.createTempFile("images", "jpg");
                     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                    StorageReference imageStorage = storageRef.child(property.getImagePath());
-                    imageStorage.getFile(localFile)
-                            .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    Uri uri = Uri.fromFile(localFile);
-                                    image.setImageURI(uri);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                        }
-                    });
+
+                    if (property.getImagePath() != null && property.getImagePath().length() != 0) {
+                        StorageReference imageStorage = storageRef.child(property.getImagePath());
+                        imageStorage.getFile(localFile)
+                                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Uri uri = Uri.fromFile(localFile);
+                                        image.setImageURI(uri);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                            }
+                        });
+
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -174,7 +181,8 @@ public class PropertyDetailsActivity extends NavDrawerActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.edit) {
             Intent intent = new Intent(this, EditAddPropertyActivity.class);
-            intent.putExtra("id", propertyId);
+            intent.putExtra("propertyId", propertyId);
+            intent.putExtra("landlordId", landlordId);
             intent.putExtra("isAdd", false);
             startActivity(intent);
             return true;
@@ -191,7 +199,7 @@ public class PropertyDetailsActivity extends NavDrawerActivity
 
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, LandlordHomeActivity.class);
-            intent.putExtra("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            intent.putExtra("landlordId", FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
             Intent intent = new Intent(this, LandlordMessagesActivity.class);

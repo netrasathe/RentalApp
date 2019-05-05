@@ -85,7 +85,7 @@ public class LandlordMessagesActivity extends MessagesActivity
 
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, LandlordHomeActivity.class);
-            intent.putExtra("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            intent.putExtra("landlordId", FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
             // Do nothing
