@@ -68,4 +68,10 @@
     <string name="policy">Policy</string>
     <string name="note">Note</string>
     <string name="city_state_zip_code">City/State/Zip Code</string>
+    <string name="title_activity_landlord_announcements">LandlordAnnouncementsActivity</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
 </resources>

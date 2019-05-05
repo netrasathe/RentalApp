@@ -4,9 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -14,11 +13,13 @@ public class AddPolicyNoteAdapter extends RecyclerView.Adapter<AddPolicyNoteAdap
 
     private ArrayList<String> mData;
     private OnItemClickListener mListener;
+    private int currentPosition;
     public AddPolicyNoteAdapter(ArrayList<String> data) {
         mData = data;
     }
     @Override
     public void onBindViewHolder(AddPolicyNoteView holder, int position) {
+        currentPosition = position;
         String string = mData.get(position);
         holder.bindView(string);
     }
@@ -44,7 +45,7 @@ public class AddPolicyNoteAdapter extends RecyclerView.Adapter<AddPolicyNoteAdap
     }
 
     class AddPolicyNoteView extends RecyclerView.ViewHolder {
-        TextView mTextView;
+        EditText mTextView;
         ImageView mDeleteButton;
 
 

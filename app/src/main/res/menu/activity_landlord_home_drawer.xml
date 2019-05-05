@@ -12,6 +12,7 @@
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_menu_messages"
             android:title="@string/menu_messages" />
+
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_profile"

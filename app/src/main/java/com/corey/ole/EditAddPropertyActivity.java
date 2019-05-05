@@ -267,7 +267,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
                 photoUri = FileProvider.getUriForFile(this,
                         "com.corey.ole",
                         photoFile);
-
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
@@ -275,13 +274,11 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile( imageFileName, ".jpg", storageDir
         );
-        // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -381,8 +378,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         }
 
-
-
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
         intent.putExtra("propertyId", thisProperty.getId());
         intent.putExtra("landlordId", landlordId);
@@ -402,21 +397,18 @@ public class EditAddPropertyActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
+
                     }
                 });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.done, menu);
         return true;
     }
