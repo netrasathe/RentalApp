@@ -68,6 +68,9 @@ public class TenantListActivity extends NavDrawerActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mTenants.clear();
+                if (dataSnapshot.getValue() == null) {
+                    return;
+                }
                 for (String uid : (ArrayList<String>) dataSnapshot.getValue()) {
                     mDb.getReference("users/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
