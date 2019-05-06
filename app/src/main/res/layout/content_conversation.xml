@@ -107,7 +107,7 @@
             android:background="@color/colorAccent"
             android:clickable="true"
             android:focusable="true"
-            app:backgroundTint="@color/lightBlue"
+            app:backgroundTint="@color/colorPrimary"
             app:srcCompat="@drawable/ic_menu_send" />
 
     </RelativeLayout>
