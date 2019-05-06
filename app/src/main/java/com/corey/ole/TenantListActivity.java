@@ -2,6 +2,7 @@ package com.corey.ole;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,18 +13,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class TenantListActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String propertyName = "Property";
-    RecyclerView mRecyclerView;
-    TenantListAdapter mAdapter;
-    int propertyID;
-
-    ArrayList<TenantProfile> mTenants = new ArrayList<>();
+    private String propertyName = "Property";
+    private RecyclerView mRecyclerView;
+    private TenantListAdapter mAdapter;
+    private String propertyID;
+    private FirebaseDatabase mDb;
+    private ArrayList<TenantProfile> mTenants = new ArrayList<>();
 
 
     @Override
@@ -33,9 +39,7 @@ public class TenantListActivity extends NavDrawerActivity
 
         Intent intent = getIntent();
         propertyName = intent.getStringExtra("name");
-        propertyID = intent.getIntExtra("PropertyID", 0);
-
-
+        propertyID = intent.getStringExtra("PropertyID");
 
         Toolbar toolbar = findViewById(R.id.tenant_list_toolbar);
         toolbar.setTitle(propertyName + " Tenants");
@@ -53,12 +57,41 @@ public class TenantListActivity extends NavDrawerActivity
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-       // mTenants.add(TenantProfile.makeTestTenants(propertyID));
-        setAdapterAndUpdateData();
+        mDb = FirebaseDatabase.getInstance();
+        getTenants();
 
     }
 
+    private void getTenants() {
+        DatabaseReference tenantsRef = mDb.getReference("property/" + propertyID + "/tenants");
+        tenantsRef.orderByValue().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mTenants.clear();
+                for (String uid : (ArrayList<String>) dataSnapshot.getValue()) {
+                    mDb.getReference("users/" + uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            TenantProfile profile = dataSnapshot.getValue(TenantProfile.class);
+                            profile.setId(dataSnapshot.getKey());
+                            mTenants.add(profile);
+                            setAdapterAndUpdateData();
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void setAdapterAndUpdateData() {
         // create a new adapter with the updated mComments array
@@ -82,9 +115,7 @@ public class TenantListActivity extends NavDrawerActivity
             Intent intent = new Intent(this, LandlordMessagesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
-            intent.putExtra(TenantProfile.EXTRA_TENANT_ID, FirebaseAuth.getInstance().getCurrentUser().getUid());
-            intent.putExtra(TenantProfile.EXTRA_LABEL, "Profile");
+            Intent intent = new Intent(this, LandlordProfileActivity.class);
             startActivity(intent);
             return true;
         }  else if (id == R.id.nav_logout) {

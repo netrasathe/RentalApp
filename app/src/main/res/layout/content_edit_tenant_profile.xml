@@ -143,6 +143,7 @@
         android:text="@string/room_number"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
+        android:visibility="invisible"
         app:backgroundTint="@color/textWhite"
         app:layout_constraintEnd_toEndOf="@+id/tenant_name_edit_field"
         app:layout_constraintHorizontal_bias="0.0"

@@ -82,8 +82,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Announce
             } else {
                 user.addListenerForSingleValueEvent(new ValueEventListener() {
                     public void onDataChange(DataSnapshot data) {
-                        mSenderView.setText(data.child("First Name").getValue(String.class) + " " +
-                                data.child("Last Name").getValue(String.class));
+                        mSenderView.setText(data.child("firstName").getValue(String.class) + " " +
+                                data.child("lastName").getValue(String.class));
                     }
 
                     @Override

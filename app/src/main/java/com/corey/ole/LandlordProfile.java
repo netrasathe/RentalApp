@@ -2,17 +2,13 @@ package com.corey.ole;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 public class LandlordProfile {
 
     private int accountType = 2;
-    private String id;
     private String firstName;
     private String lastName;
     private String email;
-
-
     private String gender;
     private Date birthdate;
     private String imagePath;
@@ -20,7 +16,6 @@ public class LandlordProfile {
     private ArrayList<String> properties;
 
     public LandlordProfile(String firstName, String lastName, String email, String gender, Date birthdate, String phone, String imagePath, ArrayList<String> properties) {
-        this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -31,10 +26,7 @@ public class LandlordProfile {
         this.properties = properties;
     }
 
-
-
-    public String getId() {
-        return id;
+    public LandlordProfile() {
     }
 
     public int getAccountType() {
@@ -75,10 +67,6 @@ public class LandlordProfile {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
 

@@ -80,8 +80,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 DatabaseReference user = usersRef.child(senderUid);
                 user.addListenerForSingleValueEvent(new ValueEventListener() {
                     public void onDataChange(DataSnapshot data) {
-                        mSenderView1.setText(data.child("First Name").getValue(String.class) + " " +
-                                data.child("Last Name").getValue(String.class));
+                        mSenderView1.setText(data.child("firstName").getValue(String.class) + " " +
+                                data.child("lastName").getValue(String.class));
                     }
 
                     @Override

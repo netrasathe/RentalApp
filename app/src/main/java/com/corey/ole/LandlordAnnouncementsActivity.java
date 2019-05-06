@@ -142,9 +142,7 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
             Intent intent = new Intent(this, LandlordMessagesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
-            intent.putExtra(TenantProfile.EXTRA_TENANT_ID, FirebaseAuth.getInstance().getCurrentUser().getUid());
-            intent.putExtra(TenantProfile.EXTRA_LABEL, "Profile");
+            Intent intent = new Intent(this, LandlordProfileActivity.class);
             startActivity(intent);
             return true;
         }  else if (id == R.id.nav_logout) {

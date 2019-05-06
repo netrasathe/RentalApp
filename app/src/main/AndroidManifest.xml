@@ -35,11 +35,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TenantEditTenantProfileActivity"
-            android:label="@string/title_activity_tenant_edit_tenant_profile"
+            android:label="@string/title_activity_edit_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TenantTenantProfileActivity"
-            android:label="@string/title_activity_tenant_tenant_profile"
+            android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RepairsActivity"
@@ -87,6 +87,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".LandlordTenantProfileActivity" />
+        <activity
+            android:name=".LandlordProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LandlordEditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TenantListActivity" />
         <activity android:name=".LandlordEditTenantProfileActivity" />
         <activity android:name=".TenantProfileActivity" />

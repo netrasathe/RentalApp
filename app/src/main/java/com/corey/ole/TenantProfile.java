@@ -12,6 +12,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.function.BiFunction;
 
@@ -74,6 +76,12 @@ public class TenantProfile {
     }
 
     public ArrayList<Repair> getRepairs() {
+        Collections.sort(repairs, new Comparator<Repair>() {
+            @Override
+            public int compare(Repair repair, Repair t1) {
+                return t1.getDate().compareTo(repair.getDate());
+            }
+        });
         return repairs;
     }
 
@@ -147,6 +155,10 @@ public class TenantProfile {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public void addRepair(Repair repair) {
+        repairs.add(repair);
     }
 
 //

@@ -64,7 +64,7 @@ class TenantViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 Intent goToTenantListIntent = new Intent(view.getContext(), LandlordTenantProfileActivity.class);
-                goToTenantListIntent.putExtra(TenantProfile.EXTRA_TENANT_ID, "DKYk5BGJZaWlkB9MpyMDr15O9VF2");//mTenant.getId());
+                goToTenantListIntent.putExtra(TenantProfile.EXTRA_TENANT_ID, mTenant.getId());
                 goToTenantListIntent.putExtra(TenantProfile.EXTRA_LABEL, "Tenant Profile");
 
                 view.getContext().startActivity(goToTenantListIntent);
@@ -76,7 +76,7 @@ class TenantViewHolder extends RecyclerView.ViewHolder {
 
     void bind(TenantProfile tenant) {
         mTenant = tenant;
-        mNameTextView.setText(tenant.getFirstName() + tenant.getLastName());
+        mNameTextView.setText(tenant.getFirstName() + " " + tenant.getLastName());
         mRoomTextView.setText(tenant.getRoom());
         //mPhotoTextView.setImageBitmap(tenant.getPhoto());
     }

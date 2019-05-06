@@ -2,6 +2,7 @@ package com.corey.ole;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
@@ -26,6 +30,7 @@ public class RepairsActivity extends NavDrawerActivity
 
     private FirebaseDatabase mDb;
     private String mUid;
+    private Repair mRepair;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +70,20 @@ public class RepairsActivity extends NavDrawerActivity
     }
 
     private void postNewRepair(String repair) {
-        Date now = new Date();
-        DatabaseReference repairRef = mDb.getReference("users/" + mUid + "/repairs").push();
-        repairRef.child("Date").setValue(now);
-        repairRef.child("Request").setValue(repair);
+        mRepair = new Repair(repair, new Date(), false);
+        DatabaseReference userRef = mDb.getReference("users").child(mUid);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TenantProfile tenant = dataSnapshot.getValue(TenantProfile.class);
+                tenant.addRepair(mRepair);
+                mDb.getReference("users").child(mUid).setValue(tenant);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
