@@ -124,9 +124,10 @@
         android:id="@+id/property_details_view_tenants_button"
         style="@style/Widget.AppCompat.Button.Colored"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="32dp"
+        android:background="@drawable/round_edges"
         android:text="@string/view_tenants"
         android:textColor="#000000"
         android:textSize="14sp"

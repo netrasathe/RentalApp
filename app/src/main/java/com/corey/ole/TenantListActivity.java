@@ -53,7 +53,7 @@ public class TenantListActivity extends NavDrawerActivity
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mTenants.add(TenantProfile.makeTestTenants(propertyID));
+       // mTenants.add(TenantProfile.makeTestTenants(propertyID));
         setAdapterAndUpdateData();
 
     }

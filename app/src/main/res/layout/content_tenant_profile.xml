@@ -169,11 +169,13 @@
 
     <ImageView
         android:id="@+id/profile_picture_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="150dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="30dp"
         android:contentDescription="@string/profile_picture"
+        app:layout_constraintBottom_toTopOf="@+id/gender"
         app:layout_constraintEnd_toStartOf="@+id/tenant_name_field"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

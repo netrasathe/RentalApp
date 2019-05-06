@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -31,6 +33,7 @@ public class TenantHomeActivity extends NavDrawerActivity
     private RecyclerView mUpcomingRecycler;
     private String mUid;
     private FirebaseDatabase mDb;
+    private TenantProfile tenant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,60 +63,57 @@ public class TenantHomeActivity extends NavDrawerActivity
         mUpcomingRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        setAnnouncements();
-        setUpcoming();
+
+        mDb.getReference("users").child(mUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tenant = dataSnapshot.getValue(TenantProfile.class);
+                setAnnouncements();
+                setUpcoming();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setAnnouncements() {
-        mDb.getReference("property").orderByChild("tenants").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDb.getReference("property").child(tenant.getPropertyId()).child("announcements").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    ArrayList tenants = (ArrayList<String>) child.child("tenants").getValue();
-                    if (tenants != null && tenants.contains(mUid)) {
-                        ArrayList<String> data = new ArrayList<>();
-                        Iterable<DataSnapshot> announcements = child.child("announcements").getChildren();
-                        for (DataSnapshot ds : announcements) {
-                            data.add(ds.getValue(String.class));
-                        }
-                        AnnouncementAdapter adapter = new AnnouncementAdapter(data);
-                        mAnnouceRecycler.setAdapter(adapter);
-                    }
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                ArrayList<String> data = dataSnapshot.getValue(t);
+                if (data != null) {
+                    AnnouncementAdapter adapter = new AnnouncementAdapter(data);
+                    mAnnouceRecycler.setAdapter(adapter);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
     }
 
     private void setUpcoming() {
-        mDb.getReference("users/" + mUid + "/repairs").orderByChild("Date").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<String> data = new ArrayList<>();
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Date d = child.child("Date").getValue(Date.class);
-                    String date = new SimpleDateFormat("MM/dd/yy").format(d);
-                    String request = child.child("Request").getValue(String.class);
-                    if (request.length() > 15) {
-                        data.add("Repair Request submitted " + date + ": " + request.substring(0, 15) + "...");
-                    } else {
-                        data.add("Repair Request submitted " + date + ": " + request);
-                    }
-                }
-                Collections.reverse(data);
-                AnnouncementAdapter adapter = new AnnouncementAdapter(data);
-                mUpcomingRecycler.setAdapter(adapter);
+        if (tenant.getRepairs() == null)
+            return;
+        ArrayList<String> data = new ArrayList<>();
+        for (Repair repair : tenant.getRepairs()) {
+            Date d = repair.getDate();
+            String date = new SimpleDateFormat("MM/dd/yy").format(d);
+            String request = repair.getRequest();
+            if (request.length() > 15) {
+                data.add("Repair Request submitted " + date + ": " + request.substring(0, 15) + "...");
+            } else {
+                data.add("Repair Request submitted " + date + ": " + request);
             }
+        }
+        AnnouncementAdapter adapter = new AnnouncementAdapter(data);
+        mUpcomingRecycler.setAdapter(adapter);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override

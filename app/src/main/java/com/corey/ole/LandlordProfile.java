@@ -1,38 +1,48 @@
 package com.corey.ole;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class LandlordProfile {
 
+    private int accountType = 2;
     private String id;
     private String firstName;
     private String lastName;
     private String email;
+
+
     private String gender;
-    private int phone;
+    private Date birthdate;
+    private String imagePath;
+    private String phone;
     private ArrayList<String> properties;
 
-    public LandlordProfile(String firstName, String lastName, String email, String gender, int phone, ArrayList<String> properties) {
+    public LandlordProfile(String firstName, String lastName, String email, String gender, Date birthdate, String phone, String imagePath, ArrayList<String> properties) {
         this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.gender = gender;
         this.phone = phone;
+        this.imagePath = imagePath;
+        this.birthdate = birthdate;
         this.properties = properties;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
+
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public int getAccountType() {
+        return accountType;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -46,6 +56,31 @@ public class LandlordProfile {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public String getEmail() {
         return email;
@@ -63,11 +98,11 @@ public class LandlordProfile {
         this.gender = gender;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

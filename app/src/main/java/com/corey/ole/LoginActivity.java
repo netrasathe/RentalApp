@@ -184,9 +184,9 @@ public class LoginActivity extends AppCompatActivity implements
         DatabaseReference user = usersRef.child(uid);
         user.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot data) {
-                if (data.child("Account Type").getValue(Integer.class) == 1) {
+                if (data.child("accountType").getValue(Integer.class) == 1) {
                     tenantLogin();
-                } else if (data.child("Account Type").getValue(Integer.class) == 2) {
+                } else if (data.child("accountType").getValue(Integer.class) == 2) {
                     landlordLogin(uid);
                 }
             }

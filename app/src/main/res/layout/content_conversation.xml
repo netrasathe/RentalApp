@@ -102,12 +102,13 @@
             android:id="@+id/send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:clickable="true"
-            app:srcCompat="@drawable/ic_menu_send"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:focusable="true" />
+            android:background="@color/colorAccent"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@color/lightBlue"
+            app:srcCompat="@drawable/ic_menu_send" />
 
     </RelativeLayout>
 

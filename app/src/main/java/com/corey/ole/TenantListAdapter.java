@@ -76,8 +76,8 @@ class TenantViewHolder extends RecyclerView.ViewHolder {
 
     void bind(TenantProfile tenant) {
         mTenant = tenant;
-        mNameTextView.setText(tenant.getName());
+        mNameTextView.setText(tenant.getFirstName() + tenant.getLastName());
         mRoomTextView.setText(tenant.getRoom());
-        mPhotoTextView.setImageBitmap(tenant.getPhoto());
+        //mPhotoTextView.setImageBitmap(tenant.getPhoto());
     }
 }

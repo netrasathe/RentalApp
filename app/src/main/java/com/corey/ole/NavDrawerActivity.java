@@ -30,8 +30,8 @@ public class NavDrawerActivity extends AppCompatActivity {
         DatabaseReference user = usersRef.child(mUid);
         user.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot data) {
-                String firstName = data.child("First Name").getValue(String.class);
-                String lastName = data.child("Last Name").getValue(String.class);
+                String firstName = data.child("firstName").getValue(String.class);
+                String lastName = data.child("lastName").getValue(String.class);
                 mUsername.setText(firstName + " " + lastName);
             }
 

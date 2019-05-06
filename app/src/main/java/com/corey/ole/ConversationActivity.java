@@ -65,8 +65,8 @@ public class ConversationActivity extends NavDrawerActivity {
                         query.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                String firstName = dataSnapshot.child("First Name").getValue(String.class);
-                                String lastName = dataSnapshot.child("Last Name").getValue(String.class);
+                                String firstName = dataSnapshot.child("firstName").getValue(String.class);
+                                String lastName = dataSnapshot.child("lastName").getValue(String.class);
                                 mTitle = firstName + " " + lastName;
                                 setTitle();
                             }

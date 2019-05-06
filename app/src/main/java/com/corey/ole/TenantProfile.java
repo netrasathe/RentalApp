@@ -10,7 +10,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.BiFunction;
 
 // custom class made for storing a tenant object.
 public class TenantProfile {
@@ -18,36 +21,80 @@ public class TenantProfile {
     public static final String EXTRA_TENANT_ID = "tenantID";
     public static final String EXTRA_LABEL = "label";
 
+    private final int accountType = 1;
     private String id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String gender;
     private Date birthdate;
-    private int phone;
+    private String phone;
     private String email;
-    private Bitmap photo;
-    private int propertyID;
+    private String imagePath;
+    private String propertyId;
     private String room;
+    private ArrayList<Repair> repairs;
 
 
-    public TenantProfile(String id, String name, String gender, Date birthdate, int phone, String email, Bitmap photo, int propertyID, String room) {
+    public TenantProfile(String id, String firstName, String lastName, String gender, Date birthdate, String phone, String email, String imagePath,
+                         String propertyID, String room, ArrayList<Repair> repairs) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.gender = gender;
         this.birthdate = birthdate;
         this.phone = phone;
         this.email = email;
-        this.photo = photo;
-
-        this.propertyID = propertyID;
+        this.imagePath = imagePath;
+        this.propertyId = propertyID;
         this.room = room;
+        this.repairs = repairs;
+    }
+
+    public TenantProfile() {
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPropertyId() {
+        return propertyId;
+    }
+
+    public void setPropertyId(String propertyId) {
+        this.propertyId = propertyId;
+    }
+
+    public int getAccountType() {
+        return accountType;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public ArrayList<Repair> getRepairs() {
+        return repairs;
+    }
+
+    public void setRepairs(ArrayList<Repair> repairs) {
+        this.repairs = repairs;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getGender() {
@@ -58,7 +105,7 @@ public class TenantProfile {
         return birthdate;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
@@ -66,21 +113,12 @@ public class TenantProfile {
         return email;
     }
 
-    public Bitmap getPhoto() {
-        return photo;
-    }
-
-    public int getPropertyID() {
-        return propertyID;
-    }
 
     public String getRoom() {
         return room;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public void setGender(String gender) {
         this.gender = gender;
@@ -90,7 +128,7 @@ public class TenantProfile {
         this.birthdate = birthdate;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -98,29 +136,30 @@ public class TenantProfile {
         this.email = email;
     }
 
-    public void setPhoto(Bitmap photo) {
-        this.photo = photo;
-    }
-
-    public void setPropertyID(int property) {
-        this.propertyID = property;
-    }
 
     public void setRoom(String room) {
         this.room = room;
     }
 
-
-    public static TenantProfile makeTestTenants(int propertyID) {
-        TenantProfile tenant = new TenantProfile("1", "John Smith", "Male",
-                new Date(System.currentTimeMillis() - (25 * 60 * 60 * 1000)),
-                1234567890,
-                "email@email.com",
-                null,
-                propertyID,
-                "212");
-        return tenant;
+    public String getImagePath() {
+        return imagePath;
     }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+//
+//    public static TenantProfile makeTestTenants(int propertyID) {
+//        TenantProfile tenant = new TenantProfile("1", "John Smith", "Male",
+//                new Date(System.currentTimeMillis() - (25 * 60 * 60 * 1000)),
+//                1234567890,
+//                "email@email.com",
+//                null,
+//                propertyID,
+//                "212");
+//        return tenant;
+//    }
 
 }
 
