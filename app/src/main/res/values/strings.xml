@@ -77,4 +77,5 @@
     <string name="tenants">tenants</string>
     <string name="documents">Documents</string>
     <string name="policies">policies</string>
+    <string name="title_activity_landlord_policies">LandlordPoliciesActivity</string>
 </resources>

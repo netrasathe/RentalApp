@@ -131,7 +131,20 @@ public class PropertyDetailsActivity extends NavDrawerActivity
             @Override
             public void onClick(View v) {
                 startAnnouncementActivity();
+            }
+        });
 
+        policiesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPoliciesActivity();
+            }
+        });
+
+        documentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDocumentsActivity();
             }
         });
 
@@ -139,6 +152,23 @@ public class PropertyDetailsActivity extends NavDrawerActivity
 
     private void startAnnouncementActivity(){
         Intent intent = new Intent(this, LandlordAnnouncementsActivity.class);
+        intent.putExtra(LandlordProfile.LANDLORD_ID, landlordId);
+        intent.putExtra(Property.PROPERTY_ID, propertyId);
+        intent.putExtra(Property.PROPERTY_NAME, propertyName);
+        startActivity(intent);
+
+    }
+
+    private void startPoliciesActivity() {
+        Intent intent = new Intent(this, LandlordPoliciesActivity.class);
+        intent.putExtra(LandlordProfile.LANDLORD_ID, landlordId);
+        intent.putExtra(Property.PROPERTY_ID, propertyId);
+        intent.putExtra(Property.PROPERTY_NAME, propertyName);
+        startActivity(intent);
+    }
+
+    private void startDocumentsActivity() {
+        Intent intent = new Intent(this, LandlordPoliciesActivity.class);
         intent.putExtra(LandlordProfile.LANDLORD_ID, landlordId);
         intent.putExtra(Property.PROPERTY_ID, propertyId);
         intent.putExtra(Property.PROPERTY_NAME, propertyName);

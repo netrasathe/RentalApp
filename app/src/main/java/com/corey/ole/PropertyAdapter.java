@@ -100,11 +100,13 @@ public class PropertyAdapter extends RecyclerView.Adapter {
         }
 
         void bind(Property property) {
-            String t = property.getNumTenants() + " Tenants";
+            int t = property.getNumTenants();
+            mTenants.setText(t + " Tenants");
+
             mTitle.setText(property.getName());
             mStreet.setText(property.getStreet());
             mCityStateZip.setText(property.getCityStateZip());
-            mTenants.setText(t);
+
             try {
                 final File localFile = File.createTempFile("images", "jpg");
 

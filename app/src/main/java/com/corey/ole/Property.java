@@ -29,6 +29,7 @@ public class Property {
     private ArrayList<String> announcements;
     private ArrayList<String> updates;
 
+
     Property(String name, String street, String cityStateZip, String imagePath,
              ArrayList<String> tenants, ArrayList<String> policies, ArrayList<String> notes,
              ArrayList<String> announcements, ArrayList<String> updates) {

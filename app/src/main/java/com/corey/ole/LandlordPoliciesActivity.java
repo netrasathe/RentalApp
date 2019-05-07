@@ -1,9 +1,7 @@
 package com.corey.ole;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,44 +17,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class LandlordAnnouncementsActivity extends AppCompatActivity
+public class LandlordPoliciesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseReference propertyRef;
-    private String propertyId;
-    private ArrayList<String> announcments;
-    private Property thisProperty;
-    private EditText editText;
-    private Button addButton;
     private RecyclerView recyclerView;
+    private Button addButton;
+    private TextView textView;
     private String propertyName;
+    private String propertyId;
     private String landlordId;
+    private ArrayList<String> policies;
+    private DatabaseReference propertyRef;
+    private Property thisProperty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landlord_announcements);
+        setContentView(R.layout.activity_landlord_policies);
 
         Intent intent = getIntent();
-        announcments = new ArrayList<>();
+        policies = new ArrayList<>();
         propertyId = intent.getStringExtra(Property.PROPERTY_ID);
         propertyName = intent.getStringExtra(Property.PROPERTY_NAME);
         landlordId = intent.getStringExtra(LandlordProfile.LANDLORD_ID);
@@ -64,7 +56,6 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(propertyName);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -73,12 +64,11 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        editText = findViewById(R.id.landlord_announcement_text);
-        addButton = findViewById(R.id.landlord_announcement_add_button);
-        recyclerView = findViewById(R.id.landlord_announcement_recycler_view);
+        recyclerView = findViewById(R.id.landlord_policies_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        addButton = findViewById(R.id.landlord_policies_add_button);
+        textView = findViewById(R.id.landlord_policies_text);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         propertyRef = database.getReference("property").child(propertyId);
@@ -86,10 +76,10 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 thisProperty = dataSnapshot.getValue(Property.class);
-                ArrayList<String> n = thisProperty.getAnnouncements();
+                ArrayList<String> n = thisProperty.getPolicies();
                 if (n != null) {
-                    announcments = n;
-                    setAnnouncementAdapter();
+                    policies = n;
+                    setPoliciesAdapter();
                 }
             }
             @Override
@@ -102,35 +92,35 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = editText.getText().toString();
+                String text = textView.getText().toString();
 
                 if (text.length() == 0) {
-                    Toast.makeText(LandlordAnnouncementsActivity.this, "Announcement Field Required",
+                    Toast.makeText(LandlordPoliciesActivity.this, "Policies Field Required",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    announcments.add(text);
-                    editText.setText("");
-                    setAnnouncementAdapter();
+                   policies.add(text);
+                   textView.setText("");
+                   setPoliciesAdapter();
                 }
             }
         });
 
+
     }
 
-    private void setAnnouncementAdapter() {
-        AddPolicyNoteAdapter adapter = new AddPolicyNoteAdapter(announcments);
+    private void setPoliciesAdapter() {
+        AddPolicyNoteAdapter adapter = new AddPolicyNoteAdapter(policies);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new AddPolicyNoteAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                announcments.remove(position);
-                setAnnouncementAdapter();
+                policies.remove(position);
+                setPoliciesAdapter();
             }
         });
 
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -178,15 +168,14 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.done) {
-            saveAnnouncements();
+            savePolicies();
 
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-    private void saveAnnouncements() {
-        thisProperty.setAnnouncements(announcments);
+    private void savePolicies() {
+        thisProperty.setPolicies(policies);
         propertyRef.setValue(thisProperty);
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
         intent.putExtra(Property.PROPERTY_ID, propertyId);
