@@ -48,13 +48,7 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     private TextView nameView;
     private TextView streetView;
     private TextView cityStateZipView;
-    private TextView addPolicyText;
-    private TextView addNoteText;
-    private Button addPolicyButton;
-    private Button addNoteButton;
     private ImageButton imageButton;
-    private RecyclerView policiesRecycler;
-    private RecyclerView notesRecycler;
     private Button cameraButton;
     private Button galleryButton;
     private AlertDialog imageButtonDialog;
@@ -104,16 +98,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
         nameView = findViewById(R.id.edit_property_name);
         streetView = findViewById(R.id.edit_property_street);
         cityStateZipView = findViewById(R.id.edit_property_csz);
-        addPolicyButton = findViewById(R.id.edit_property_add_policy);
-        addNoteButton = findViewById(R.id.edit_property_add_note);
-        addNoteText = findViewById(R.id.edit_property_note);
-        addPolicyText = findViewById(R.id.edit_property_policy);
-        policiesRecycler = findViewById(R.id.edit_property_details_policies_recycler_view);
-        notesRecycler = findViewById(R.id.edit_property_details_notes_recycler_view);
-        policiesRecycler.setHasFixedSize(true);
-        policiesRecycler.setLayoutManager(new LinearLayoutManager(this));
-        notesRecycler.setHasFixedSize(true);
-        notesRecycler.setLayoutManager(new LinearLayoutManager(this));
         database = FirebaseDatabase.getInstance();
         propertyRef = database.getReference("property");
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -127,19 +111,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
                     nameView.setText(thisProperty.getName());
                     streetView.setText(thisProperty.getStreet());
                     cityStateZipView.setText(thisProperty.getCityStateZip());
-                    ArrayList<String> n = thisProperty.getNotes();
-
-                    if (n != null) {
-                        notes = n;
-                        setNoteAdapter();
-                    }
-                    ArrayList<String> p = thisProperty.getPolicies();
-                    if (p != null) {
-                        policies = p;
-                        setPolicyAdapter();
-                    }
-
-
                     /* Fetch the image from Firebase Storage and sets it to imageButton */
                     try {
                         final File localFile = File.createTempFile("images", "jpg");
@@ -186,29 +157,7 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         }
 
-        addNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String note = addNoteText.getText().toString();
-                if (note.length() != 0)
-                    notes.add(note);
-                setNoteAdapter();
-                addNoteText.setText("");
-            }
 
-        });
-
-        addPolicyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String policy = addPolicyText.getText().toString();
-                if (policy.length() != 0)
-                    policies.add(policy);
-                setPolicyAdapter();
-                addPolicyText.setText("");
-            }
-
-        });
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,43 +167,10 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         });
 
-        setNoteAdapter();
-        setPolicyAdapter();
 
     }
 
-    private void setPolicyAdapter() {
-        if (policies == null)
-            return;
 
-        AddPolicyNoteAdapter policyAdapter = new AddPolicyNoteAdapter(policies);
-        policiesRecycler.setAdapter(policyAdapter);
-        policyAdapter.setOnItemClickListener(new AddPolicyNoteAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                policies.remove(position);
-                setPolicyAdapter();
-
-            }
-        });
-    }
-
-    private void setNoteAdapter() {
-        if (notes == null)
-            return;
-
-        AddPolicyNoteAdapter noteAdapter = new AddPolicyNoteAdapter(notes);
-        notesRecycler.setAdapter(noteAdapter);
-        noteAdapter.setOnItemClickListener(new AddPolicyNoteAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                notes.remove(position);
-                setNoteAdapter();
-            }
-
-        });
-
-    }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {

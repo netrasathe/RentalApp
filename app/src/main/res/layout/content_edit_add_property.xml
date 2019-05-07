@@ -11,50 +11,32 @@
 
     <ImageButton
         android:id="@+id/edit_property_image"
-        android:layout_width="0dp"
-        android:layout_height="156dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:background="@null"
+        android:layout_width="261dp"
+        android:layout_height="161dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="75dp"
+        android:background="@drawable/round_edges_darker_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/add_photo_alternate_white_48dp" />
+        app:srcCompat="@drawable/baseline_add_photo_alternate_black_48dp" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginBottom="340dp"
         android:text="@string/about"
         android:textColor="#FFFFFF"
+        android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_image" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/property_policies"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_property_policy"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit_property_policy" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/property_notes"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_property_note"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/edit_property_note" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_image" />
 
     <EditText
         android:id="@+id/edit_property_name"
@@ -62,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="@string/name"
         android:inputType="textPersonName"
@@ -70,103 +52,28 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.444" />
+        app:layout_constraintVertical_bias="0.38" />
 
     <EditText
         android:id="@+id/edit_property_street"
         style="@style/Base.ThemeOverlay.AppCompat.Dark"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="11dp"
         android:ems="10"
         android:hint="@string/street"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/edit_property_csz"
         app:layout_constraintEnd_toEndOf="@+id/edit_property_name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edit_property_name"
         app:layout_constraintTop_toBottomOf="@+id/edit_property_name" />
-
-    <EditText
-        android:id="@+id/edit_property_policy"
-        style="@style/Base.ThemeOverlay.AppCompat.Dark"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="@string/policy"
-        android:inputType="textPersonName"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/edit_property_add_policy"
-        app:layout_constraintStart_toStartOf="@+id/edit_property_csz"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_csz" />
-
-    <EditText
-        android:id="@+id/edit_property_note"
-        style="@style/Base.ThemeOverlay.AppCompat.Dark"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="@string/note"
-        android:inputType="textPersonName"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/edit_property_add_note"
-        app:layout_constraintStart_toStartOf="@+id/edit_property_details_policies_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_details_policies_recycler_view" />
-
-    <Button
-        android:id="@+id/edit_property_add_note"
-        android:layout_width="23dp"
-        android:layout_height="23dp"
-        android:background="@drawable/ic_add_white"
-        android:baselineAlignBottom="false"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_property_note"
-        app:layout_constraintEnd_toEndOf="@+id/edit_property_details_policies_recycler_view"
-        app:layout_constraintTop_toTopOf="@+id/edit_property_note"
-        app:srcCompat="@drawable/ic_add_white"
-        tools:ignore="VectorDrawableCompat" />
-
-    <Button
-        android:id="@+id/edit_property_add_policy"
-        android:layout_width="23dp"
-        android:layout_height="23dp"
-
-        android:background="@drawable/ic_add_white"
-        android:baselineAlignBottom="false"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_property_policy"
-        app:layout_constraintEnd_toEndOf="@+id/edit_property_csz"
-        app:layout_constraintTop_toTopOf="@+id/edit_property_policy"
-        app:srcCompat="@drawable/ic_add_white"
-        tools:ignore="VectorDrawableCompat" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/edit_property_details_policies_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/edit_property_add_policy"
-        app:layout_constraintStart_toStartOf="@+id/edit_property_policy"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_policy" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/edit_property_details_notes_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/edit_property_add_note"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/edit_property_note"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_note" />
 
     <EditText
         android:id="@+id/edit_property_csz"
@@ -174,14 +81,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="232dp"
         android:ems="10"
         android:hint="@string/city_state_zip_code"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/edit_property_street"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edit_property_street"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_street" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_street"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
