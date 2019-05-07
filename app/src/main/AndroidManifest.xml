@@ -98,6 +98,7 @@
         <activity android:name=".TenantListActivity" />
         <activity android:name=".LandlordEditTenantProfileActivity" />
         <activity android:name=".TenantProfileActivity" />
+        <activity android:name=".SignupActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
