@@ -42,6 +42,10 @@ public class SignupActivity extends AppCompatActivity {
     private String firstName;
     private String lastName;
     private String gender;
+
+    private String month;
+    private String day;
+    private String year;
     private Date birthday;
 
     private String email;
@@ -64,14 +68,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_signup_personal_info);
 
-
-        Spinner genderSpinner = findViewById(R.id.genderSpinner);
-        List<String> list = new ArrayList<>();
-        list.add("Male");
-        list.add("Female");
-        list.add("Nonbinary");
-        ArrayAdapter<String> dataAdapter= new ArrayAdapter<String>(this, R.layout.spinner_item, list);
-        genderSpinner.setAdapter(dataAdapter);
+        prepGenderSpiner();
 
         mAuth = FirebaseAuth.getInstance();
         dbUsersRef = database.getReference("users");
@@ -84,6 +81,21 @@ public class SignupActivity extends AppCompatActivity {
             setContentView(R.layout.app_bar_signup_account_info);
         } else {
             // TODO: raise dialog
+        }
+
+    }
+
+    private void prepGenderSpiner() {
+        Spinner genderSpinner = findViewById(R.id.genderSpinner);
+        List<String> list = new ArrayList<>();
+        list.add("Male");
+        list.add("Female");
+        list.add("Nonbinary");
+        ArrayAdapter<String> dataAdapter= new ArrayAdapter<String>(this, R.layout.spinner_item, list);
+        genderSpinner.setAdapter(dataAdapter);
+
+        if (gender != null) {
+            genderSpinner.setSelection(dataAdapter.getPosition(gender));
         }
 
     }
@@ -209,6 +221,26 @@ public class SignupActivity extends AppCompatActivity {
         } else {
 
         }
+    }
+
+    public void backToPersonalDetails(View view) {
+        setContentView(R.layout.app_bar_signup_personal_info);
+
+        EditText firstNameField = findViewById(R.id.firstNameField);
+        EditText lastNameField = findViewById(R.id.lastNameField);
+        prepGenderSpiner();
+        EditText birthMonthField = findViewById(R.id.birthMonthField);
+        EditText birthDayField = findViewById(R.id.birthDayField);
+        EditText birthYearField = findViewById(R.id.birthYearField);
+
+
+        firstNameField.setText(firstName);
+        lastNameField.setText(lastName);
+
+        birthMonthField.setText(month);
+        birthDayField.setText(day);
+        birthYearField.setText(year);
+
     }
 
 
