@@ -20,6 +20,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_signup_account_info" />
+    <include
+        layout="@layout/content_signup_account_info"
+        android:isScrollContainer="true"
+        android:overScrollMode="ifContentScrolls" />
 
 </android.support.design.widget.CoordinatorLayout>

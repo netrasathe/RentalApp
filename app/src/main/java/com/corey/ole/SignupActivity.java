@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,11 +26,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -34,6 +42,10 @@ public class SignupActivity extends AppCompatActivity {
     private String firstName;
     private String lastName;
     private String gender;
+
+    private String month;
+    private String day;
+    private String year;
     private Date birthday;
 
     private String email;
@@ -56,8 +68,9 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_signup_personal_info);
 
-        mAuth = FirebaseAuth.getInstance();
+        prepGenderSpiner();
 
+        mAuth = FirebaseAuth.getInstance();
         dbUsersRef = database.getReference("users");
 
     }
@@ -72,6 +85,43 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    private void prepGenderSpiner() {
+        Spinner genderSpinner = findViewById(R.id.genderSpinner);
+        List<String> list = new ArrayList<>();
+        list.add("Male");
+        list.add("Female");
+        list.add("Nonbinary");
+        ArrayAdapter<String> dataAdapter= new ArrayAdapter<String>(this, R.layout.spinner_item, list);
+        genderSpinner.setAdapter(dataAdapter);
+
+        if (gender != null) {
+            genderSpinner.setSelection(dataAdapter.getPosition(gender));
+        }
+
+    }
+
+    private boolean validatePersonalDetails(EditText firstNameField,
+                                           EditText lastNameField) {
+
+        boolean valid = true;
+        if (firstName.length() <= 0) {
+            firstNameField.setError("First Name Required.");
+            valid = false;
+        } else {
+            firstNameField.setError(null);
+        }
+
+        if (lastName.length() <= 0) {
+            lastNameField.setError("Last Name Required.");
+            valid = false;
+        } else {
+            lastNameField.setError(null);
+        }
+
+        return valid;
+
+    }
+
     private boolean savePersonalDetails() {
 
         EditText firstNameField = findViewById(R.id.firstNameField);
@@ -80,24 +130,86 @@ public class SignupActivity extends AppCompatActivity {
         EditText birthMonthField = findViewById(R.id.birthMonthField);
         EditText birthDayField = findViewById(R.id.birthDayField);
         EditText birthYearField = findViewById(R.id.birthYearField);
+        TextView dobHeader = findViewById(R.id.dobHeader);
 
         firstName = firstNameField.getText().toString();
         lastName = lastNameField.getText().toString();
         gender = genderSpinner.getSelectedItem().toString();
 
+
         String birthdayString = birthMonthField.getText().toString() + "/" +
                 birthDayField.getText().toString() + "/" +
                 birthYearField.getText().toString();
 
+        boolean valid = validatePersonalDetails(firstNameField, lastNameField);
+
         try {
             birthday = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(birthdayString);
+            dobHeader.setError(null);
         } catch (ParseException e) {
             e.printStackTrace();
             // TODO: improper date formatting
+            dobHeader.setError("Invalid Date of Birth");
             return false;
         }
 
-        return true;
+        return valid;
+    }
+
+
+
+    private boolean validateAccountDetails(TextView emailField,
+                                           TextView passwordField,
+                                           TextView phoneField,
+                                           RadioGroup accountTypeField,
+                                           TextView accountTypeHeader) {
+        boolean valid = true;
+
+
+        String emailRegex = "^(.+)@(.+)$";
+        Pattern emailPattern = Pattern.compile(emailRegex);
+        if (TextUtils.isEmpty(email)) {
+            emailField.setError("Required.");
+            valid = false;
+        } else if (!emailPattern.matcher(email).matches()) {
+            emailField.setError("Please enter a valid email.");
+            valid = false;
+        } else {
+            emailField.setError(null);
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            passwordField.setError("Required.");
+            valid = false;
+        } else if (password.length() < 6) {
+            passwordField.setError("Password must be at least 6 characters.");
+            valid = false;
+        } else {
+            passwordField.setError(null);
+        }
+
+        String phoneRegex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+        Pattern phonePattern = Pattern.compile(phoneRegex);
+
+        if (TextUtils.isEmpty(phone)) {
+            phoneField.setError("Required.");
+            valid = false;
+        } else if (!phonePattern.matcher(phone).matches()) {
+            phoneField.setError("Please enter a valid 10 digit phone number.");
+            valid = false;
+        } else {
+            phoneField.setError(null);
+        }
+
+        if (accountTypeField.getCheckedRadioButtonId() == -1) {
+            accountTypeHeader.setError("Account Type is required.");
+            valid = false;
+        } else {
+            accountTypeHeader.setError(null);
+        }
+
+
+        return valid;
     }
 
 
@@ -111,18 +223,47 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    public void backToPersonalDetails(View view) {
+        setContentView(R.layout.app_bar_signup_personal_info);
+
+        EditText firstNameField = findViewById(R.id.firstNameField);
+        EditText lastNameField = findViewById(R.id.lastNameField);
+        prepGenderSpiner();
+        EditText birthMonthField = findViewById(R.id.birthMonthField);
+        EditText birthDayField = findViewById(R.id.birthDayField);
+        EditText birthYearField = findViewById(R.id.birthYearField);
+
+
+        firstNameField.setText(firstName);
+        lastNameField.setText(lastName);
+
+        birthMonthField.setText(month);
+        birthDayField.setText(day);
+        birthYearField.setText(year);
+
+    }
+
 
     private boolean saveAccountDetails() {
+
+
 
         EditText emailField = findViewById(R.id.emailField);
         EditText passwordField = findViewById(R.id.passwordField);
         EditText phoneField = findViewById(R.id.phoneField);
         RadioGroup accountTypeField = findViewById(R.id.accountTypeField);
         EditText propertyCodeField = findViewById(R.id.propertyCodeField);
+        TextView accountTypeHeader = findViewById(R.id.accountTypeHeader);
 
         email = emailField.getText().toString();
         password = passwordField.getText().toString();
         phone = phoneField.getText().toString();
+
+        boolean validAccountDetails = validateAccountDetails(emailField, passwordField, phoneField, accountTypeField, accountTypeHeader);
+
+        if (!validAccountDetails) {
+            return false;
+        }
 
         if (accountTypeField.getCheckedRadioButtonId() == R.id.tenantRadioButton) {
             accountType = 1;
@@ -130,9 +271,13 @@ public class SignupActivity extends AppCompatActivity {
         } else if (accountTypeField.getCheckedRadioButtonId() == R.id.landlordRadioButton) {
             accountType = 2;
             propertyCode = null;
+        } else {
+            return false;
         }
 
         return true;
+
+
     }
 
     private void createAccount() {
