@@ -76,12 +76,14 @@ public class TenantProfile {
     }
 
     public ArrayList<Repair> getRepairs() {
-        Collections.sort(repairs, new Comparator<Repair>() {
-            @Override
-            public int compare(Repair repair, Repair t1) {
-                return t1.getDate().compareTo(repair.getDate());
-            }
-        });
+        if (repairs != null) {
+            Collections.sort(repairs, new Comparator<Repair>() {
+                @Override
+                public int compare(Repair repair, Repair t1) {
+                    return t1.getDate().compareTo(repair.getDate());
+                }
+            });
+        }
         return repairs;
     }
 

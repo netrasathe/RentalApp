@@ -21,9 +21,19 @@ public class LandlordProfile {
         this.email = email;
         this.gender = gender;
         this.phone = phone;
-        this.imagePath = imagePath;
+
+        if (imagePath == null) {
+            this.imagePath = "";
+        } else {
+            this.imagePath = imagePath;
+        }
+
         this.birthdate = birthdate;
-        this.properties = properties;
+        if (properties == null) {
+            this.properties = new ArrayList<>();
+        } else {
+            this.properties = properties;
+        }
     }
 
     public LandlordProfile() {

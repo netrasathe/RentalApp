@@ -112,6 +112,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="84dp"
         android:background="@drawable/round_edges"
+        android:onClick="onSignupButton"
         android:radius="10dp"
         android:text="@string/signup"
         android:textColor="@android:color/background_dark"

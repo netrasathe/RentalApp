@@ -66,20 +66,22 @@ public class LandlordHomeActivity extends NavDrawerActivity
                 mPropertyIds = (ArrayList<String>) dataSnapshot.child("properties").getValue();
                 DatabaseReference ref = database.getReference("property");
 
-                for (String id: mPropertyIds) {
-                    DatabaseReference p = ref.child(id);
-                    p.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            mProperties.add(dataSnapshot.getValue(Property.class));
-                            setAdapterAndUpdateData();
-                        }
+                if (mPropertyIds != null) {
+                    for (String id : mPropertyIds) {
+                        DatabaseReference p = ref.child(id);
+                        p.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                mProperties.add(dataSnapshot.getValue(Property.class));
+                                setAdapterAndUpdateData();
+                            }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            System.out.println("The read failed: " + databaseError.getCode());
-                        }
-                    });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                System.out.println("The read failed: " + databaseError.getCode());
+                            }
+                        });
+                    }
                 }
             }
             @Override

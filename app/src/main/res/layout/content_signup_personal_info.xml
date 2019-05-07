@@ -25,51 +25,91 @@
 
 
     <Button
-        android:id="@+id/signupButton"
+        android:id="@+id/nextButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
         android:drawableEnd="@drawable/ic_keyboard_arrow_right_black"
+        android:onClick="onNextClick"
         android:text="Next"
         android:textColor="@color/textBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthdateField" />
+        app:layout_constraintTop_toBottomOf="@id/birthMonthField" />
 
     <EditText
-        android:id="@+id/birthdateField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/birthMonthField"
+        android:layout_width="69dp"
+        android:layout_height="48dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="@color/textWhite"
         android:ems="10"
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        android:inputType="number"
+        android:maxLength="2"
+        app:layout_constraintEnd_toStartOf="@+id/birthDayField"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <EditText
-        android:id="@+id/editText5"
-        android:layout_width="160dp"
-        android:layout_height="46dp"
+        android:id="@+id/birthYearField"
+        android:layout_width="140dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/textWhite"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Last"
-        app:layout_constraintBottom_toBottomOf="@+id/editText6"
+        android:inputType="number"
+        android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/editText6"
-        app:layout_constraintTop_toTopOf="@+id/editText6" />
+        app:layout_constraintStart_toEndOf="@+id/birthDayField"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/birthDayField"
+        android:layout_width="69dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/textWhite"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="2"
+        app:layout_constraintEnd_toStartOf="@+id/birthYearField"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/birthMonthField"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <EditText
+        android:id="@+id/lastNameField"
+        android:layout_width="160dp"
+        android:layout_height="46dp"
+        android:backgroundTint="@color/textWhite"
+        android:ems="10"
+        android:hint="Last"
+        android:inputType="textPersonName"
+        android:textColor="@color/textWhite"
+        android:textColorHint="@color/offWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/firstNameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/firstNameField"
+        app:layout_constraintTop_toTopOf="@+id/firstNameField" />
+
+    <EditText
+        android:id="@+id/firstNameField"
         android:layout_width="160dp"
         android:layout_height="46dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="@color/textWhite"
         android:ems="10"
+        android:hint="First"
         android:inputType="textPersonName"
-        android:text="First"
-        app:layout_constraintEnd_toStartOf="@+id/editText5"
+        android:textAllCaps="false"
+        android:textColor="@color/textWhite"
+        android:textColorHint="@color/offWhite"
+        app:layout_constraintEnd_toStartOf="@+id/lastNameField"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -79,8 +119,10 @@
         android:layout_width="158dp"
         android:layout_height="46dp"
         android:layout_marginTop="8dp"
-        android:minWidth="Male, Female, Nonbinary"
+        android:backgroundTint="@color/textWhite"
+        android:entries="@array/genders"
         android:spinnerMode="dropdown"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -90,7 +132,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/name"
-        app:layout_constraintStart_toStartOf="@+id/editText6"
+        android:textColor="@color/textWhite"
+        app:layout_constraintStart_toStartOf="@+id/firstNameField"
         app:layout_constraintTop_toBottomOf="@+id/signupHeader" />
 
     <TextView
@@ -99,8 +142,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/gender"
-        app:layout_constraintStart_toStartOf="@+id/editText6"
-        app:layout_constraintTop_toBottomOf="@+id/editText6" />
+        android:textColor="@color/textWhite"
+        app:layout_constraintStart_toStartOf="@+id/firstNameField"
+        app:layout_constraintTop_toBottomOf="@+id/firstNameField" />
 
     <TextView
         android:id="@+id/textView11"
@@ -108,7 +152,36 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/date_of_birth"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/genderSpinner"
         app:layout_constraintTop_toBottomOf="@+id/genderSpinner" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Year"
+        android:textColor="@color/textWhite"
+        app:layout_constraintStart_toStartOf="@+id/birthYearField"
+        app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:textColor="@color/textWhite"
+        app:layout_constraintStart_toStartOf="@+id/birthDayField"
+        app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Month"
+        android:textColor="@color/textWhite"
+        app:layout_constraintStart_toStartOf="@+id/birthMonthField"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 </android.support.constraint.ConstraintLayout>

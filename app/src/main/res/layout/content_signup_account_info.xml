@@ -25,17 +25,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/signupButton3"
+        android:id="@+id/finishButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onFinishClick"
         android:text="Finish"
         android:textColor="@color/textBlack"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintBottom_toBottomOf="@+id/backButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="@+id/backButton" />
 
     <EditText
         android:id="@+id/phoneField"
@@ -44,11 +45,13 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="phone"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        android:backgroundTint="@color/textWhite"/>
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/accountTypeField"
         android:layout_width="216dp"
         android:layout_height="36dp"
         android:layout_marginTop="8dp"
@@ -58,18 +61,22 @@
         app:layout_constraintTop_toBottomOf="@+id/textView12">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/landlordRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_weight="1"
-            android:text="Landlord" />
+            android:text="Landlord"
+            android:textColor="@color/textWhite"
+            android:buttonTint="@color/textWhite"/>
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/tenantRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Tenant" />
+            android:text="Tenant"
+            android:textColor="@color/textWhite"
+            android:buttonTint="@color/textWhite"/>
     </RadioGroup>
 
     <EditText
@@ -81,9 +88,11 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:textColor="@color/textWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13"
+        android:backgroundTint="@color/textWhite"/>
 
     <EditText
         android:id="@+id/passwordField"
@@ -92,8 +101,10 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPassword"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
+        android:backgroundTint="@color/textWhite"/>
 
     <TextView
         android:id="@+id/textView12"
@@ -101,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Account Type"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/phoneField"
         app:layout_constraintTop_toBottomOf="@+id/phoneField" />
 
@@ -110,6 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/email"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/emailField"
         app:layout_constraintTop_toBottomOf="@+id/signupHeader2" />
 
@@ -119,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/password"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/emailField"
         app:layout_constraintTop_toBottomOf="@+id/emailField" />
 
@@ -128,21 +142,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/cell_phone"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/passwordField"
         app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/backButton"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Back"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/signupButton3"
+        app:layout_constraintEnd_toStartOf="@+id/finishButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/propertyCodeField" />
 
     <TextView
         android:id="@+id/textView16"
@@ -150,16 +165,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Property Code"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-        tools:layout_editor_absoluteX="98dp" />
+        android:textColor="@color/textWhite"
+        app:layout_constraintStart_toStartOf="@+id/accountTypeField"
+        app:layout_constraintTop_toBottomOf="@+id/accountTypeField" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/propertyCodeField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textColor="@color/textWhite"
         app:layout_constraintStart_toStartOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintTop_toBottomOf="@+id/textView16"
+        android:backgroundTint="@color/textWhite"/>
 </android.support.constraint.ConstraintLayout>

@@ -210,4 +210,9 @@ public class LoginActivity extends AppCompatActivity implements
         mSignUpText.setVisibility(show ? View.GONE : View.VISIBLE);
         mSignUpButton.setVisibility(show ? View.GONE : View.VISIBLE);
     }
+
+    public void onSignupButton(View view) {
+        Intent signupIntent = new Intent(this, SignupActivity.class);
+        startActivity(signupIntent);
+    }
 }

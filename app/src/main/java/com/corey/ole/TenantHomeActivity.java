@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 
 public class TenantHomeActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -103,7 +104,7 @@ public class TenantHomeActivity extends NavDrawerActivity
         ArrayList<String> data = new ArrayList<>();
         for (Repair repair : tenant.getRepairs()) {
             Date d = repair.getDate();
-            String date = new SimpleDateFormat("MM/dd/yy").format(d);
+            String date = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(d);
             String request = repair.getRequest();
             if (request.length() > 15) {
                 data.add("Repair Request submitted " + date + ": " + request.substring(0, 15) + "...");
