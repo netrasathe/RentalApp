@@ -10,175 +10,195 @@
     tools:showIn="@layout/app_bar_signup_account_info">
 
 
-    <TextView
-        android:id="@+id/signupHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Sign Up for Ole"
-        android:textColor="@color/textWhite"
-        android:textSize="24sp"
+    <ScrollView
+        android:layout_width="395dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/finishButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onFinishClick"
-        android:text="Finish"
-        android:textColor="@color/textBlack"
-        app:layout_constraintBottom_toBottomOf="@+id/backButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/backButton"
-        app:layout_constraintTop_toTopOf="@+id/backButton" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/phoneField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView15"
-        android:backgroundTint="@color/textWhite"/>
+            <Button
+                android:id="@+id/backButton"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="backToPersonalDetails"
+                android:text="Back"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/finishButton"
+                app:layout_constraintEnd_toStartOf="@+id/finishButton"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/finishButton" />
 
-    <RadioGroup
-        android:id="@+id/accountTypeField"
-        android:layout_width="216dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/phoneField"
-        app:layout_constraintStart_toStartOf="@+id/phoneField"
-        app:layout_constraintTop_toBottomOf="@+id/accountTypeHeader">
+            <TextView
+                android:id="@+id/signupHeader2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:text="Sign Up for Ole"
+                android:textColor="@color/textWhite"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/landlordRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:text="Landlord"
-            android:textColor="@color/textWhite"
-            android:buttonTint="@color/textWhite"/>
+            <EditText
+                android:id="@+id/propertyCodeField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/textWhite"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="@color/textWhite"
+                app:layout_constraintStart_toStartOf="@+id/textView16"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
-        <RadioButton
-            android:id="@+id/tenantRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Tenant"
-            android:textColor="@color/textWhite"
-            android:buttonTint="@color/textWhite"/>
-    </RadioGroup>
+            <TextView
+                android:id="@+id/accountTypeHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Account Type"
+                android:textColor="@color/textWhite"
+                app:layout_constraintStart_toStartOf="@+id/emailField"
+                app:layout_constraintTop_toBottomOf="@+id/phoneField" />
 
-    <EditText
-        android:id="@+id/emailField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/textWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13"
-        android:backgroundTint="@color/textWhite"/>
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/password"
+                android:textColor="@color/textWhite"
+                app:layout_constraintStart_toStartOf="@+id/emailField"
+                app:layout_constraintTop_toBottomOf="@+id/emailField" />
 
-    <EditText
-        android:id="@+id/passwordField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/textView14"
-        android:backgroundTint="@color/textWhite"/>
+            <RadioGroup
+                android:id="@+id/accountTypeField"
+                android:layout_width="216dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@+id/accountTypeHeader"
+                app:layout_constraintTop_toBottomOf="@+id/accountTypeHeader">
 
-    <TextView
-        android:id="@+id/accountTypeHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Account Type"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/phoneField"
-        app:layout_constraintTop_toBottomOf="@+id/phoneField" />
+                <RadioButton
+                    android:id="@+id/landlordRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/textWhite"
+                    android:text="Landlord"
+                    android:textColor="@color/textWhite" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/email"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/emailField"
-        app:layout_constraintTop_toBottomOf="@+id/signupHeader2" />
+                <RadioButton
+                    android:id="@+id/tenantRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/textWhite"
+                    android:text="Tenant"
+                    android:textColor="@color/textWhite" />
+            </RadioGroup>
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/password"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/emailField"
-        app:layout_constraintTop_toBottomOf="@+id/emailField" />
+            <EditText
+                android:id="@+id/emailField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/textWhite"
+                android:ems="10"
+                android:hint="email@example.com"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/textWhite"
+                android:textColorHint="@color/offWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/cell_phone"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/passwordField"
-        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Property Code"
+                android:textColor="@color/textWhite"
+                app:layout_constraintStart_toStartOf="@+id/emailField"
+                app:layout_constraintTop_toBottomOf="@+id/accountTypeField" />
 
-    <Button
-        android:id="@+id/backButton"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:onClick="backToPersonalDetails"
-        android:text="Back"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/finishButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/propertyCodeField" />
+            <EditText
+                android:id="@+id/passwordField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/textWhite"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:textColor="@color/textWhite"
+                app:layout_constraintStart_toStartOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Property Code"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/accountTypeField"
-        app:layout_constraintTop_toBottomOf="@+id/accountTypeField" />
+            <Button
+                android:id="@+id/finishButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="64dp"
+                android:onClick="onFinishClick"
+                android:text="Finish"
+                android:textColor="@color/textBlack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/backButton"
+                app:layout_constraintTop_toBottomOf="@+id/propertyCodeField" />
 
-    <EditText
-        android:id="@+id/propertyCodeField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textColor="@color/textWhite"
-        app:layout_constraintStart_toStartOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/textView16"
-        android:backgroundTint="@color/textWhite"/>
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/cell_phone"
+                android:textColor="@color/textWhite"
+                app:layout_constraintStart_toStartOf="@+id/emailField"
+                app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+
+            <EditText
+                android:id="@+id/phoneField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/textWhite"
+                android:ems="10"
+                android:hint="1234567890"
+                android:inputType="phone"
+                android:textColor="@color/textWhite"
+                android:textColorHint="@color/offWhite"
+                app:layout_constraintStart_toStartOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/email"
+                android:textColor="@color/textWhite"
+                app:layout_constraintStart_toStartOf="@+id/emailField"
+                app:layout_constraintTop_toBottomOf="@+id/signupHeader2" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

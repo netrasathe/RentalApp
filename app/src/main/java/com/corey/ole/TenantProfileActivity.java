@@ -37,7 +37,7 @@ public class TenantProfileActivity extends NavDrawerActivity {
         name.setText(tenant.getFirstName() + " " + tenant.getLastName());
         room.setText("Room " + tenant.getRoom());
         gender.setText(tenant.getGender());
-        dob.setText(new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(tenant.getBirthdate()));
+        dob.setText(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(tenant.getBirthdate()));
         phone.setText(String.valueOf(tenant.getPhone()).replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3"));
         email.setText(tenant.getEmail());
 
