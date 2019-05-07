@@ -24,7 +24,7 @@ public class LandlordProfile {
         this.phone = phone;
 
         if (imagePath == null) {
-            this.imagePath = "";
+            this.imagePath = "default/images/default_profile_picture.jpg";
         } else {
             this.imagePath = imagePath;
         }

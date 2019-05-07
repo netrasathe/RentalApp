@@ -46,7 +46,12 @@ public class TenantProfile {
         this.birthdate = birthdate;
         this.phone = phone;
         this.email = email;
-        this.imagePath = imagePath;
+
+        if (imagePath == null) {
+            this.imagePath = "default/images/default_profile_picture.jpg";
+        } else {
+            this.imagePath = imagePath;
+        }
         this.propertyId = propertyID;
         this.room = room;
         this.repairs = repairs;

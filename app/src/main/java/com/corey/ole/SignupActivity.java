@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -137,14 +138,17 @@ public class SignupActivity extends AppCompatActivity {
         gender = genderSpinner.getSelectedItem().toString();
 
 
-        String birthdayString = birthMonthField.getText().toString() + "/" +
-                birthDayField.getText().toString() + "/" +
-                birthYearField.getText().toString();
+        month = birthMonthField.getText().toString();
+        day = birthDayField.getText().toString();
+        year = birthYearField.getText().toString();
+        String birthdayString =  month + "/" + day + "/" + year;
 
         boolean valid = validatePersonalDetails(firstNameField, lastNameField);
 
         try {
-            birthday = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(birthdayString);
+            DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+            format.setLenient(false);
+            birthday = format.parse(birthdayString);
             dobHeader.setError(null);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -316,12 +320,12 @@ public class SignupActivity extends AppCompatActivity {
     private void addUser(FirebaseUser user, int accountType) {
         if (accountType == 1) {
             TenantProfile tenant = new TenantProfile(user.getUid(), firstName, lastName,
-                    gender, birthday, phone, email, null, propertyCode, roomCode, new ArrayList<Repair>());
+                    gender, birthday, phone, email, null, propertyCode, roomCode, null);
             dbUsersRef.child(user.getUid()).setValue(tenant);
 
 
         } else if (accountType == 2) {
-            LandlordProfile landlord = new LandlordProfile(firstName, lastName, email, gender, birthday, phone, null, new ArrayList<String>());
+            LandlordProfile landlord = new LandlordProfile(firstName, lastName, email, gender, birthday, phone, null, null);
             dbUsersRef.child(user.getUid()).setValue(landlord);
         }
     }
