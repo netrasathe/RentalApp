@@ -10,15 +10,17 @@
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="179dp"
-        android:layout_height="34dp"
+        android:layout_width="215dp"
+        android:layout_height="42dp"
         android:layout_marginStart="119dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="119dp"
         android:layout_marginBottom="20dp"
+        android:gravity="center"
         android:text="Announcements"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/landlord_announcement_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,42 +29,45 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/landlord_announcement_recycler_view"
         android:layout_width="345dp"
-        android:layout_height="362dp"
+        android:layout_height="344dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="33dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <EditText
         android:id="@+id/landlord_announcement_text"
         style="@style/Base.ThemeOverlay.AppCompat.Dark"
-        android:layout_width="294dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="93dp"
+        android:layout_width="287dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="41dp"
         android:ems="10"
         android:hint="Announcement"
         android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/landlord_announcement_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/landlord_announcement_recycler_view"
+        app:layout_constraintVertical_bias="0.206" />
 
     <Button
         android:id="@+id/landlord_announcement_add_button"
         android:layout_width="67dp"
         android:layout_height="44dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="93dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/round_edges"
         android:text="Add"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/landlord_announcement_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/landlord_announcement_text"
-        app:layout_constraintTop_toBottomOf="@+id/landlord_announcement_recycler_view" />
+        app:layout_constraintTop_toTopOf="@+id/landlord_announcement_text"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

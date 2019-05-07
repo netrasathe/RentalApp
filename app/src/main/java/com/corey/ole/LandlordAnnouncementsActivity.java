@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
@@ -46,11 +47,22 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
     private EditText editText;
     private Button addButton;
     private RecyclerView recyclerView;
+    private String propertyName;
+    private String landlordId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landlord_announcements);
+
+        Intent intent = getIntent();
+        announcments = new ArrayList<>();
+        propertyId = intent.getStringExtra(Property.PROPERTY_ID);
+        propertyName = intent.getStringExtra(Property.PROPERTY_NAME);
+        landlordId = intent.getStringExtra(LandlordProfile.LANDLORD_ID);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(propertyName);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -64,23 +76,21 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
         editText = findViewById(R.id.landlord_announcement_text);
         addButton = findViewById(R.id.landlord_announcement_add_button);
         recyclerView = findViewById(R.id.landlord_announcement_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Intent intent = getIntent();
-        announcments = new ArrayList<>();
-        propertyId = intent.getStringExtra("landlordId");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         propertyRef = database.getReference("property").child(propertyId);
-        propertyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        propertyRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 thisProperty = dataSnapshot.getValue(Property.class);
-                ArrayList<String> n = thisProperty.getNotes();
+                ArrayList<String> n = thisProperty.getAnnouncements();
                 if (n != null) {
                     announcments = n;
-                    setAnnouncmentAdapter();
+                    setAnnouncementAdapter();
                 }
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -99,13 +109,14 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
                             Toast.LENGTH_SHORT).show();
                 } else {
                     announcments.add(text);
+                    setAnnouncementAdapter();
                 }
             }
         });
 
     }
 
-    private void setAnnouncmentAdapter() {
+    private void setAnnouncementAdapter() {
         AddPolicyNoteAdapter adapter = new AddPolicyNoteAdapter(announcments);
         recyclerView.setAdapter(adapter);
 
@@ -113,7 +124,7 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
             @Override
             public void onItemClick(int position) {
                 announcments.remove(position);
-                setAnnouncmentAdapter();
+                setAnnouncementAdapter();
             }
         });
 
@@ -176,6 +187,9 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
     private void saveAnnouncements() {
         thisProperty.setAnnouncements(announcments);
         propertyRef.setValue(thisProperty);
-        Intent intent;
+        Intent intent = new Intent(this, PropertyDetailsActivity.class);
+        intent.putExtra(Property.PROPERTY_ID, propertyId);
+        intent.putExtra(LandlordProfile.LANDLORD_ID, landlordId);
+        startActivity(intent);
     }
 }

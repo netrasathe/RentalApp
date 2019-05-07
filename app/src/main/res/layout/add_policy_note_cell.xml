@@ -33,7 +33,7 @@
 
             <ImageView
                 android:id="@+id/add_policy_note_delete_button"
-                android:layout_width="150dp"
+                android:layout_width="49dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"

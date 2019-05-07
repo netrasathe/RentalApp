@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Property {
+
+    public static final String PROPERTY_ID = "propertyId";
+    public static final String PROPERTY_NAME = "propertyName";
     private String id;
     private String name;
     private String street;

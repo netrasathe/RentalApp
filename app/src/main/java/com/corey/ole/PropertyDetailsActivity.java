@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,7 +31,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class PropertyDetailsActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,6 +43,9 @@ public class PropertyDetailsActivity extends NavDrawerActivity
     private String propertyName;
     private Button tenantButton;
     private String landlordId;
+    private Button policiesButton;
+    private Button announecementsButton;
+    private Button documentsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,9 @@ public class PropertyDetailsActivity extends NavDrawerActivity
         name = findViewById(R.id.property_details_name);
         address = findViewById(R.id.property_details_address);
         tenantButton = findViewById(R.id.property_details_tenants_button);
+        policiesButton = findViewById(R.id.property_details_policies_button);
+        announecementsButton = findViewById(R.id.property_details_announcements_button);
+        documentsButton = findViewById(R.id.property_details_documents_button);
         Intent intent = getIntent();
         propertyId = intent.getStringExtra("propertyId");
         landlordId = intent.getStringExtra("landlordId");
@@ -122,6 +126,23 @@ public class PropertyDetailsActivity extends NavDrawerActivity
 
             }
         });
+
+        announecementsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAnnouncementActivity();
+
+            }
+        });
+
+    }
+
+    private void startAnnouncementActivity(){
+        Intent intent = new Intent(this, LandlordAnnouncementsActivity.class);
+        intent.putExtra(LandlordProfile.LANDLORD_ID, landlordId);
+        intent.putExtra(Property.PROPERTY_ID, propertyId);
+        intent.putExtra(Property.PROPERTY_NAME, propertyName);
+        startActivity(intent);
 
     }
 

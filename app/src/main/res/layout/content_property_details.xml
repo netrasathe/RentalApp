@@ -88,7 +88,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/round_edges"
         android:text="@string/announcements"
-        app:layout_constraintBottom_toTopOf="@+id/property_details_documents"
+        app:layout_constraintBottom_toTopOf="@+id/property_details_documents_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/property_details_address" />
 
@@ -109,7 +109,7 @@
         app:layout_constraintTop_toBottomOf="@+id/property_details_address" />
 
     <Button
-        android:id="@+id/property_details_documents"
+        android:id="@+id/property_details_documents_button"
         android:layout_width="148dp"
         android:layout_height="55dp"
         android:layout_marginStart="42dp"

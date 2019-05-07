@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class LandlordProfile {
 
+    public static final String LANDLORD_ID = "landlordId";
     private int accountType = 2;
     private String firstName;
     private String lastName;
