@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -44,9 +43,7 @@ public class PropertyDetailsActivity extends NavDrawerActivity
     private FirebaseDatabase database;
     private String propertyId;
     private String propertyName;
-    private RecyclerView policiesRecycler;
-    private RecyclerView notesRecycler;
-    private Button viewTenantButton;
+    private Button tenantButton;
     private String landlordId;
 
     @Override
@@ -67,15 +64,7 @@ public class PropertyDetailsActivity extends NavDrawerActivity
         image = findViewById(R.id.property_details_image);
         name = findViewById(R.id.property_details_name);
         address = findViewById(R.id.property_details_address);
-        viewTenantButton = findViewById(R.id.property_details_view_tenants_button);
-
-        policiesRecycler = findViewById(R.id.property_details_policies_recycler_view);
-        policiesRecycler.setHasFixedSize(true);
-        policiesRecycler.setLayoutManager(new LinearLayoutManager(this));
-        notesRecycler = findViewById(R.id.property_details_notes_recycler_view);
-        notesRecycler.setHasFixedSize(true);
-        notesRecycler.setLayoutManager(new LinearLayoutManager(this));
-
+        tenantButton = findViewById(R.id.property_details_tenants_button);
         Intent intent = getIntent();
         propertyId = intent.getStringExtra("propertyId");
         landlordId = intent.getStringExtra("landlordId");
@@ -91,17 +80,7 @@ public class PropertyDetailsActivity extends NavDrawerActivity
                 propertyName = property.getName();
                 name.setText(propertyName);
                 address.setText(property.getStreet() + property.getCityStateZip());
-                ArrayList<String> notes = property.getNotes();
-                if (notes != null) {
-                    AnnouncementAdapter noteAdapter = new AnnouncementAdapter(property.getNotes());
-                    notesRecycler.setAdapter(noteAdapter);
-                }
-                ArrayList<String> policies = property.getPolicies();
-                if (policies != null) {
-                    AnnouncementAdapter policyAdapter = new AnnouncementAdapter(property.getPolicies());
-                    policiesRecycler.setAdapter(policyAdapter);
 
-                }
                 try {
                     final File localFile = File.createTempFile("images", "jpg");
                     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -136,7 +115,7 @@ public class PropertyDetailsActivity extends NavDrawerActivity
             }
         });
 
-        viewTenantButton.setOnClickListener(new View.OnClickListener() {
+        tenantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startTenantList();
