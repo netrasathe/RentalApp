@@ -30,8 +30,7 @@
         android:layout_marginTop="57dp"
         android:text="@string/about"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:textSize="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_property_image" />
 
