@@ -104,7 +104,7 @@ public class ConversationActivity extends NavDrawerActivity {
                     Date date = child.child("Date").getValue(Date.class);
                     Boolean read = child.child("Read").getValue(Boolean.class);
                     Message newMessage = new Message(message, date, sender, read, mConvId);
-                    if (sender != mUid && !read) {
+                    if (sender != mUid && (read == null || !read)) {
                         mDb.getReference("messages/" + mConvId + "/messages/" + child.getKey() + "/Read").setValue(true);
                     }
                     data.add(newMessage);
@@ -189,7 +189,7 @@ public class ConversationActivity extends NavDrawerActivity {
                     if (newMessage) {
                         newMessage = false;
                         findViewById(R.id.llTo).setVisibility(View.GONE);
-                        mDb.getReference("users").orderByChild("Email").equalTo(to).addValueEventListener(new ValueEventListener() {
+                        mDb.getReference("users").orderByChild("email").equalTo(to).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 DatabaseReference conv = mDb.getReference().child("messages").push();
