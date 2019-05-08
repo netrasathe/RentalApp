@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,7 +35,6 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
-
 
     private String firstName;
     private String lastName;
@@ -49,6 +51,7 @@ public class SignupActivity extends AppCompatActivity {
     private int accountType;
     private String propertyCode;
     private String roomCode = "100A";
+    private String uid;
 
     private FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -92,12 +95,9 @@ public class SignupActivity extends AppCompatActivity {
         if (gender != null) {
             genderSpinner.setSelection(dataAdapter.getPosition(gender));
         }
-
     }
 
-    private boolean validatePersonalDetails(EditText firstNameField,
-                                           EditText lastNameField) {
-
+    private boolean validatePersonalDetails(EditText firstNameField, EditText lastNameField) {
         boolean valid = true;
         if (firstName.length() <= 0) {
             firstNameField.setError("First Name Required.");
@@ -114,7 +114,6 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return valid;
-
     }
 
     private boolean savePersonalDetails() {
@@ -162,7 +161,6 @@ public class SignupActivity extends AppCompatActivity {
                                            RadioGroup accountTypeField,
                                            TextView accountTypeHeader) {
         boolean valid = true;
-
 
         String emailRegex = "^(.+)@(.+)$";
         Pattern emailPattern = Pattern.compile(emailRegex);
@@ -217,7 +215,7 @@ public class SignupActivity extends AppCompatActivity {
         if (saveAccountDetailsSuccess) {
             createAccount();
         } else {
-
+          // Do nothing
         }
     }
 
@@ -238,14 +236,10 @@ public class SignupActivity extends AppCompatActivity {
         birthMonthField.setText(month);
         birthDayField.setText(day);
         birthYearField.setText(year);
-
     }
 
 
     private boolean saveAccountDetails() {
-
-
-
         EditText emailField = findViewById(R.id.emailField);
         EditText passwordField = findViewById(R.id.passwordField);
         EditText phoneField = findViewById(R.id.phoneField);
@@ -265,7 +259,7 @@ public class SignupActivity extends AppCompatActivity {
 
         if (accountTypeField.getCheckedRadioButtonId() == R.id.tenantRadioButton) {
             accountType = 1;
-            propertyCode = propertyCodeField.getText().toString();
+            propertyCode = propertyCodeField.getText().toString().trim();
         } else if (accountTypeField.getCheckedRadioButtonId() == R.id.landlordRadioButton) {
             accountType = 2;
             propertyCode = null;
@@ -274,12 +268,9 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return true;
-
-
     }
 
     private void createAccount() {
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -289,7 +280,8 @@ public class SignupActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            addUser(user, accountType);
+                            uid = user.getUid();
+                            addUser(accountType);
 
                             if (accountType == 1) {
                                 tenantLogin(user.getUid());
@@ -311,16 +303,15 @@ public class SignupActivity extends AppCompatActivity {
                 });
     }
 
-    private void addUser(FirebaseUser user, int accountType) {
+    private void addUser(int accountType) {
         if (accountType == 1) {
-            TenantProfile tenant = new TenantProfile(user.getUid(), firstName, lastName,
+            TenantProfile tenant = new TenantProfile(uid, firstName, lastName,
                     gender, birthday, phone, email, null, propertyCode, roomCode, new ArrayList<Repair>(), new Rent());
-            dbUsersRef.child(user.getUid()).setValue(tenant);
-
-
+            addTenantToProperty();
+            dbUsersRef.child(uid).setValue(tenant);
         } else if (accountType == 2) {
             LandlordProfile landlord = new LandlordProfile(firstName, lastName, email, gender, birthday, phone, null, null);
-            dbUsersRef.child(user.getUid()).setValue(landlord);
+            dbUsersRef.child(uid).setValue(landlord);
         }
     }
 
@@ -336,5 +327,21 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void addTenantToProperty() {
+        database.getReference("property/" + propertyCode + "/tenants").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<String> tenants = (ArrayList<String>) dataSnapshot.getValue();
+                        tenants.add(uid);
+                        database.getReference("property/" + propertyCode + "/tenants").setValue(tenants);
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
 }
