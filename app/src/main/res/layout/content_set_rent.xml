@@ -13,7 +13,7 @@
         android:id="@+id/dueHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Due the"
         android:textColor="@color/textWhite"
@@ -284,8 +284,8 @@
 
     <TextView
         android:id="@+id/urlLabel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="Link to Payment Portal:"

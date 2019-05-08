@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,13 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -320,7 +314,7 @@ public class SignupActivity extends AppCompatActivity {
     private void addUser(FirebaseUser user, int accountType) {
         if (accountType == 1) {
             TenantProfile tenant = new TenantProfile(user.getUid(), firstName, lastName,
-                    gender, birthday, phone, email, null, propertyCode, roomCode, null);
+                    gender, birthday, phone, email, null, propertyCode, roomCode, new ArrayList<Repair>(), new Rent());
             dbUsersRef.child(user.getUid()).setValue(tenant);
 
 

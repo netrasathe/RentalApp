@@ -170,26 +170,25 @@
         android:layout_width="165dp"
         android:layout_height="50dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="32dp"
         android:inputType="textShortMessage"
         android:text="@string/name"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:backgroundTint="@color/textWhite"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/profile_picture_edit_field"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/profile_picture_edit_field"
         android:layout_width="130dp"
         android:layout_height="150dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="32dp"
         android:background="@android:color/darker_gray"
         android:contentDescription="@string/profile_picture"
         android:src="@drawable/baseline_add_photo_alternate_black_18dp"
         app:layout_constraintEnd_toStartOf="@+id/tenant_name_edit_field"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tenant_name_edit_field" />
 

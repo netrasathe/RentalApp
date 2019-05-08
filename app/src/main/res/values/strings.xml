@@ -69,6 +69,8 @@
     <string name="note">Note</string>
     <string name="city_state_zip_code">City/State/Zip Code</string>
     <string name="policies">policies</string>
+    <string name="tenants">tenants</string>
+    <string name="documents">documents</string>
     <string name="title_activity_landlord_policies">Policies</string>
     <string name="title_activity_landlord_announcements">Announcements</string>
     <string name="title_activity_set_rent">Set Rent</string>

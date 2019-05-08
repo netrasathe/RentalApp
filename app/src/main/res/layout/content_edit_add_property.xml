@@ -13,12 +13,9 @@
         android:id="@+id/edit_property_image"
         android:layout_width="261dp"
         android:layout_height="161dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="75dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/round_edges_darker_grey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_add_photo_alternate_black_48dp" />
@@ -29,12 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
         android:layout_marginTop="57dp"
-        android:layout_marginBottom="340dp"
         android:text="@string/about"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_property_image" />
 
@@ -81,17 +76,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="232dp"
         android:ems="10"
         android:hint="@string/city_state_zip_code"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/edit_property_street"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edit_property_street"
-        app:layout_constraintTop_toBottomOf="@+id/edit_property_street"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_property_street" />
 
 </android.support.constraint.ConstraintLayout>
