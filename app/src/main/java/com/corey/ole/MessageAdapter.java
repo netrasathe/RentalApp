@@ -94,7 +94,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Announce
             }
 
             if (message.getRead() || mUid.equals(uid)) {
-                mUnreadView.setVisibility(View.INVISIBLE);
+                mUnreadView.setVisibility(View.GONE);
             } else {
                 mUnreadView.setVisibility(View.VISIBLE);
             }
