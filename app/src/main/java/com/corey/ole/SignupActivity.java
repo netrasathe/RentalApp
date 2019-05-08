@@ -307,7 +307,9 @@ public class SignupActivity extends AppCompatActivity {
         if (accountType == 1) {
             TenantProfile tenant = new TenantProfile(uid, firstName, lastName,
                     gender, birthday, phone, email, null, propertyCode, roomCode, new ArrayList<Repair>(), new Rent());
-            addTenantToProperty();
+            if (!TextUtils.isEmpty(propertyCode)) {
+                addTenantToProperty();
+            }
             dbUsersRef.child(uid).setValue(tenant);
         } else if (accountType == 2) {
             LandlordProfile landlord = new LandlordProfile(firstName, lastName, email, gender, birthday, phone, null, null);
