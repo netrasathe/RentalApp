@@ -19,8 +19,11 @@ import android.widget.ImageButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -52,7 +55,7 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
         setSupportActionBar(toolbar);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        getTenantFromID(uid);
+        //getTenantFromID(uid);
 
         imageButton = findViewById(R.id.profile_picture_edit_field);
 
@@ -63,6 +66,43 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
             }
 
         });
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = db.getReference("users").child(uid);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tenant = dataSnapshot.getValue(TenantProfile.class);
+                /* Fetch the image from Firebase Storage and sets it to imageButton */
+                loadData();
+                try {
+                    final File localFile = File.createTempFile("images", "jpg");
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                    if (tenant.getImagePath() != null && tenant.getImagePath().length() != 0) {
+                        StorageReference imageStorage = storageRef.child(tenant.getImagePath());
+                        imageStorage.getFile(localFile)
+                                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        photoUri = Uri.fromFile(localFile);
+                                        imageButton.setImageURI(photoUri);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                            }
+                        });
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -70,7 +110,6 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
         int id = item.getItemId();
         if (id == R.id.done) {
             saveImageToFirebaseStorage();
-            updateTenantData(uid);
             Intent intent = new Intent(this, TenantTenantProfileActivity.class);
             startActivity(intent);
             return true;
@@ -173,6 +212,7 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        updateTenantData(uid);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

@@ -69,31 +69,6 @@ public class EditTenantProfileActivity extends NavDrawerActivity {
 
             }
         });
-
-
-        /* Fetch the image from Firebase Storage and sets it to imageButton */
-        try {
-            final File localFile = File.createTempFile("images", "jpg");
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-            if (tenant.getImagePath() != null && tenant.getImagePath().length() != 0) {
-                StorageReference imageStorage = storageRef.child(tenant.getImagePath());
-                imageStorage.getFile(localFile)
-                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Uri uri = Uri.fromFile(localFile);
-                                imageButton.setImageURI(uri);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void getTenantFromID(String tenantID){
