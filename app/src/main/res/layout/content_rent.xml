@@ -230,28 +230,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="48dp"
         android:text="@string/you_pay"
         android:textAlignment="viewStart"
         android:textColor="@color/textWhite"
-        android:textSize="14dp"
+        android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/payNowButton"
         app:layout_constraintEnd_toStartOf="@+id/youPayValue"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/payNowButton"
-        tools:layout_editor_absoluteY="506dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/youPayValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:gravity="end"
         android:text="$0"
         android:textAlignment="viewEnd"
         android:textColor="@color/textWhite"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="@+id/payNowButton"
-        tools:layout_editor_absoluteY="506dp" />
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/youPayHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/youPayHeader"
+        app:layout_constraintTop_toTopOf="@+id/youPayHeader" />
 
     <android.support.constraint.Group
         android:id="@+id/group2"
