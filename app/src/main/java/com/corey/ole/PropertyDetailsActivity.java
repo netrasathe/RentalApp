@@ -84,7 +84,7 @@ public class PropertyDetailsActivity extends NavDrawerActivity
                 Property property = dataSnapshot.getValue(Property.class);
                 propertyName = property.getName();
                 name.setText(propertyName);
-                address.setText(property.getStreet() + property.getCityStateZip());
+                address.setText(property.getStreet() + "\n" + property.getCityStateZip());
 
                 /* Fetch the image from Firebase Storage and sets it to imageButton */
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
