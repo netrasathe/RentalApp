@@ -83,7 +83,6 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
-                android:backgroundTint="@color/textWhite"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
 
@@ -118,7 +117,6 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
-                android:backgroundTint="@color/textWhite"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
 
@@ -152,7 +150,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:backgroundTint="@color/textWhite"
                 android:text="0"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
@@ -187,7 +184,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:backgroundTint="@color/textWhite"
                 android:text="0"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
@@ -221,7 +217,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:backgroundTint="@color/textWhite"
                 android:inputType="number"
                 android:text="0"
                 android:textColor="@color/textWhite"
@@ -284,7 +279,6 @@
         android:textColor="@color/textWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/textWhite"
         app:layout_constraintStart_toStartOf="parent"
         tools:targetApi="o" />
 
