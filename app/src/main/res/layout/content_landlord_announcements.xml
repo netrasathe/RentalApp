@@ -15,7 +15,7 @@
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="Announcements"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/textWhite"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
         android:ems="10"
         android:hint="Announcement"
         android:inputType="textPersonName"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/textWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/landlord_announcement_add_button"
         app:layout_constraintStart_toStartOf="parent" />

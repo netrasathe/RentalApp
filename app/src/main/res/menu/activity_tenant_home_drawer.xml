@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_menu_rent"
             android:title="@string/menu_rent" />
         <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_menu_about"
+            android:title="@string/about_the_property" />
+        <item
             android:id="@+id/nav_lease"
             android:icon="@drawable/ic_menu_lease"
             android:title="@string/menu_lease" />

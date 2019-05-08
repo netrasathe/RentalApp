@@ -1,41 +1,49 @@
 package com.corey.ole;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
-public class RepairsActivity extends NavDrawerActivity
+public class TenantPropertyActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private TenantProfile tenant;
     private FirebaseDatabase mDb;
     private String mUid;
-    private Repair mRepair;
+    private Property property;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repairs);
+        setContentView(R.layout.activity_tenant_property);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,40 +58,83 @@ public class RepairsActivity extends NavDrawerActivity
 
         mDb = FirebaseDatabase.getInstance();
         mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        final EditText repairInputBox = findViewById(R.id.repairEditText);
-        Button send = findViewById(R.id.repairButton);
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String repair = repairInputBox.getText().toString();
-                if (TextUtils.isEmpty(repair)) {
-                    // don't do anything if nothing was added
-                    repairInputBox.requestFocus();
-                } else {
-                    // clear edit text, post comment
-                    repairInputBox.setText("");
-                    postNewRepair(repair);
-                }
-            }
-        });
+        getTenant();
     }
 
-    private void postNewRepair(String repair) {
-        mRepair = new Repair(repair, new Date(), false);
-        DatabaseReference userRef = mDb.getReference("users").child(mUid);
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void getTenant() {
+        mDb.getReference("users/" + mUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                TenantProfile tenant = dataSnapshot.getValue(TenantProfile.class);
-                tenant.addRepair(mRepair);
-                mDb.getReference("users").child(mUid).setValue(tenant);
+                tenant = dataSnapshot.getValue(TenantProfile.class);
+                getProperty();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+    }
+
+    private void getProperty() {
+        mDb.getReference("property/" + tenant.getPropertyId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                property = dataSnapshot.getValue(Property.class);
+                setData();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setData() {
+        TextView name = findViewById(R.id.property_details_name);
+        TextView address = findViewById(R.id.property_details_address);
+        TextView room = findViewById(R.id.property_details_room);
+        final ImageView image = findViewById(R.id.property_details_image);
+
+        name.setText(property.getName());
+        address.setText(property.getStreet() + property.getCityStateZip());
+        room.setText("Room " + tenant.getRoom());
+
+        try {
+            final File localFile = File.createTempFile("images", "jpg");
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+            if (property.getImagePath() != null && property.getImagePath().length() != 0) {
+                StorageReference imageStorage = storageRef.child(property.getImagePath());
+                imageStorage.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Uri uri = Uri.fromFile(localFile);
+                                image.setImageURI(uri);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        RecyclerView policiesRecycler = findViewById(R.id.policies_recycler);
+        policiesRecycler.setHasFixedSize(true);
+        policiesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        ArrayList<String> policies = property.getPolicies();
+        if (policies != null) {
+            AnnouncementAdapter policyAdapter = new AnnouncementAdapter(property.getPolicies());
+            policiesRecycler.setAdapter(policyAdapter);
+
+        }
     }
 
     @Override
@@ -99,7 +150,7 @@ public class RepairsActivity extends NavDrawerActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.repairs, menu);
+        getMenuInflater().inflate(R.menu.tenant_home, menu);
         return true;
     }
 
@@ -116,15 +167,15 @@ public class RepairsActivity extends NavDrawerActivity
             Intent intent = new Intent(this, TenantMessagesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
-            Intent intent = new Intent(this, TenantPropertyActivity.class);
-            startActivity(intent);
+            // Do nothing
         } else if (id == R.id.nav_rent) {
             Intent intent = new Intent(this, RentActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_lease) {
 
         } else if (id == R.id.nav_repair) {
-            // Do nothing
+            Intent intent = new Intent(this, RepairsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, TenantTenantProfileActivity.class);
             startActivity(intent);

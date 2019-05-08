@@ -90,6 +90,9 @@ public class TenantMessagesActivity extends MessagesActivity
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
             // Do nothing
+        } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(this, TenantPropertyActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_rent) {
             Intent intent = new Intent(this, RentActivity.class);
             startActivity(intent);
