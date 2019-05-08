@@ -184,12 +184,15 @@
         android:id="@+id/profile_picture_edit_field"
         android:layout_width="130dp"
         android:layout_height="150dp"
-        android:background="@android:color/darker_gray"
         android:contentDescription="@string/profile_picture"
         android:src="@drawable/baseline_add_photo_alternate_black_18dp"
         app:layout_constraintEnd_toStartOf="@+id/tenant_name_edit_field"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tenant_name_edit_field" />
+        app:layout_constraintTop_toTopOf="@+id/tenant_name_edit_field"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:scaleType="fitCenter"
+      />
 
 </android.support.constraint.ConstraintLayout>
