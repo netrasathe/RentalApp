@@ -123,4 +123,5 @@ public class EditTenantProfileActivity extends NavDrawerActivity {
 
         userRef.setValue(tenant);
     }
+
 }

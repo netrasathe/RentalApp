@@ -71,7 +71,9 @@ public class SetRentActivity extends TenantProfileActivity {
             FirebaseDatabase.getInstance().getReference("users/" + tenantID).setValue(tenant);
             Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
             intent.putExtra(TenantProfile.EXTRA_TENANT_ID, tenantID);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
             return true;
         }
 

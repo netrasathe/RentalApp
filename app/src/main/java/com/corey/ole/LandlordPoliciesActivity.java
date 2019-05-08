@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
@@ -29,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class LandlordPoliciesActivity extends AppCompatActivity
+public class LandlordPoliciesActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView recyclerView;
@@ -180,6 +179,8 @@ public class LandlordPoliciesActivity extends AppCompatActivity
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
         intent.putExtra(Property.PROPERTY_ID, propertyId);
         intent.putExtra(LandlordProfile.LANDLORD_ID, landlordId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 }

@@ -3,17 +3,14 @@ package com.corey.ole;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,13 +35,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EditAddPropertyActivity extends AppCompatActivity {
+public class EditAddPropertyActivity extends NavDrawerActivity {
 
     private TextView nameView;
     private TextView streetView;
@@ -60,7 +59,7 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     private boolean isAddProperty;
     private FirebaseDatabase database;
     private DatabaseReference propertyRef;
-    private Uri photoUri;
+    private Bitmap imageBitmap;
     private ArrayList<String> propertyIds;
     private StorageReference storageRef;
 
@@ -92,7 +91,7 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         policies = new ArrayList<>();
         notes = new ArrayList<>();
-        photoUri = null;
+        imageBitmap = null;
 
         imageButton = findViewById(R.id.edit_property_image);
         nameView = findViewById(R.id.edit_property_name);
@@ -112,27 +111,25 @@ public class EditAddPropertyActivity extends AppCompatActivity {
                     streetView.setText(thisProperty.getStreet());
                     cityStateZipView.setText(thisProperty.getCityStateZip());
                     /* Fetch the image from Firebase Storage and sets it to imageButton */
-                    try {
-                        final File localFile = File.createTempFile("images", "jpg");
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                    if (thisProperty.getImagePath() != null && thisProperty.getImagePath().length() != 0) {
+                        StorageReference islandRef = storageRef.child(thisProperty.getImagePath());
 
-                        if (thisProperty.getImagePath() != null && thisProperty.getImagePath().length() != 0) {
-                            StorageReference imageStorage = storageRef.child(thisProperty.getImagePath());
-                            imageStorage.getFile(localFile)
-                                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                            Uri uri = Uri.fromFile(localFile);
-                                            imageButton.setImageURI(uri);
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                }
-                            });
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        final long ONE_MEGABYTE = 1024 * 1024;
+                        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                // Data for "images/island.jpg" is returns, use this as needed
+                                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                imageButton.setImageBitmap(Bitmap.createScaledBitmap(bmp, imageButton.getWidth(),
+                                        imageButton.getHeight(), false));
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle any errors
+                            }
+                        });
                     }
                 }
                 @Override
@@ -180,10 +177,6 @@ public class EditAddPropertyActivity extends AppCompatActivity {
             } catch (IOException ex) {
             }
             if (photoFile != null) {
-                photoUri = FileProvider.getUriForFile(this,
-                        "com.corey.ole",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
@@ -208,11 +201,14 @@ public class EditAddPropertyActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_TAKE_PHOTO) {
-                imageButton.setImageURI(photoUri);
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                imageButton.setImageBitmap(imageBitmap);
                 imageButtonDialog.cancel();
             } else if (requestCode == PICK_IMAGE) {
-                photoUri = data.getData();
-                imageButton.setImageURI(photoUri);
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                imageButton.setImageBitmap(imageBitmap);
                 imageButtonDialog.cancel();
             }
         }
@@ -297,19 +293,27 @@ public class EditAddPropertyActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
         intent.putExtra("propertyId", thisProperty.getId());
         intent.putExtra("landlordId", landlordId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
 
     }
 
     private void saveImageToFirebaseStorage() {
-        if (photoUri == null) {
+        if (imageBitmap == null) {
             thisProperty.setImagePath("");
             return;
 
         }
+        String path = thisProperty.getId() + "/images/profile.jpg";
+        thisProperty.setImagePath(path);
 
-        StorageReference imageRef = storageRef.child(thisProperty.getImagePath());
-        imageRef.putFile(photoUri)
+        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        imageBitmap.recycle();
+        imageRef.putBytes(byteArray)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -338,8 +342,5 @@ public class EditAddPropertyActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
 }

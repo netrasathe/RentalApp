@@ -1,8 +1,8 @@
 package com.corey.ole;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,27 +60,26 @@ public class TenantProfileActivity extends NavDrawerActivity {
 
 
         /* Fetch the image from Firebase Storage and sets it to imageButton */
-        try {
-            final File localFile = File.createTempFile("images", "jpg");
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-            if (tenant.getImagePath() != null && tenant.getImagePath().length() != 0) {
-                StorageReference imageStorage = storageRef.child(tenant.getImagePath());
-                imageStorage.getFile(localFile)
-                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Uri uri = Uri.fromFile(localFile);
-                                ImageView image = findViewById(R.id.profile_picture_field);
-                                image.setImageURI(uri);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        if (tenant.getImagePath() != null && tenant.getImagePath().length() != 0) {
+            StorageReference islandRef = storageRef.child(tenant.getImagePath());
+
+            final long ONE_MEGABYTE = 1024 * 1024;
+            islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Data for "images/island.jpg" is returns, use this as needed
+                    ImageView image = findViewById(R.id.profile_picture_field);
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    image.setImageBitmap(Bitmap.createScaledBitmap(bmp, image.getWidth(),
+                            image.getHeight(), false));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
         }
     }
 

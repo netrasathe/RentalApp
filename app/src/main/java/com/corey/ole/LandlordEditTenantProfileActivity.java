@@ -43,7 +43,9 @@ public class LandlordEditTenantProfileActivity extends EditTenantProfileActivity
 
             Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
             intent.putExtra(TenantProfile.EXTRA_TENANT_ID, tenant.getId());
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
             return true;
         }
 

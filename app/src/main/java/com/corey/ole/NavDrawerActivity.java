@@ -1,6 +1,7 @@
 package com.corey.ole;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -52,29 +53,25 @@ public class NavDrawerActivity extends AppCompatActivity {
                 if (imagePath != null && !imagePath.isEmpty())
                 {
                     /* Fetch the image from Firebase Storage and sets it to imageButton */
-                    try {
-                        final File localFile = File.createTempFile("images", "jpg");
-                        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                        StorageReference imageStorage = storageRef.child(imagePath);
-                        imageStorage.getFile(localFile)
-                                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        Uri uri = Uri.fromFile(localFile);
-                                        imageView.setImageURI(uri);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                            }
-                        });
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                    StorageReference islandRef = storageRef.child(imagePath);
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    final long ONE_MEGABYTE = 1024 * 1024;
+                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            // Data for "images/island.jpg" is returns, use this as needed
+                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            imageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, imageView.getWidth(),
+                                    imageView.getHeight(), false));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
                 }
-
-
             }
 
             @Override
@@ -84,4 +81,11 @@ public class NavDrawerActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+
 }

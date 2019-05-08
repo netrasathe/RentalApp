@@ -1,11 +1,7 @@
 package com.corey.ole;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,29 +11,22 @@ import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class LandlordAnnouncementsActivity extends AppCompatActivity
+public class LandlordAnnouncementsActivity extends NavDrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseReference propertyRef;
@@ -191,6 +180,8 @@ public class LandlordAnnouncementsActivity extends AppCompatActivity
         Intent intent = new Intent(this, PropertyDetailsActivity.class);
         intent.putExtra(Property.PROPERTY_ID, propertyId);
         intent.putExtra(LandlordProfile.LANDLORD_ID, landlordId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 }

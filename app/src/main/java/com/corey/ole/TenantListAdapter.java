@@ -2,7 +2,8 @@ package com.corey.ole;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +15,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 // Adapter for the recycler view in the Property's tenant list.
@@ -86,30 +84,29 @@ class TenantViewHolder extends RecyclerView.ViewHolder {
         mTenant = tenant;
         mNameTextView.setText(tenant.getFirstName() + " " + tenant.getLastName());
         mRoomTextView.setText(tenant.getRoom());
-        try {
-            final File localFile = File.createTempFile("images", "jpg");
+
+        String imagePath = tenant.getImagePath();
+        if (imagePath != null && !imagePath.isEmpty())
+        {
+            /* Fetch the image from Firebase Storage and sets it to imageButton */
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference islandRef = storageRef.child(imagePath);
 
-            if (tenant.getImagePath() != null && tenant.getImagePath().length() != 0) {
-                StorageReference imageStorage = storageRef.child(tenant.getImagePath());
-                imageStorage.getFile(localFile)
-                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Uri uri = Uri.fromFile(localFile);
-                                mPhotoTextView.setImageURI(uri);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            final long ONE_MEGABYTE = 1024 * 1024;
+            islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Data for "images/island.jpg" is returns, use this as needed
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    mPhotoTextView.setImageBitmap(Bitmap.createScaledBitmap(bmp, mPhotoTextView.getWidth(),
+                            mPhotoTextView.getHeight(), false));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
         }
-
     }
 }
