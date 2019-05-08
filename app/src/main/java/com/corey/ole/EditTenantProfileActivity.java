@@ -22,6 +22,7 @@ public class EditTenantProfileActivity extends NavDrawerActivity {
     protected TenantProfile tenant;
     private EditText name;
     protected EditText room;
+    protected TextView roomDisplay;
     private EditText gender;
     private EditText dob;
     private TextView email;
@@ -33,6 +34,7 @@ public class EditTenantProfileActivity extends NavDrawerActivity {
     public void loadData(){
         name = findViewById(R.id.tenant_name_edit_field);
         room = findViewById(R.id.room_number_edit_field);
+        roomDisplay = findViewById(R.id.room_number_display_field);
         gender = findViewById(R.id.gender_edit_field);
         dob = findViewById(R.id.date_of_birth_edit_field);
         phone = findViewById(R.id.cell_phone_edit_field);
@@ -42,6 +44,7 @@ public class EditTenantProfileActivity extends NavDrawerActivity {
 
         name.setText(tenant.getFirstName() + " " + tenant.getLastName());
         room.setText(tenant.getRoom());
+        roomDisplay.setText("Room " + tenant.getRoom());
         gender.setText(tenant.getGender());
         dob.setText(new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(tenant.getBirthdate()));
         phone.setText(String.valueOf(tenant.getPhone()).replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3"));

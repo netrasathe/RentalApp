@@ -139,13 +139,6 @@ public class PropertyDetailsActivity extends NavDrawerActivity
             }
         });
 
-        documentsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDocumentsActivity();
-            }
-        });
-
     }
 
     private void startAnnouncementActivity(){

@@ -106,10 +106,17 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
     }
 
     @Override
+    public void loadData() {
+        super.loadData();
+        roomDisplay.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.done) {
             saveImageToFirebaseStorage();
+            updateTenantData(uid);
             Intent intent = new Intent(this, TenantTenantProfileActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -202,7 +209,6 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
 
     private void saveImageToFirebaseStorage() {
         if (imageBitmap == null) {
-            tenant.setImagePath("");
             return;
         }
         String path = uid + "/images/profile.jpg";
@@ -213,19 +219,7 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         imageBitmap.recycle();
-        imageRef.putBytes(byteArray)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        updateTenantData(uid);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-
-                    }
-                });
+        imageRef.putBytes(byteArray);
     }
 
 }

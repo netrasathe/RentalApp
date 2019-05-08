@@ -301,7 +301,6 @@ public class EditAddPropertyActivity extends NavDrawerActivity {
 
     private void saveImageToFirebaseStorage() {
         if (imageBitmap == null) {
-            thisProperty.setImagePath("");
             return;
 
         }
