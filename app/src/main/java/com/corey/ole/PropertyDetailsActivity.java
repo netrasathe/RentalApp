@@ -1,7 +1,8 @@
 package com.corey.ole;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -85,29 +86,26 @@ public class PropertyDetailsActivity extends NavDrawerActivity
                 name.setText(propertyName);
                 address.setText(property.getStreet() + property.getCityStateZip());
 
-                try {
-                    final File localFile = File.createTempFile("images", "jpg");
-                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                /* Fetch the image from Firebase Storage and sets it to imageButton */
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                if (property.getImagePath() != null && property.getImagePath().length() != 0) {
+                    StorageReference islandRef = storageRef.child(property.getImagePath());
 
-                    if (property.getImagePath() != null && property.getImagePath().length() != 0) {
-                        StorageReference imageStorage = storageRef.child(property.getImagePath());
-                        imageStorage.getFile(localFile)
-                                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        Uri uri = Uri.fromFile(localFile);
-                                        image.setImageURI(uri);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                            }
-                        });
-
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    final long ONE_MEGABYTE = 1024 * 1024;
+                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            // Data for "images/island.jpg" is returns, use this as needed
+                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            image.setImageBitmap(Bitmap.createScaledBitmap(bmp, image.getWidth(),
+                                    image.getHeight(), false));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
                 }
 
 

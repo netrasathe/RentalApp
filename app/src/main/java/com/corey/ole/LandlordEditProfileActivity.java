@@ -2,7 +2,8 @@ package com.corey.ole;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -53,7 +56,7 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
     private TextView property;
     private FirebaseDatabase mDb;
     private ImageButton imageButton;
-    private Uri photoUri;
+    private Bitmap imageBitmap;
     private Button galleryButton;
     private Button cameraButton;
     private AlertDialog imageButtonDialog;
@@ -119,7 +122,9 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
         if (id == R.id.done) {
             saveProfileImageToFirebaseStorage();
             Intent intent = new Intent(this, LandlordProfileActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
             return true;
         }
 
@@ -135,10 +140,6 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
             } catch (IOException ex) {
             }
             if (photoFile != null) {
-                photoUri = FileProvider.getUriForFile(this,
-                        "com.corey.ole",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
@@ -163,11 +164,14 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_TAKE_PHOTO) {
-                imageButton.setImageURI(photoUri);
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                imageButton.setImageBitmap(imageBitmap);
                 imageButtonDialog.cancel();
             } else if (requestCode == PICK_IMAGE) {
-                photoUri = data.getData();
-                imageButton.setImageURI(photoUri);
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                imageButton.setImageBitmap(imageBitmap);
                 imageButtonDialog.cancel();
             }
         }
@@ -253,41 +257,43 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
         property.setVisibility(View.INVISIBLE);
 
         /* Fetch the image from Firebase Storage and sets it to imageButton */
-        try {
-            final File localFile = File.createTempFile("images", "jpg");
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-            if (landlord.getImagePath() != null && landlord.getImagePath().length() != 0) {
-                StorageReference imageStorage = storageRef.child(landlord.getImagePath());
-                imageStorage.getFile(localFile)
-                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                photoUri = Uri.fromFile(localFile);
-                                imageButton.setImageURI(photoUri);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
-            }
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        if (landlord.getImagePath() != null && landlord.getImagePath().length() != 0) {
+            StorageReference islandRef = storageRef.child(landlord.getImagePath());
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            final long ONE_MEGABYTE = 1024 * 1024;
+            islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Data for "images/island.jpg" is returns, use this as needed
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    imageButton.setImageBitmap(Bitmap.createScaledBitmap(bmp, imageButton.getWidth(),
+                            imageButton.getHeight(), false));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
         }
     }
 
 
     private void saveProfileImageToFirebaseStorage() {
-        if (photoUri == null) {
+        if (imageBitmap == null) {
             landlord.setImagePath("");
             return;
         }
         String path = mUid + "/images/profile.jpg";
         landlord.setImagePath(path);
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference imageRef = storageRef.child(path);
-        imageRef.putFile(photoUri)
+
+        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(path);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        imageBitmap.recycle();
+        imageRef.putBytes(byteArray)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
