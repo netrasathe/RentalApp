@@ -83,6 +83,9 @@ public class TenantTenantProfileActivity extends TenantProfileActivity
         } else if (id == R.id.nav_messages) {
             Intent intent = new Intent(this, TenantMessagesActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(this, TenantPropertyActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_rent) {
             Intent intent = new Intent(this, RentActivity.class);
             startActivity(intent);

@@ -307,7 +307,6 @@ public class SignupActivity extends AppCompatActivity {
         if (accountType == 1) {
             TenantProfile tenant = new TenantProfile(uid, firstName, lastName,
                     gender, birthday, phone, email, null, propertyCode, roomCode, new ArrayList<Repair>(), new Rent());
-            addTenantToProperty();
             dbUsersRef.child(uid).setValue(tenant);
         } else if (accountType == 2) {
             LandlordProfile landlord = new LandlordProfile(firstName, lastName, email, gender, birthday, phone, null, null);
@@ -332,9 +331,11 @@ public class SignupActivity extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ArrayList<String> tenants = (ArrayList<String>) dataSnapshot.getValue();
-                        tenants.add(uid);
-                        database.getReference("property/" + propertyCode + "/tenants").setValue(tenants);
+                        if (dataSnapshot.getValue() != null) {
+                            ArrayList<String> tenants = (ArrayList<String>) dataSnapshot.getValue();
+                            tenants.add(uid);
+                            database.getReference("property/" + propertyCode + "/tenants").setValue(tenants);
+                        }
                     }
 
                     @Override

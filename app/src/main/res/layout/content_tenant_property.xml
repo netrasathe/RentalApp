@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/darkGrey"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".PropertyDetailsActivity"
-    tools:showIn="@layout/app_bar_property_details">
-
+    tools:context=".TenantPropertyActivity"
+    tools:showIn="@layout/app_bar_tenant_property">
 
     <ImageButton
         android:id="@+id/property_details_image"
@@ -29,11 +28,11 @@
     <TextView
         android:id="@+id/property_details_name"
         android:layout_width="0dp"
-        android:layout_height="34dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="@string/building"
         android:textColor="@color/textWhite"
@@ -41,16 +40,15 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/property_details_address"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/property_details_image" />
 
     <TextView
         android:id="@+id/property_details_address"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/address"
@@ -60,56 +58,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/property_details_name" />
 
-    <Button
-        android:id="@+id/property_details_tenants_button"
-        style="@style/Widget.AppCompat.Button.Colored"
-
-        android:layout_width="148dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/round_edges"
-        android:text="@string/tenants"
-        android:textColor="#000000"
+    <TextView
+        android:id="@+id/property_details_room"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="@string/room"
+        android:textColor="@color/textWhite"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/property_details_documents_button"
-        app:layout_constraintTop_toBottomOf="@+id/property_details_policies_button" />
-
-    <Button
-        android:id="@+id/property_details_announcements_button"
-        android:layout_width="148dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/round_edges"
-        android:text="@string/announcements"
-        app:layout_constraintEnd_toStartOf="@+id/property_details_policies_button"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/property_details_address" />
 
-    <Button
-        android:id="@+id/property_details_policies_button"
-        android:layout_width="148dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/round_edges"
-        android:text="@string/policies"
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/title_activity_landlord_policies"
+        android:textColor="@color/textWhite"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/property_details_room" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/policies_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/property_details_announcements_button"
-        app:layout_constraintTop_toBottomOf="@+id/property_details_address" />
-
-    <Button
-        android:id="@+id/property_details_documents_button"
-        android:layout_width="148dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/round_edges"
-        android:text="@string/documents"
-        app:layout_constraintEnd_toStartOf="@+id/property_details_tenants_button"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/property_details_announcements_button" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 </android.support.constraint.ConstraintLayout>

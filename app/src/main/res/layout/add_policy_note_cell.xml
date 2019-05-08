@@ -28,7 +28,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="Policies/Notes"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/textWhite"
                 android:textSize="14sp" />
 
             <ImageView

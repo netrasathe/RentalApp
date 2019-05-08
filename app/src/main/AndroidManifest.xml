@@ -18,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".TenantPropertyActivity"
+            android:label="@string/title_activity_tenant_property"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".LandlordPoliciesActivity"
             android:label="@string/title_activity_landlord_policies" />
         <activity
@@ -93,7 +97,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LandlordTenantProfileActivity"
+        <activity
+            android:name=".LandlordTenantProfileActivity"
             android:label="@string/title_activity_landlord_tenant_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -105,7 +110,8 @@
             android:label="@string/title_activity_edit_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TenantListActivity" />
-        <activity android:name=".LandlordEditTenantProfileActivity"
+        <activity
+            android:name=".LandlordEditTenantProfileActivity"
             android:label="@string/title_activity_landlord_edit_tenant_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TenantProfileActivity" />
