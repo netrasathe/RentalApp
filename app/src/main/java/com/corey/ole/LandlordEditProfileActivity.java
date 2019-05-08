@@ -121,6 +121,7 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
         int id = item.getItemId();
         if (id == R.id.done) {
             saveProfileImageToFirebaseStorage();
+            updateLandlordData();
             Intent intent = new Intent(this, LandlordProfileActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -282,7 +283,6 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
 
     private void saveProfileImageToFirebaseStorage() {
         if (imageBitmap == null) {
-            landlord.setImagePath("");
             return;
         }
         String path = mUid + "/images/profile.jpg";
@@ -293,18 +293,6 @@ public class LandlordEditProfileActivity extends NavDrawerActivity {
         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         imageBitmap.recycle();
-        imageRef.putBytes(byteArray)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        updateLandlordData();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-
-                    }
-                });
+        imageRef.putBytes(byteArray);
     }
 }
