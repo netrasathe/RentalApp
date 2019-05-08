@@ -13,11 +13,11 @@
         android:id="@+id/dueHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="32dp"
         android:text="Due the"
         android:textColor="@color/textWhite"
-        android:textSize="24sp"
+        android:textSize="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,32 +26,32 @@
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@+id/dueHeader"
-        app:layout_constraintTop_toTopOf="@+id/dueHeader"
-        app:layout_constraintBottom_toBottomOf="@+id/dueHeader"
+        android:layout_marginStart="16dp"
         android:entries="@array/date_array"
         android:textColor="@color/textWhite"
-        android:theme="@style/Spinner" />
+        android:theme="@style/Spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/dueHeader"
+        app:layout_constraintStart_toEndOf="@+id/dueHeader"
+        app:layout_constraintTop_toTopOf="@+id/dueHeader" />
 
     <TextView
         android:id="@+id/dueHeader2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:text="of the month"
         android:textColor="@color/textWhite"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/daySpinner"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dueHeader"
         app:layout_constraintStart_toEndOf="@+id/daySpinner"
-        app:layout_constraintTop_toTopOf="@+id/daySpinner" />
+        app:layout_constraintTop_toTopOf="@+id/dueHeader" />
 
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="48dp"
         android:stretchColumns="1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,15 +67,14 @@
                 android:layout_column="1"
                 android:text="@string/base_rent"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/baseRentLabel"
                 android:gravity="end"
                 android:text="$"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/baseRentValue"
@@ -84,7 +83,8 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
-                android:textColor="@color/textWhite" />
+                android:textColor="@color/textWhite"
+                android:textSize="14dp" />
 
         </TableRow>
 
@@ -101,15 +101,14 @@
                 android:layout_column="1"
                 android:text="@string/water"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/waterLabel"
                 android:gravity="end"
                 android:text="$"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/waterValue"
@@ -118,7 +117,8 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
-                android:textColor="@color/textWhite" />
+                android:textColor="@color/textWhite"
+                android:textSize="14dp" />
 
         </TableRow>
 
@@ -135,15 +135,14 @@
                 android:layout_column="1"
                 android:text="@string/trash"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/trashLabel"
                 android:gravity="end"
                 android:text="$"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/trashValue"
@@ -152,7 +151,8 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
-                android:textColor="@color/textWhite" />
+                android:textColor="@color/textWhite"
+                android:textSize="14dp" />
 
         </TableRow>
 
@@ -169,15 +169,14 @@
                 android:layout_column="1"
                 android:text="@string/electricity"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/electricityLabel"
                 android:gravity="end"
                 android:text="$"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/electricityValue"
@@ -186,7 +185,8 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
-                android:textColor="@color/textWhite" />
+                android:textColor="@color/textWhite"
+                android:textSize="14dp" />
 
         </TableRow>
 
@@ -203,15 +203,14 @@
                 android:layout_column="1"
                 android:text="@string/internet"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/internetLabel"
                 android:gravity="end"
                 android:text="$"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/internetValue"
@@ -220,7 +219,8 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
-                android:textColor="@color/textWhite" />
+                android:textColor="@color/textWhite"
+                android:textSize="14dp" />
 
         </TableRow>
 
@@ -239,8 +239,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/total"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/totalLabel"
@@ -258,7 +257,7 @@
                 android:text="0"
                 android:textAlignment="viewStart"
                 android:textColor="@color/textWhite"
-                android:textSize="18sp"
+                android:textSize="14dp"
                 android:textStyle="bold" />
 
         </TableRow>
@@ -270,8 +269,9 @@
         style="@style/Base.ThemeOverlay.AppCompat.Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="128dp"
         android:autofillHints="password"
         android:ems="10"
         android:hint="http://"
@@ -279,22 +279,27 @@
         android:textColor="@color/textWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/urlLabel"
+        app:layout_constraintStart_toStartOf="parent"
         tools:targetApi="o" />
 
     <TextView
         android:id="@+id/urlLabel"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Link to Payment Portal:"
+        android:textAlignment="center"
         android:textColor="@color/textWhite"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/urlValue"
-        app:layout_constraintEnd_toStartOf="@+id/urlValue"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/urlValue" />
+        android:textSize="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/urlValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>
