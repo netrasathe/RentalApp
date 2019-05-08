@@ -1,7 +1,5 @@
 package com.corey.ole;
 
-import android.media.Image;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -9,19 +7,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +21,7 @@ import java.util.Locale;
 public class EditTenantProfileActivity extends NavDrawerActivity {
     protected TenantProfile tenant;
     private EditText name;
-    private EditText room;
+    protected EditText room;
     private EditText gender;
     private EditText dob;
     private TextView email;

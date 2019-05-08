@@ -1,15 +1,14 @@
 package com.corey.ole;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 public class LandlordEditTenantProfileActivity extends EditTenantProfileActivity {
 
     private String uid;
-    private String label;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,12 @@ public class LandlordEditTenantProfileActivity extends EditTenantProfileActivity
             // TODO: Raise dialog exception
             tenant = null;
         }
+    }
 
+    @Override
+    public void loadData() {
+        super.loadData();
+        room.setVisibility(View.VISIBLE);
     }
 
     @Override
