@@ -51,17 +51,6 @@ public class TenantEditTenantProfileActivity extends EditTenantProfileActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent tenantIntent = getIntent();
-        Bundle intentExtras = tenantIntent.getExtras();
-//
-//        if(intentExtras != null) {
-//            uid = intentExtras.getString(TenantProfile.EXTRA_TENANT_ID);
-//            getTenantFromID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//        } else {
-//            // TODO: Raise dialog exception
-//            tenant = null;
-//        }
-
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getTenantFromID(uid);
 

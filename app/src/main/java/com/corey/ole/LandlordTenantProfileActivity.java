@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -17,6 +18,7 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private String label;
+    private String tenantID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +27,9 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
 
         Intent tenantIntent = getIntent();
         Bundle intentExtras = tenantIntent.getExtras();
-        String tenantID = intentExtras.getString(TenantProfile.EXTRA_TENANT_ID);
-        label = intentExtras.getString(TenantProfile.EXTRA_LABEL);
+        tenantID = intentExtras.getString(TenantProfile.EXTRA_TENANT_ID);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if(!TextUtils.isEmpty(label)) {
-            toolbar.setTitle(label);
-        } else {
-            toolbar.setTitle("");
-        }
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -44,6 +40,13 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
+        findViewById(R.id.rent_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setRent();
+            }
+        });
+
         if(!TextUtils.isEmpty(tenantID)) {
             getTenantFromID(tenantID);
         } else {
@@ -52,6 +55,11 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
         }
     }
 
+    private void setRent() {
+        Intent intent = new Intent(this, SetRentActivity.class);
+        intent.putExtra("tenantID", tenantID);
+        startActivity(intent);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -59,7 +67,6 @@ public class LandlordTenantProfileActivity extends TenantProfileActivity
             // do something
             Intent intent = new Intent(this, LandlordEditTenantProfileActivity.class);
             intent.putExtra(TenantProfile.EXTRA_TENANT_ID, tenant.getId());
-            intent.putExtra(TenantProfile.EXTRA_LABEL, label);
             startActivity(intent);
             return true;
         }

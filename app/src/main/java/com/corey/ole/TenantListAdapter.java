@@ -65,12 +65,10 @@ class TenantViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 Intent goToTenantListIntent = new Intent(view.getContext(), LandlordTenantProfileActivity.class);
                 goToTenantListIntent.putExtra(TenantProfile.EXTRA_TENANT_ID, mTenant.getId());
-                goToTenantListIntent.putExtra(TenantProfile.EXTRA_LABEL, "Tenant Profile");
-
                 view.getContext().startActivity(goToTenantListIntent);
 
             }
-        });
+    });
 
     }
 

@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/darkGrey"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".RentActivity"
-    tools:showIn="@layout/app_bar_rent" >
+    tools:context=".SetRentActivity"
+    tools:showIn="@layout/app_bar_set_rent">
 
     <TextView
         android:id="@+id/dueHeader"
@@ -15,16 +15,44 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="Due April 30th 2019"
+        android:text="Due the"
         android:textColor="@color/textWhite"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/daySpinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/dueHeader"
+        app:layout_constraintTop_toTopOf="@+id/dueHeader"
+        app:layout_constraintBottom_toBottomOf="@+id/dueHeader"
+        android:entries="@array/date_array"
+        android:textColor="@color/textWhite"
+        android:theme="@style/Spinner" />
+
+    <TextView
+        android:id="@+id/dueHeader2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="of the month"
+        android:textColor="@color/textWhite"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/daySpinner"
+        app:layout_constraintStart_toEndOf="@+id/daySpinner"
+        app:layout_constraintTop_toTopOf="@+id/daySpinner" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
         android:stretchColumns="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,28 +65,31 @@
             <TextView
                 android:id="@+id/baseRentHeader"
                 android:layout_column="1"
-                android:layout_marginTop="16dp"
                 android:text="@string/base_rent"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp"
-                android:textStyle="bold|italic"
-                android:layout_marginStart="48dp" />
+                android:textStyle="bold|italic" />
 
             <TextView
-                android:id="@+id/baseRentValue"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
+                android:id="@+id/baseRentLabel"
                 android:gravity="end"
-                android:text="$0"
+                android:text="$"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/baseRentValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="0"
+                android:textColor="@color/textWhite" />
 
         </TableRow>
 
         <View
             android:layout_height="2dip"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:background="@color/textWhite" />
 
         <TableRow
@@ -68,28 +99,31 @@
             <TextView
                 android:id="@+id/waterHeader"
                 android:layout_column="1"
-                android:layout_marginTop="16dp"
                 android:text="@string/water"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp"
-                android:textStyle="bold|italic"
-                android:layout_marginStart="48dp" />
+                android:textStyle="bold|italic" />
 
             <TextView
-                android:id="@+id/waterValue"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
+                android:id="@+id/waterLabel"
                 android:gravity="end"
-                android:text="$0"
+                android:text="$"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/waterValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="0"
+                android:textColor="@color/textWhite" />
 
         </TableRow>
 
         <View
             android:layout_height="2dip"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:background="@color/textWhite" />
 
         <TableRow
@@ -99,28 +133,31 @@
             <TextView
                 android:id="@+id/trashHeader"
                 android:layout_column="1"
-                android:layout_marginTop="16dp"
                 android:text="@string/trash"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp"
-                android:textStyle="bold|italic"
-                android:layout_marginStart="48dp" />
+                android:textStyle="bold|italic" />
 
             <TextView
-                android:id="@+id/trashValue"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
+                android:id="@+id/trashLabel"
                 android:gravity="end"
-                android:text="$0"
+                android:text="$"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/trashValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="0"
+                android:textColor="@color/textWhite" />
 
         </TableRow>
 
         <View
             android:layout_height="2dip"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:background="@color/textWhite" />
 
         <TableRow
@@ -130,28 +167,31 @@
             <TextView
                 android:id="@+id/electricityHeader"
                 android:layout_column="1"
-                android:layout_marginTop="16dp"
                 android:text="@string/electricity"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp"
-                android:textStyle="bold|italic"
-                android:layout_marginStart="48dp" />
+                android:textStyle="bold|italic" />
 
             <TextView
-                android:id="@+id/electricityValue"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
+                android:id="@+id/electricityLabel"
                 android:gravity="end"
-                android:text="$0"
+                android:text="$"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/electricityValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="0"
+                android:textColor="@color/textWhite" />
 
         </TableRow>
 
         <View
             android:layout_height="2dip"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:background="@color/textWhite" />
 
         <TableRow
@@ -161,28 +201,31 @@
             <TextView
                 android:id="@+id/internetHeader"
                 android:layout_column="1"
-                android:layout_marginTop="16dp"
                 android:text="@string/internet"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp"
-                android:textStyle="bold|italic"
-                android:layout_marginStart="48dp" />
+                android:textStyle="bold|italic" />
 
             <TextView
-                android:id="@+id/internetValue"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
+                android:id="@+id/internetLabel"
                 android:gravity="end"
-                android:text="$0"
+                android:text="$"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/internetValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="0"
+                android:textColor="@color/textWhite" />
 
         </TableRow>
 
         <View
             android:layout_height="2dip"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:background="@color/textWhite" />
 
         <TableRow
@@ -197,15 +240,23 @@
                 android:text="@string/total"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp"
-                android:textStyle="bold|italic"
-                android:layout_marginStart="48dp" />
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/totalLabel"
+                android:layout_marginTop="16dp"
+                android:gravity="end"
+                android:text="$"
+                android:textColor="@color/textWhite"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/totalValue"
+                android:layout_marginStart="6dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
-                android:gravity="end"
-                android:text="$0"
+                android:text="0"
+                android:textAlignment="viewStart"
                 android:textColor="@color/textWhite"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -214,63 +265,36 @@
 
     </TableLayout>
 
-    <TableLayout
+    <EditText
+        android:id="@+id/urlValue"
+        style="@style/Base.ThemeOverlay.AppCompat.Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:stretchColumns="1"
-        app:layout_constraintBottom_toTopOf="@+id/payNowButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                android:id="@+id/youPayHeader"
-                android:layout_column="1"
-                android:layout_marginTop="16dp"
-                android:text="@string/you_pay"
-                android:textColor="@color/textWhite"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginStart="48dp" />
-
-            <TextView
-                android:id="@+id/youPayValue"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
-                android:gravity="end"
-                android:text="$0"
-                android:textColor="@color/textWhite"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-        </TableRow>
-
-        <View
-            android:layout_height="2dip"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:background="@color/textWhite" />
-
-    </TableLayout>
-
-    <Button
-        android:id="@+id/payNowButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="120dp"
-        android:layout_height="53dp"
-        android:layout_marginBottom="48dp"
-        android:background="@drawable/round_edges"
-        android:drawableStart="@drawable/ic_payment_black"
-        android:drawableEnd="@drawable/ic_keyboard_arrow_right_black"
-        android:text="@string/pay_now"
-        android:textColor="@color/textBlack"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:autofillHints="password"
+        android:ems="10"
+        android:hint="http://"
+        android:inputType="textUri"
+        android:textColor="@color/textWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/urlLabel"
+        tools:targetApi="o" />
+
+    <TextView
+        android:id="@+id/urlLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Link to Payment Portal:"
+        android:textColor="@color/textWhite"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/urlValue"
+        app:layout_constraintEnd_toStartOf="@+id/urlValue"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/urlValue" />
 
 </android.support.constraint.ConstraintLayout>

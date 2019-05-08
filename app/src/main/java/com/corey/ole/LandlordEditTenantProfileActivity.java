@@ -18,10 +18,7 @@ public class LandlordEditTenantProfileActivity extends EditTenantProfileActivity
 
         Intent tenantIntent = getIntent();
         Bundle intentExtras = tenantIntent.getExtras();
-        label = intentExtras.getString(TenantProfile.EXTRA_LABEL);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Edit " + label);
         setSupportActionBar(toolbar);
 
         if(intentExtras != null) {
@@ -42,7 +39,6 @@ public class LandlordEditTenantProfileActivity extends EditTenantProfileActivity
 
             Intent intent = new Intent(this, LandlordTenantProfileActivity.class);
             intent.putExtra(TenantProfile.EXTRA_TENANT_ID, tenant.getId());
-            intent.putExtra(TenantProfile.EXTRA_LABEL, label);
             startActivity(intent);
             return true;
         }

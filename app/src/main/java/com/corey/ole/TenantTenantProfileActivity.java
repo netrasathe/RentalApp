@@ -33,6 +33,8 @@ public class TenantTenantProfileActivity extends TenantProfileActivity
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
+        findViewById(R.id.rent_button).setVisibility(View.INVISIBLE);
+
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getTenantFromID(uid);
     }

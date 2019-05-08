@@ -54,6 +54,8 @@ public class LandlordProfileActivity extends NavDrawerActivity
         navigationView.setNavigationItemSelectedListener(this);
         setDrawerData(navigationView);
 
+        findViewById(R.id.rent_button).setVisibility(View.INVISIBLE);
+
         mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getLandlordFromID(mUid);
     }

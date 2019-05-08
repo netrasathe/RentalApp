@@ -1,27 +1,14 @@
 package com.corey.ole;
 
-import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.function.BiFunction;
 
 // custom class made for storing a tenant object.
 public class TenantProfile {
 
     public static final String EXTRA_TENANT_ID = "tenantID";
-    public static final String EXTRA_LABEL = "label";
 
     private final int accountType = 1;
     private String id;
@@ -35,10 +22,11 @@ public class TenantProfile {
     private String propertyId;
     private String room;
     private ArrayList<Repair> repairs;
+    private Rent rent;
 
 
     public TenantProfile(String id, String firstName, String lastName, String gender, Date birthdate, String phone, String email, String imagePath,
-                         String propertyID, String room, ArrayList<Repair> repairs) {
+                         String propertyID, String room, ArrayList<Repair> repairs, Rent rent) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,6 +43,7 @@ public class TenantProfile {
         this.propertyId = propertyID;
         this.room = room;
         this.repairs = repairs;
+        this.rent = rent;
     }
 
     public TenantProfile() {
@@ -133,6 +122,9 @@ public class TenantProfile {
         return room;
     }
 
+    public Rent getRent() {
+        return rent;
+    }
 
 
     public void setGender(String gender) {
@@ -162,6 +154,10 @@ public class TenantProfile {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public void setRent(Rent rent) {
+        this.rent = rent;
     }
 
     public void addRepair(Repair repair) {
