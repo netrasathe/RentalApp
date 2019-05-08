@@ -68,7 +68,7 @@ public class LandlordMessagesActivity extends MessagesActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_new) {
-            Intent intent = new Intent(this, TenantConversationActivity.class);
+            Intent intent = new Intent(this, LandlordConversationActivity.class);
             intent.putExtra("New Message", true);
             startActivity(intent);
             return true;

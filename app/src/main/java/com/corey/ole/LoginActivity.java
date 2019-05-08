@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements
     private View mProgressView;
 
     private FirebaseAuth mAuth;
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
