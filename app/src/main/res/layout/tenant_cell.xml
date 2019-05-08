@@ -30,6 +30,8 @@
                 android:id="@+id/photo"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView

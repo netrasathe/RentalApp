@@ -2,6 +2,8 @@ package com.corey.ole;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,6 +12,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 // Adapter for the recycler view in the Property's tenant list.
@@ -76,6 +86,30 @@ class TenantViewHolder extends RecyclerView.ViewHolder {
         mTenant = tenant;
         mNameTextView.setText(tenant.getFirstName() + " " + tenant.getLastName());
         mRoomTextView.setText(tenant.getRoom());
-        //mPhotoTextView.setImageBitmap(tenant.getPhoto());
+        try {
+            final File localFile = File.createTempFile("images", "jpg");
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+            if (tenant.getImagePath() != null && tenant.getImagePath().length() != 0) {
+                StorageReference imageStorage = storageRef.child(tenant.getImagePath());
+                imageStorage.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Uri uri = Uri.fromFile(localFile);
+                                mPhotoTextView.setImageURI(uri);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
