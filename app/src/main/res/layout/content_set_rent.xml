@@ -13,7 +13,7 @@
         android:id="@+id/dueHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:text="Due the"
         android:textColor="@color/textWhite"
@@ -50,9 +50,9 @@
         android:id="@+id/tableLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="32dp"
         android:stretchColumns="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +83,7 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
+                android:backgroundTint="@color/textWhite"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
 
@@ -117,6 +118,7 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0"
+                android:backgroundTint="@color/textWhite"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
 
@@ -150,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
+                android:backgroundTint="@color/textWhite"
                 android:text="0"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
@@ -184,6 +187,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
+                android:backgroundTint="@color/textWhite"
                 android:text="0"
                 android:textColor="@color/textWhite"
                 android:textSize="14dp" />
@@ -217,6 +221,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:backgroundTint="@color/textWhite"
                 android:inputType="number"
                 android:text="0"
                 android:textColor="@color/textWhite"
@@ -279,6 +284,7 @@
         android:textColor="@color/textWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/textWhite"
         app:layout_constraintStart_toStartOf="parent"
         tools:targetApi="o" />
 
